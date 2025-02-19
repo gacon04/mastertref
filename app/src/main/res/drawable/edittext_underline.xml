@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <solid android:color="@android:color/transparent"/> <!-- Nền trong suốt -->
+
+    <size android:height="2dp"/> <!-- Độ dày của đường kẻ -->
+
+    <stroke
+        android:width="2dp"
+        android:color="@android:color/darker_gray"/> <!-- Màu đường kẻ -->
+</shape>
