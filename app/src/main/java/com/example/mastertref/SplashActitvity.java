@@ -7,7 +7,7 @@ import android.os.Looper;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Splash extends AppCompatActivity {
+public class SplashActitvity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class Splash extends AppCompatActivity {
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(Splash.this, Login.class);
+                Intent intent = new Intent(SplashActitvity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }

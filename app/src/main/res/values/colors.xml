@@ -36,6 +36,7 @@
     <color name="dark_red">#8B0000</color>
     <color name="dark_blue">#00008B</color>
     <color name="dark_green">#006400</color>
+    <color name="dark_orange">#FF8C00</color>
 
     <!-- Lighter Shades -->
     <color name="light_blue">#ADD8E6</color>
@@ -59,5 +60,6 @@
     <color name="success">#4CAF50</color>
     <color name="warning">#FF9800</color>
     <color name="info">#2196F3</color>
+
 
 </resources>
