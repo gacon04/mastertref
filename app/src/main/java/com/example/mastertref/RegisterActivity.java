@@ -22,8 +22,8 @@ public class RegisterActivity extends AppCompatActivity {
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(intent);
+                // Kết thúc activity hiện tại để quay lại activity đang onPause trước đó
+                finish();
             }
         });
     }

@@ -64,7 +64,7 @@
             android:text="Đăng nhập"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-
+            app:cornerRadius="20dp"
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView

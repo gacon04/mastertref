@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item
+            android:id="@+id/search"
+            android:title="Tìm kiếm"
+            android:icon="@drawable/search"/>
+        <item
+            android:id="@+id/my_list"
+            android:title="Kho món ăn của tôi"
+            android:icon="@drawable/book"/>
+        <item
+            android:id="@+id/add_recipe"
+                android:title=""
+           />
+
+        <item
+            android:id="@+id/my_kitchen"
+            android:title="Bếp của tôi"
+            android:icon="@drawable/people"/>
+        <item
+            android:id="@+id/setting"
+            android:title="Cài đặt"
+            android:icon="@drawable/setting"/>
+
+</menu>
