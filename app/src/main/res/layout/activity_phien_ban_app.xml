@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="com.example.mastertref.SettingFragmentChild.DieuKhoanChinhSach">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <ImageView
+                android:id="@+id/back_button"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/left_arrow"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sfpro_bold"
+                android:padding="20dp"
+                android:text="Phiên bản App"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+        <!-- Thông tin phiên bản -->
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="18dp"
+            android:src="@drawable/mastertref" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="version 25.0.1 "
+            android:textColor="@color/black"
+            android:fontFamily="@font/sfpro_medi"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp" />
+
+        <!-- ID người dùng -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mã ID của bạn: xxxxxxxx"
+            android:fontFamily="@font/sfpro_medi"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginTop="5dp" />
+
+
+
+        <!-- Bản quyền -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="© MasterTref Inc."
+            android:textColor="@color/black"
+            android:fontFamily="@font/sfpro_medi"
+            android:textSize="14sp"
+            android:layout_marginTop="5dp" />
+
+        <!-- Thông điệp -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nấu ngon hơn mỗi ngày!"
+            android:fontFamily="@font/sfpro_bold"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp" />
+    </LinearLayout>
+</LinearLayout>

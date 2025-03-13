@@ -3,4 +3,9 @@
         <item name="fontFamily">@font/sfpro_regu</item>
         <item name="android:textSize">14sp</item>
     </style>
+    <style name="MyButtonStyle" parent="@style/Widget.MaterialComponents.Button">
+        <item name="android:backgroundTintMode">src_over</item>
+        <item name="android:backgroundTint">@null</item>
+    </style>
+
 </resources>

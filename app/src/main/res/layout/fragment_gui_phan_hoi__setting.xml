@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="com.example.mastertref.SettingFragmentChild.GuiPhanHoi">
+
+    <!-- Toolbar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/back_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/left_arrow" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gửi góp ý"
+            android:fontFamily="@font/sfpro_bold"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+
+    <!-- Nội dung -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chúng tôi rất vui nếu được nghe góp ý của bạn cho
+các kết quả tìm kiếm. Xin gửi chúng tôi góp ý của bạn để MasterTref có thể làm tốt hơn. Nếu bạn muốn
+có phản hồi từ đội ngũ hỗ trợ, vui lòng liên hệ MasterTref qua email"
+            android:textSize="14sp"
+            android:fontFamily="@font/sfpro_medi"
+            android:textColor="@color/black"
+            android:paddingBottom="8dp"/>
+
+        <!-- EditText nhập góp ý -->
+        <EditText
+            android:id="@+id/feedback_input"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="@color/mingray"
+            android:hint="Viết góp ý của bạn ở đây.."
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:fontFamily="@font/sfpro_regu"/>
+
+        <!-- Khoảng cách -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:background="@android:color/transparent"/>
+
+        <!-- Thông tin điều khoản -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chúng tôi sẽ sử dụng thông tin này để hoàn thiện cung cụ tìm kiếm của MasterTref.
+Khi góp ý này được gửi đi, bạn đã đồng ý để chúng tôi sử dụng thông tin đó theo Chính sách bảo mật và Điều khoản dịch vụ"
+            android:textSize="14sp"
+            android:fontFamily="@font/sfpro_medi"
+            android:textColor="@color/black"
+            android:paddingBottom="8dp"/>
+
+        <!-- Nút Gửi -->
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sfpro_medi"
+            android:text="Gửi"
+            android:textSize="18sp"
+            android:backgroundTint="@color/dark_orange"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="16dp"
+            android:enabled="false"/>
+    </LinearLayout>
+</LinearLayout>

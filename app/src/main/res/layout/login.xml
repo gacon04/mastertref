@@ -152,7 +152,7 @@
                 android:textColor="@android:color/black" />
 
             <EditText
-                android:id="@+id/editPassword"
+                android:id="@+id/edtPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -182,13 +182,14 @@
                     android:textColor="@android:color/black" />
 
                 <TextView
+                    android:id="@+id/tv_forgot_pass"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:fontFamily="@font/sfpro_regu"
+                    android:fontFamily="@font/sfpro_medii"
                     android:text="Quên mật khẩu ?"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@color/dark_orange" />
             </RelativeLayout>
         </LinearLayout>
 

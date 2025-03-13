@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,6 +15,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MasterTref"
         tools:targetApi="31">
+        <activity
+            android:name=".SettingFragmentChild.TaiKhoanActivity.DoiMatKhau"
+            android:exported="false" />
+        <activity
+            android:name=".SettingFragmentChild.TaiKhoanActivity.CacBepDaChan"
+            android:exported="false" />
+        <activity
+            android:name=".SettingFragmentChild.VeMasterTrefActivity.PhienBanApp"
+            android:exported="false" />
+        <activity
+            android:name=".ForgotPassword"
+            android:exported="false" />
+        <activity
+            android:name=".ChangeMyInfo"
+            android:exported="false" />
         <activity
             android:name=".AddRecipeActivity"
             android:exported="false" />

@@ -1,10 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddRecipeActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- AppBarLayout chứa Toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/pastel_orange"
+            app:navigationIcon="@drawable/left_arrow"
+            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
+            app:title="Đăng công thức" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Nội dung chính trong NestedScrollView -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Ảnh đại diện món ăn -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/imgRecipe"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/image" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đăng hình đại diện món ăn"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="16sp"
+                    android:layout_gravity="center"/>
+            </FrameLayout>
+
+            <!-- Nhập thông tin món ăn -->
+            <EditText
+                android:id="@+id/edtTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tên món ăn"
+                android:textColor="@color/gray"
+                android:fontFamily="@font/sfpro_medi"
+                android:textSize="18sp"
+                android:padding="8dp"
+                android:background="@null" />
+
+            <EditText
+                android:id="@+id/edtDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mô tả món ăn"
+                android:textColor="@color/gray"
+                android:fontFamily="@font/sfpro_medi"
+                android:padding="8dp"
+                android:background="@null"
+                android:minHeight="80dp" />
+
+            <!-- Nguyên liệu -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nguyên liệu"
+                android:fontFamily="@font/sfpro_bold"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:paddingTop="16dp" />
+
+            <EditText
+            android:id="@+id/edtIngredient1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="250g bột"
+            android:padding="12dp"
+            android:minHeight="48dp"
+            android:background="@null" />
+
+
+
+            <EditText
+                android:id="@+id/edtIngredient2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="100ml nước"
+                android:padding="12dp"
+                android:minHeight="48dp"
+                android:background="@null" />
+
+            <!-- Cách làm -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cách làm"
+                android:fontFamily="@font/sfpro_bold"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:paddingTop="16dp" />
+
+            <EditText
+                android:id="@+id/edtStep1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Trộn bột và nước đến khi đặc lại ..."
+                android:padding="35dp"
+                android:background="@null" />
+
+            <EditText
+                android:id="@+id/edtStep2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Đậy kín hỗn hợp và để nhiệt độ phòng 24-36 tiếng..."
+                android:padding="8dp"
+                android:background="@null" />
+
+            <!-- Thêm bước -->
+            <Button
+                android:id="@+id/btnAddStep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+ Thêm bước"
+                android:textSize="16sp"
+                android:layout_gravity="center_horizontal"
+                android:padding="8dp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Nút Lưu -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/save"
+        android:contentDescription="Lưu công thức"
+        app:layout_anchor="@id/toolbar"
+        app:layout_anchorGravity="bottom|end"
+        android:layout_margin="16dp" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

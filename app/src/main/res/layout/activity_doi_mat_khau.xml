@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".SettingFragmentChild.TaiKhoanActivity.DoiMatKhau">>
+
+    <!-- Toolbar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/back_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/left_arrow" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quay lại"
+            android:fontFamily="@font/sfpro_bold"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+
+    <!-- Nội dung -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TẠO MẬT KHẨU MỚI"
+            android:textSize="24sp"
+            android:fontFamily="@font/sfpro_bold"
+            android:textColor="@color/black"
+            android:paddingBottom="3dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mật khẩu mới của bạn phải khác với mật khẩu đang sử dụng hiện tại"
+            android:textSize="18sp"
+            android:fontFamily="@font/sfpro_medi"
+            android:textColor="@color/gray"
+            android:paddingBottom="20dp"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mật khẩu hiện tại"
+            android:textSize="16sp"
+            android:fontFamily="@font/sfpro_medi"
+            android:textColor="@color/black"
+            android:paddingBottom="5dp"/>
+        <!-- EditText nhập góp ý -->
+        <EditText
+            android:id="@+id/edtCurrentPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/mingray"
+            android:fontFamily="@font/sfpro_regu"
+            android:gravity="top"
+            android:textColor="@color/black"
+            android:hint="Nhập vào mật khẩu hiện tại.."
+            android:padding="12dp"
+            android:textSize="16sp" />
+
+        <!-- Khoảng cách -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:background="@android:color/transparent"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mật khẩu mới"
+            android:textSize="16sp"
+            android:fontFamily="@font/sfpro_medi"
+            android:textColor="@color/black"
+            android:paddingBottom="5dp"/>
+        <EditText
+            android:id="@+id/edtNewPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/mingray"
+            android:fontFamily="@font/sfpro_regu"
+            android:textColor="@color/black"
+            android:gravity="top"
+            android:hint="Nhập vào mật khẩu mới muốn đặt"
+            android:padding="12dp"
+            android:textSize="16sp" />
+
+        <!-- Khoảng cách -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:background="@android:color/transparent"/>
+
+        <!-- Nút Gửi -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sfpro_medi"
+            android:paddingBottom="5dp"
+            android:text="Xác nhận mật khẩu"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+        <EditText
+            android:id="@+id/edtConfirmPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/mingray"
+            android:fontFamily="@font/sfpro_regu"
+            android:gravity="top"
+            android:hint="Nhập vào mật khẩu hiện tại.."
+            android:textColor="@color/black"
+            android:padding="12dp"
+            android:textSize="16sp" />
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sfpro_medi"
+            android:text="XÁC NHẬN"
+            android:textSize="18sp"
+            android:backgroundTint="@color/dark_orange"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="16dp"
+            android:enabled="false"/>
+    </LinearLayout>
+</LinearLayout>

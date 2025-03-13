@@ -51,6 +51,7 @@
     <color name="pastel_purple">#B39EB5</color>
     <color name="pastel_orange">#FFB347</color>
 
+    <color name="mingray">#F5F5F5</color>
     <!-- UI Design Colors -->
     <color name="primary">#6200EE</color>
     <color name="primary_variant">#3700B3</color>
@@ -60,6 +61,7 @@
     <color name="success">#4CAF50</color>
     <color name="warning">#FF9800</color>
     <color name="info">#2196F3</color>
+
 
 
 </resources>

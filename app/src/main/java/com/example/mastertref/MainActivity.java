@@ -2,6 +2,8 @@ package com.example.mastertref;
 
 
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -45,11 +47,12 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new MyKitchenFragment());
             } else if (item.getItemId() == R.id.setting) {
                 replaceFragment(new SettingFragment());
-            }
-            else if (item.getItemId() == R.id.add_recipe) {
-                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+            } else if (item.getItemId() == R.id.add_recipe) {
+                Intent intent = new Intent(MainActivity.this, AddRecipeActivity.class);
                 startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
+
 
             return true;
         });
