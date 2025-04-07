@@ -15,8 +15,9 @@ import com.example.mastertref.utils.AESHelper;
 import org.jspecify.annotations.NonNull;
 
 public class TaikhoanVM extends AndroidViewModel {
-    private TaikhoanDAO taikhoanDAO;
-    private AppDatabase database;
+    private static final String TAG = "TaikhoanVM";
+    private final TaikhoanDAO taikhoanDAO;
+    private final AppDatabase database;
 
     public TaikhoanVM(@NonNull Application application) {
         super(application);
@@ -24,38 +25,37 @@ public class TaikhoanVM extends AndroidViewModel {
         taikhoanDAO = database.taikhoanDAO();
     }
 
+    public TaikhoanDAO getTaikhoanDAO() {
+        return taikhoanDAO;
+    }
 
     // tạo tài khoản đăng nhập vào đầu tiên
     public void createDefaultUserIfNotExists() {
-        final TaikhoanDAO dao = this.taikhoanDAO;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                TaikhoanEntity existingUser = dao.getUserByEmail("crushzone610@gmail.com");
-                if (existingUser == null) {
-                    TaikhoanEntity newUser = new TaikhoanEntity(
-                            "ngocminh04",
-                            "crushzone610@gmail.com",
-                            "Ngocminh2k4@",
-                            "Tran Ngoc Minh",
-                            "Tui yêu VN",
-                            "Vietnam",
-                            "default_avatar.png",
-                            true
-                    );
-                    dao.insertUser(newUser);
-                    Log.d("DATABASE", "Thêm tài khoản mặc định thành công!");
-                } else {
-                    Log.d("DATABASE", "Tài khoản mặc định đã tồn tại.");
-                }
+        new Thread(() -> {
+            TaikhoanEntity existingUser = taikhoanDAO.getUserByEmail("crushzone610@gmail.com");
+            if (existingUser == null) {
+                TaikhoanEntity newUser = new TaikhoanEntity(
+                        "ngocminh04",
+                        "crushzone610@gmail.com",
+                        "Ngocminh2k4@",
+                        "Tran Ngoc Minh",
+                        "Tui yêu VN",
+                        "Vietnam",
+                        "default_avatar.png",
+                        true
+                );
+                taikhoanDAO.insertUser(newUser);
+                Log.d("DATABASE", "Thêm tài khoản mặc định thành công!");
+            } else {
+                Log.d("DATABASE", "Tài khoản mặc định đã tồn tại.");
             }
         }).start();
     }
 
-
     public LiveData<TaikhoanEntity> getUserByUsername(String username) {
         return taikhoanDAO.getTaikhoanByUsername(username);
     }
+
     public boolean insertAccount(TaikhoanEntity user) {
         try {
             taikhoanDAO.insertUser(user);
@@ -63,8 +63,8 @@ public class TaikhoanVM extends AndroidViewModel {
         } catch (Exception e) {
             return false;
         }
-
     }
+
     public void validLoginInfo(String email, String password, OnLoginResultListener listener) {
         new Thread(() -> {
             String encryptedPassword = AESHelper.encrypt(password);
@@ -87,11 +87,12 @@ public class TaikhoanVM extends AndroidViewModel {
     public void insertUser(TaikhoanEntity user) {
         new Thread(() -> taikhoanDAO.insertUser(user)).start();
     }
+
     public void updateUser(TaikhoanEntity user) {
         new Thread(() -> taikhoanDAO.updateUser(user)).start();
     }
+
     public boolean isEmailExists(String email) {
         return taikhoanDAO.isEmailExists(email) > 0;
     }
-
 }

@@ -80,7 +80,10 @@
 
         <!-- Khoảng cách -->
 
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/black" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -100,45 +103,39 @@
             android:hint="Nhập vào mật khẩu mới muốn đặt"
             android:padding="12dp"
             android:textSize="16sp" />
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/black" />
+        <!-- Thêm EditText cho xác nhận mật khẩu -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái, số và kí tự đặc biệt"
-            android:textSize="12sp"
-            android:fontFamily="@font/sfpro_regul"
-            android:textColor="@color/red"
-            android:paddingBottom="10dp"/>
-
-
-        <!-- Nút Gửi -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:text="Xác nhận mật khẩu mới"
+            android:textSize="16sp"
             android:fontFamily="@font/sfpro_medi"
-            android:paddingBottom="5dp"
-            android:text="Xác nhận mật khẩu"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:paddingBottom="5dp"
+            android:layout_marginTop="16dp"/>
         <EditText
-            android:id="@+id/edtConfirmPass"
+            android:id="@+id/edtConfirmPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:fontFamily="@font/sfpro_regu"
-            android:gravity="top"
-            android:hint="Nhập lại mật khẩu mới..."
             android:textColor="@color/black"
+            android:gravity="top"
+            android:hint="Nhập lại mật khẩu mới để xác nhận"
             android:padding="12dp"
             android:textSize="16sp" />
-        <TextView
+
+        <!-- Nút Gửi -->
+
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Mật khẩu xác nhận phải giống với mật khẩu mới"
-            android:textSize="12sp"
-            android:fontFamily="@font/sfpro_regul"
-            android:textColor="@color/red"
-            android:paddingBottom="10dp"/>
+            android:layout_height="1dp"
+            android:background="@android:color/black" />
+
         <Button
             android:id="@+id/btn_send"
             android:layout_width="match_parent"

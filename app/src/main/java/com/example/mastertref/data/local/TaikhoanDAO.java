@@ -35,8 +35,6 @@ public interface TaikhoanDAO {
     @Query("SELECT * FROM taikhoan WHERE email = :email LIMIT 1")
     TaikhoanEntity getUserByEmail(String email);
 
-
-
     // 🟢 Kiểm tra email đã tồn tại chưa
     @Query("SELECT COUNT(*) FROM taikhoan WHERE email = :email")
     int isEmailExists(String email);
@@ -50,10 +48,10 @@ public interface TaikhoanDAO {
     TaikhoanEntity getUserById(int userId);
 
     // 🟢 Xác thực mật khẩu cũ trước khi cập nhật (Dùng trong chức năng đổi mật khẩu)
-    @Query("SELECT * FROM taikhoan WHERE id = :userId AND password = :oldPassword LIMIT 1")
-    TaikhoanEntity verifyPassword(int userId, String oldPassword);
+    @Query("SELECT * FROM taikhoan WHERE username = :username AND password = :password LIMIT 1")
+    TaikhoanEntity verifyPassword(String username, String password);
 
     // 🟢 Cập nhật mật khẩu mới (Lưu ý: Mật khẩu mới cần được mã hóa trước khi gọi hàm này)
-    @Query("UPDATE taikhoan SET password = :newPassword WHERE id = :userId")
-    void updatePassword(int userId, String newPassword);
+    @Query("UPDATE taikhoan SET password = :newPassword WHERE username = :username")
+    void updatePassword(String username, String newPassword);
 }
