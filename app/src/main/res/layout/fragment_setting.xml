@@ -5,7 +5,7 @@
     android:id="@+id/fragment_setting"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".SettingFragment">
+    tools:context=".ui.SettingFragment">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

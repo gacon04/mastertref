@@ -16,31 +16,31 @@
         android:theme="@style/Theme.MasterTref"
         tools:targetApi="31">
         <activity
-            android:name=".SettingFragmentChild.TaiKhoanActivity.DoiMatKhau"
+            android:name=".ui.SettingFragmentChild.TaiKhoanActivity.DoiMatKhau"
             android:exported="false" />
         <activity
-            android:name=".SettingFragmentChild.TaiKhoanActivity.CacBepDaChan"
+            android:name=".ui.SettingFragmentChild.TaiKhoanActivity.CacBepDaChan"
             android:exported="false" />
         <activity
-            android:name=".SettingFragmentChild.VeMasterTrefActivity.PhienBanApp"
+            android:name=".ui.SettingFragmentChild.VeMasterTrefActivity.PhienBanApp"
             android:exported="false" />
         <activity
-            android:name=".ForgotPassword"
+            android:name=".ui.ForgotPassword"
             android:exported="false" />
         <activity
-            android:name=".ChangeMyInfo"
+            android:name=".ui.ChangeMyInfo"
             android:exported="false" />
         <activity
-            android:name=".AddRecipeActivity"
+            android:name=".ui.AddRecipeActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".ui.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashActitvity"
+            android:name=".ui.SplashActitvity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,7 +48,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".ui.LoginActivity" />
     </application>
 
 </manifest>

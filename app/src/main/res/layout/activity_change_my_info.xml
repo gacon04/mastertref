@@ -16,16 +16,27 @@
             android:background="@color/white"
             android:gravity="center_vertical">
 
-            <ImageView
-                android:id="@+id/back_button"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+            <FrameLayout
+                android:id="@+id/back_button_container"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:layout_alignParentStart="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="8dp"
                 android:layout_alignParentTop="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="17dp"
-                android:contentDescription="Back Button"
-                android:src="@drawable/left_arrow" />
+                android:clickable="true"
+                android:focusable="true"
+                >
+
+                <ImageView
+                    android:id="@+id/back_button"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="Back Button"
+                    android:src="@drawable/left_arrow" />
+            </FrameLayout>
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -66,22 +77,23 @@
 
         <!-- Tên -->
         <TextView
+            android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Minh Trần Ngọc"
+            android:text="Tên tài khoản"
             android:fontFamily="@font/sfpro_bold"
             android:textColor="@color/black"
-
             android:textStyle="bold"
             android:textSize="18sp"
             android:gravity="center"
             android:paddingTop="8dp"/>
 
-        <!-- ID Cookpad -->
+
         <TextView
+            android:id="@+id/tv_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="\@mastertref_xxx"
+            android:text="\@idTaiKhoan"
             android:fontFamily="@font/sfpro_bold"
             android:textSize="14sp"
             android:gravity="center"
@@ -103,9 +115,10 @@
                 android:textColor="@color/gray"/>
 
             <EditText
+                android:id="@+id/edt_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Minh Trần Ngọc"
+                android:text=""
                 android:hint="Nhập vào tên của bạn..."
                 android:fontFamily="@font/sfpro_medi"
                 android:background="@null"
@@ -129,18 +142,18 @@
                 android:paddingTop="16dp"/>
 
             <EditText
+                android:id="@+id/edt_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="\@mastertref_xxxx"
                 android:hint="Nhập vào username muốn đặt"
                 android:fontFamily="@font/sfpro_medi"
                 android:textColor="@color/black"
                 android:textColorHint="@color/dark_gray"
-
+                android:minHeight="48dp"
                 android:background="@null"
                 android:textSize="16sp"
                 android:paddingBottom="8dp"
-                android:focusable="false"/>
+                />
 
             <View
                 android:layout_width="match_parent"
@@ -157,17 +170,17 @@
                 android:paddingTop="16dp"/>
 
             <EditText
+                android:id="@+id/edt_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nhập vào email của bạn..."
-                android:text="2224801030379@student.tdmu.edu.vn"
                 android:background="@null"
                 android:fontFamily="@font/sfpro_medi"
                 android:textColor="@color/black"
                 android:textColorHint="@color/dark_gray"
                 android:textSize="16sp"
                 android:paddingBottom="8dp"
-                android:focusable="false"/>
+              />
 
             <View
                 android:layout_width="match_parent"
@@ -184,6 +197,7 @@
                 android:paddingTop="16dp"/>
 
             <EditText
+                android:id="@+id/edt_from"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Đến từ..."
@@ -210,6 +224,7 @@
                 android:paddingTop="16dp"/>
 
             <EditText
+                android:id="@+id/edt_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Vài dòng về bạn và đam mê nấu nướng"
@@ -219,7 +234,6 @@
                 android:textColor="@color/black"
                 android:textColorHint="@color/dark_gray"
                 android:paddingBottom="8dp"/>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -230,6 +244,7 @@
 
         <!-- Nút cập nhật -->
         <Button
+            android:id="@+id/btnUpdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/sfpro_medi"
@@ -238,7 +253,7 @@
             android:backgroundTint="@color/pastel_orange"
             android:textColor="@android:color/white"
             android:layout_marginTop="16dp"
-            android:enabled="false"/>
+          />
 
     </LinearLayout>
 </ScrollView>
