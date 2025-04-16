@@ -9,17 +9,21 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.mastertref.R;
 import com.example.mastertref.databinding.MainBinding;
+import com.example.mastertref.utils.CloudinaryHelper;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 public class MainActivity extends AppCompatActivity {
 
     MainBinding binding;
-
+    FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        CloudinaryHelper.init(this);
         super.onCreate(savedInstanceState);
         binding = MainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -36,14 +40,20 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new MyKitchenFragment());
             } else if (item.getItemId() == R.id.setting) {
                 replaceFragment(new SettingFragment());
-            } else if (item.getItemId() == R.id.add_recipe) {
-                Intent intent = new Intent(MainActivity.this, AddRecipeActivity.class);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
 
 
             return true;
+        });
+        fab = findViewById(R.id.fab);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AddRecipeActivity.class);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
         });
 
 

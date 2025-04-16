@@ -58,7 +58,7 @@
 
 
         <!-- Nút sửa thông tin -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_edit_info_button"
             android:layout_width="238dp"
             android:layout_height="58dp"

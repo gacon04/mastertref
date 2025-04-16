@@ -65,13 +65,14 @@
                 android:scaleType="centerCrop"/>
 
             <ImageView
-                android:id="@+id/camera_icon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:id="@+id/btn_changeAvatar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_alignBottom="@id/profile_image"
                 android:layout_alignEnd="@id/profile_image"
                 android:src="@drawable/camera"
-                android:background="@drawable/circle_background_small"
+
+                android:background="@drawable/circle_background"
                 android:padding="4dp"/>
         </RelativeLayout>
 

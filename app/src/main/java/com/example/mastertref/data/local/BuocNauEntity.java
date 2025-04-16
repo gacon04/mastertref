@@ -28,14 +28,13 @@ public class BuocNauEntity {
     @ColumnInfo(name = "mo_ta")
     private String moTa; // Mô tả cách thực hiện
 
-    @ColumnInfo(name = "hinh_anh")
-    private String hinhAnh; // Ảnh minh họa (nếu có)
 
-    public BuocNauEntity(int monanId, int soBuoc, String moTa, String hinhAnh) {
+
+    public BuocNauEntity(int monanId, int soBuoc, String moTa) {
         this.monanId = monanId;
         this.soBuoc = soBuoc;
         this.moTa = moTa;
-        this.hinhAnh = hinhAnh;
+
     }
 
     public int getId() { return id; }
@@ -50,6 +49,5 @@ public class BuocNauEntity {
     public String getMoTa() { return moTa; }
     public void setMoTa(String moTa) { this.moTa = moTa; }
 
-    public String getHinhAnh() { return hinhAnh; }
-    public void setHinhAnh(String hinhAnh) { this.hinhAnh = hinhAnh; }
+
 }

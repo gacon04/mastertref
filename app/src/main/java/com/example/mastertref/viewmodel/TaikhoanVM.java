@@ -41,7 +41,7 @@ public class TaikhoanVM extends AndroidViewModel {
                         "Tran Ngoc Minh",
                         "Tui yêu VN",
                         "Vietnam",
-                        "default_avatar.png",
+                        "https://res.cloudinary.com/dmrexfwzv/image/upload/ic_launcher-playstore_pmtrat.png",
                         true
                 );
                 taikhoanDAO.insertUser(newUser);

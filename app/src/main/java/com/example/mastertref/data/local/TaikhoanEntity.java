@@ -83,8 +83,11 @@ public class TaikhoanEntity {
         return avatar;
     }
 
-    public void setAvatar(String avatar) {
+    public void setImageLink(String avatar) {
         this.avatar = avatar;
+    }
+    public String getImageLink() {
+        return avatar;
     }
 
     public boolean isActive() {

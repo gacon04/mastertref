@@ -52,6 +52,9 @@ dependencies {
     implementation("androidx.navigation:navigation-ui:2.7.7")
     implementation("androidx.room:room-runtime:2.5.0")
     annotationProcessor("androidx.room:room-compiler:2.5.0")
+    implementation("com.cloudinary:cloudinary-android:2.3.1")
+    implementation("com.squareup.okhttp3:okhttp:4.9.1")
+
 
 
 

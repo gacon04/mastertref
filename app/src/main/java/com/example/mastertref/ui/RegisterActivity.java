@@ -134,7 +134,7 @@ public class RegisterActivity extends AppCompatActivity {
             } else {
                 TaikhoanEntity newUser = new TaikhoanEntity(
                         IDGenerator.generateTrefID(), email, AESHelper.encrypt(password), name,"",
-                        "", "https://res.cloudinary.com/dmrexfwzv/image/upload/v1741879798/ic_launcher-playstore_pmtrat.png", true);
+                        "", "https://res.cloudinary.com/dmrexfwzv/image/upload/ic_launcher-playstore_pmtrat.png", true);
 
                 taikhoanVM.insertUser(newUser);
                 runOnUiThread(() -> {

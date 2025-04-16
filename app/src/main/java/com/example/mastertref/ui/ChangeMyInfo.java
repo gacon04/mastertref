@@ -1,20 +1,44 @@
 package com.example.mastertref.ui;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.mastertref.R;
 import com.example.mastertref.data.local.TaikhoanEntity;
 import com.example.mastertref.domain.models.TaiKhoanDTO;
+import com.example.mastertref.utils.CloudinaryHelper;
+import com.example.mastertref.utils.ImageHelper;
+import com.example.mastertref.utils.MediaPermissionHelper;
 import com.example.mastertref.utils.SessionManager;
 import com.example.mastertref.viewmodel.TaikhoanVM;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.MediaStore;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import android.app.AlertDialog;
+
+import java.io.ByteArrayOutputStream;
 
 public class ChangeMyInfo extends AppCompatActivity {
 
@@ -24,11 +48,27 @@ public class ChangeMyInfo extends AppCompatActivity {
     private TextView tvName, tvUsername;
     private EditText edtName, edtUsername, edtEmail, edtFrom, edtDescription;
     private Button btnUpdate;
-    private ImageView profileImage;
+    private ImageView profileImage,  btnChangeImage;
 
     private TaikhoanEntity currentUser;
-    private String currentUsername;
+    private String currentUsername, uploadedImageUrl;
+    private Uri selectedImageUri;
     private boolean isUsernameAvailable = true;
+    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
+        new ActivityResultContracts.StartActivityForResult(),
+        result -> {
+            if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                selectedImageUri = result.getData().getData();
+                // Hiển thị ảnh đã chọn
+                profileImage.setImageURI(selectedImageUri);
+                // Upload ảnh lên Cloudinary
+                uploadImageToCloudinary();
+            }
+        }
+    );
+
+    private static final int STORAGE_PERMISSION_CODE = 100;
+    private static final int CAMERA_PERMISSION_CODE = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +93,46 @@ public class ChangeMyInfo extends AppCompatActivity {
         edtFrom = findViewById(R.id.edt_from);
         edtDescription = findViewById(R.id.edt_description);
         btnUpdate = findViewById(R.id.btnUpdate);
+        btnChangeImage = findViewById(R.id.btn_changeAvatar);
+        profileImage = findViewById(R.id.profile_image);
     }
 
     private void setupListeners() {
         edtName.addTextChangedListener(inputWatcher);
         edtEmail.addTextChangedListener(inputWatcher);
         edtUsername.addTextChangedListener(usernameWatcher);
+        btnChangeImage.setOnClickListener(v -> {
+        Toast.makeText(this, "Button clicked", Toast.LENGTH_SHORT).show();
+            // Kiểm tra phiên bản Android và quyền tương ứng
+            String permission = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ?
+                    Manifest.permission.READ_MEDIA_IMAGES :
+                    Manifest.permission.READ_EXTERNAL_STORAGE;
 
+            if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
+                // Nếu đã có quyền, hiển thị dialog chọn ảnh
+                showImagePickerDialog();
+            } else {
+                // Nếu chưa có quyền, kiểm tra xem có nên hiển thị giải thích không
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+                    // Hiển thị dialog giải thích
+                    new AlertDialog.Builder(this)
+                            .setTitle("Cần cấp quyền")
+                            .setMessage("Ứng dụng cần quyền truy cập ảnh để thay đổi ảnh đại diện")
+                            .setPositiveButton("Đồng ý", (dialog, which) -> {
+                                ActivityCompat.requestPermissions(this,
+                                        new String[]{permission},
+                                        STORAGE_PERMISSION_CODE);
+                            })
+                            .setNegativeButton("Hủy", null)
+                            .show();
+                } else {
+                    // Xin quyền trực tiếp
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{permission},
+                            STORAGE_PERMISSION_CODE);
+                }
+            }
+        });
         btnUpdate.setOnClickListener(v -> {
             if (currentUser != null) {
                 String newName = edtName.getText().toString().trim();
@@ -67,12 +140,16 @@ public class ChangeMyInfo extends AppCompatActivity {
                 String newDescription = edtDescription.getText().toString().trim();
                 String newEmail = edtEmail.getText().toString().trim();
                 String newUsername = edtUsername.getText().toString().trim();
-
+                
                 currentUser.setFullname(newName);
                 currentUser.setFrom(newFrom);
                 currentUser.setDescription(newDescription);
                 currentUser.setEmail(newEmail);
                 currentUser.setUsername(newUsername);
+                // Cập nhật imageLink nếu có
+                if (uploadedImageUrl != null) {
+                    currentUser.setImageLink(uploadedImageUrl);
+                }
 
                 new Thread(() -> {
                     taikhoanVM.updateUser(currentUser);
@@ -106,6 +183,11 @@ public class ChangeMyInfo extends AppCompatActivity {
         edtEmail.setText(user.getEmail());
         edtFrom.setText(user.getFrom());
         edtDescription.setText(user.getDescription());
+        
+        // Load ảnh đại diện nếu có
+        if (user.getImageLink() != null && !user.getImageLink().isEmpty()) {
+            ImageHelper.loadImage(profileImage, user.getImageLink());
+        }
     }
 
     private final TextWatcher inputWatcher = new TextWatcher() {
@@ -201,5 +283,110 @@ public class ChangeMyInfo extends AppCompatActivity {
             edtUsername.setError(null);
             btnUpdate.setEnabled(true);
         }
+    }
+
+    private void uploadImageToCloudinary() {
+        if (selectedImageUri != null) {
+
+            
+            CloudinaryHelper.uploadImage(this, selectedImageUri, new CloudinaryHelper.CloudinaryCallback() {
+                @Override
+                public void onSuccess(String imageUrl) {
+                    runOnUiThread(() -> {
+                        uploadedImageUrl = imageUrl;
+                        Toast.makeText(ChangeMyInfo.this, 
+                            "Upload ảnh thành công", Toast.LENGTH_SHORT).show();
+                        
+                        // Cập nhật URL ảnh vào currentUser
+                        if (currentUser != null) {
+                            currentUser.setImageLink(uploadedImageUrl);
+                        }
+                    });
+                }
+
+                @Override
+                public void onError(String error) {
+                    runOnUiThread(() -> {
+
+                        Toast.makeText(ChangeMyInfo.this,
+                            "Lỗi upload ảnh: " + error, Toast.LENGTH_SHORT).show();
+                    });
+                }
+            });
+        }
+    }
+
+    private void showImagePickerDialog() {
+        String[] options = {"Chụp ảnh mới", "Chọn từ thư viện"};
+        new AlertDialog.Builder(this)
+                .setTitle("Chọn ảnh từ")
+                .setItems(options, (dialog, which) -> {
+                    if (which == 0) {
+                        // Kiểm tra quyền camera
+                        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) 
+                                != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(this,
+                                    new String[]{Manifest.permission.CAMERA},
+                                    CAMERA_PERMISSION_CODE);
+                            return;
+                        }
+                        // Mở camera
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent, 1);
+                    } else {
+                        // Mở gallery
+                        Intent intent = new Intent(Intent.ACTION_PICK,
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(intent, 2);
+                    }
+                })
+                .show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                         @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Khi được cấp quyền storage, hiển thị dialog chọn ảnh
+                showImagePickerDialog();
+            }
+        } else if (requestCode == CAMERA_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Khi được cấp quyền camera, mở camera
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 1);
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null) {
+            if (requestCode == 1) { // Camera
+                Bundle extras = data.getExtras();
+                if (extras != null) {
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    selectedImageUri = getImageUri(this, imageBitmap);
+                    profileImage.setImageURI(selectedImageUri);
+                    uploadImageToCloudinary();
+                }
+            } else if (requestCode == 2) { // Gallery
+                selectedImageUri = data.getData();
+                profileImage.setImageURI(selectedImageUri);
+                uploadImageToCloudinary();
+            }
+        }
+    }
+
+    private Uri getImageUri(Context context, Bitmap bitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(),
+                bitmap, "Title", null);
+        return Uri.parse(path);
     }
 }
