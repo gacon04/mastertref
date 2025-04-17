@@ -102,7 +102,7 @@ public class ChangeMyInfo extends AppCompatActivity {
         edtEmail.addTextChangedListener(inputWatcher);
         edtUsername.addTextChangedListener(usernameWatcher);
         btnChangeImage.setOnClickListener(v -> {
-        Toast.makeText(this, "Button clicked", Toast.LENGTH_SHORT).show();
+
             // Kiểm tra phiên bản Android và quyền tương ứng
             String permission = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ?
                     Manifest.permission.READ_MEDIA_IMAGES :
@@ -130,6 +130,7 @@ public class ChangeMyInfo extends AppCompatActivity {
                     ActivityCompat.requestPermissions(this,
                             new String[]{permission},
                             STORAGE_PERMISSION_CODE);
+                    showImagePickerDialog();
                 }
             }
         });
