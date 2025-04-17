@@ -234,62 +234,64 @@
                 android:orientation="vertical">
 
                 <!-- Block 1 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center_vertical"
-                    android:layout_marginHorizontal="4dp"
-                    android:elevation="2dp">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:layout_marginBottom="10dp"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:layout_marginHorizontal="4dp"-->
+<!--                    android:elevation="2dp">-->
 
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:paddingLeft="10dp"
-                    android:background="@color/light_gray"
-                    android:hint="250g bột"
-                    android:textColorHint="@color/gray"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/sfpro_regu"
-                    android:textSize="16sp" />
+<!--                <EditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:paddingLeft="10dp"-->
+<!--                    android:background="@color/light_gray"-->
+<!--                    android:hint="250g bột"-->
+<!--                    android:textColorHint="@color/gray"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:fontFamily="@font/sfpro_regu"-->
+<!--                    android:textSize="16sp" />-->
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_delete"
-                    android:layout_marginStart="8dp"/>
-            </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center_vertical"
-                    android:layout_marginHorizontal="4dp"
-                    android:elevation="2dp">
+<!--                <ImageView-->
+<!--                    android:id="@+id/btnDeleteIng1"-->
+<!--                    android:layout_width="20dp"-->
+<!--                    android:layout_height="20dp"-->
+<!--                    android:src="@drawable/ic_delete"-->
+<!--                    android:layout_marginStart="8dp"/>-->
+<!--            </LinearLayout>-->
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:layout_marginBottom="10dp"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:layout_marginHorizontal="4dp"-->
+<!--                    android:elevation="2dp">-->
 
 
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:paddingLeft="10dp"
-                        android:background="@color/light_gray"
-                        android:hint="2 quả trứng"
-                        android:textColorHint="@color/gray"
-                        android:textColor="@color/black"
-                        android:fontFamily="@font/sfpro_regu"
-                        android:textSize="16sp" />
+<!--                    <EditText-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:paddingLeft="10dp"-->
+<!--                        android:background="@color/light_gray"-->
+<!--                        android:hint="2 quả trứng"-->
+<!--                        android:textColorHint="@color/gray"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:fontFamily="@font/sfpro_regu"-->
+<!--                        android:textSize="16sp" />-->
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_delete"
-                        android:layout_marginStart="8dp"/>
-                </LinearLayout>
+<!--                    <ImageView-->
+<!--                        android:id="@+id/btnDeleteIng2"-->
+<!--                        android:layout_width="20dp"-->
+<!--                        android:layout_height="20dp"-->
+<!--                        android:src="@drawable/ic_delete"-->
+<!--                        android:layout_marginStart="8dp"/>-->
+<!--                </LinearLayout>-->
             <!-- Block 2 (copy như block 1) -->
 
         </LinearLayout>
@@ -324,38 +326,39 @@
                 android:orientation="vertical">
 
                 <!-- Step 1 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="16dp">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:layout_marginBottom="16dp">-->
 
-                    <TextView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:text="1"
-                        android:textColor="@color/black"
-                        android:background="@drawable/circle_background"
-                        android:gravity="center"/>
+<!--                    <TextView-->
+<!--                        android:layout_width="24dp"-->
+<!--                        android:layout_height="24dp"-->
+<!--                        android:text="1"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:background="@drawable/circle_background"-->
+<!--                        android:gravity="center"/>-->
 
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="@color/light_gray"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/sfpro_regu"
-                        android:hint="Trộn bột và nước đến khi đặc lại"
-                        android:textColorHint="@color/gray"
-                        android:textColor="@color/black"
-                        android:layout_marginStart="8dp"/>
+<!--                    <EditText-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="50dp"-->
+<!--                        android:background="@color/light_gray"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:fontFamily="@font/sfpro_regu"-->
+<!--                        android:hint="Trộn bột và nước đến khi đặc lại"-->
+<!--                        android:textColorHint="@color/gray"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:layout_marginStart="8dp"/>-->
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/ic_delete"
-                        android:layout_marginStart="8dp"/>
+<!--                    <ImageView-->
+<!--                        android:id="@+id/btnDeleteStep1"-->
+<!--                        android:layout_width="20dp"-->
+<!--                        android:layout_height="50dp"-->
+<!--                        android:src="@drawable/ic_delete"-->
+<!--                        android:layout_marginStart="8dp"/>-->
 
-                </LinearLayout>
+<!--                </LinearLayout>-->
 
 
             </LinearLayout>
