@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+<!--    <androidx.core.widget.NestedScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:fillViewport="true">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical">-->
+
+<!--            &lt;!&ndash; Header Image and Bookmark &ndash;&gt;-->
+<!--            <FrameLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="200dp"-->
+<!--                android:background="@color/light_gray">-->
+
+<!--                <ImageView-->
+<!--                    android:id="@+id/imgRecipe"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:scaleType="centerCrop"-->
+<!--                    android:src="@drawable/placeholder" />-->
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/btnBookmark"-->
+<!--                    android:layout_width="40dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:layout_gravity="top|end"-->
+<!--                    android:layout_margin="12dp"-->
+<!--                    android:background="@android:color/transparent"-->
+<!--                    android:src="@drawable/ic_bookmark"-->
+<!--                    -->
+<!--                    android:contentDescription="Bookmark" -->
+<!--                    />-->
+<!--            </FrameLayout>-->
+
+<!--            &lt;!&ndash; Title &ndash;&gt;-->
+<!--            <TextView-->
+<!--                android:id="@+id/tvTitle"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Ram tôm thịt"-->
+<!--                android:textSize="22sp"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:fontFamily="@font/sfpro_bold"-->
+<!--                android:paddingHorizontal="16dp"-->
+<!--                android:paddingTop="12dp"-->
+<!--                android:paddingBottom="4dp"/>-->
+
+<!--            &lt;!&ndash; Author and Description &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:paddingHorizontal="16dp"-->
+<!--                android:paddingBottom="4dp"-->
+<!--                android:gravity="center_vertical">-->
+
+<!--                <ImageView-->
+<!--                    android:layout_width="32dp"-->
+<!--                    android:layout_height="32dp"-->
+<!--                    android:src="@drawable/ic_avatar"-->
+<!--                    android:background="@drawable/circle_background"-->
+<!--                    android:layout_marginEnd="8dp"/>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:orientation="vertical">-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/tvAuthor"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="Ai Phuong"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="14sp"-->
+<!--                        android:fontFamily="@font/sfpro_bold"/>-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/tvTime"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="cook_5141805"-->
+<!--                        android:textColor="@color/gray"-->
+<!--                        android:textSize="12sp"-->
+<!--                        android:fontFamily="@font/sfpro_regu"/>-->
+<!--                </LinearLayout>-->
+<!--            </LinearLayout>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tvDescription"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Trời lạnh lạnh, ăn món ram tôm thịt này với dưa leo, cà chua, chấm ..."-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="14sp"-->
+<!--                android:fontFamily="@font/sfpro_regu"-->
+<!--                android:paddingHorizontal="16dp"-->
+<!--                android:paddingBottom="12dp"/>-->
+
+<!--            &lt;!&ndash; Ingredients Section &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:paddingHorizontal="16dp"-->
+<!--                android:paddingTop="8dp"-->
+<!--                android:paddingBottom="4dp">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:text="Nguyên Liệu"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:fontFamily="@font/sfpro_bold"/>-->
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/btnAddIngredient"-->
+<!--                    android:layout_width="40dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:background="@android:color/transparent"-->
+<!--                    android:src="@drawable/ic_add_circle"-->
+<!--                    android:contentDescription="Add Ingredient"/>-->
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/ingredientsContainer"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical"-->
+<!--                android:paddingHorizontal="32dp"-->
+<!--                android:paddingBottom="12dp">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="200g Tôm đất"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="15sp"-->
+<!--                    android:fontFamily="@font/sfpro_bold"/>-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="200g Thịt ba chỉ"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="15sp"-->
+<!--                    android:fontFamily="@font/sfpro_bold"/>-->
+<!--            </LinearLayout>-->
+
+<!--            &lt;!&ndash; Steps Section &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:paddingHorizontal="16dp"-->
+<!--                android:paddingTop="8dp"-->
+<!--                android:paddingBottom="4dp">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:text="Cách Làm"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:fontFamily="@font/sfpro_bold"/>-->
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/btnAddStep"-->
+<!--                    android:layout_width="40dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:background="@android:color/transparent"-->
+<!--                    android:src="@drawable/ic_add_circle"-->
+<!--                    android:contentDescription="Add Step"/>-->
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/stepsContainer"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical"-->
+<!--                android:paddingHorizontal="24dp"-->
+<!--                android:paddingBottom="16dp">-->
+
+<!--                &lt;!&ndash; Example Step &ndash;&gt;-->
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:gravity="top"-->
+<!--                    android:paddingBottom="8dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="24dp"-->
+<!--                        android:layout_height="24dp"-->
+<!--                        android:text="1"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:gravity="center"-->
+<!--                        android:background="@drawable/circle_background"-->
+<!--                        android:fontFamily="@font/sfpro_bold"/>-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:layout_marginStart="8dp"-->
+<!--                        android:text="Rửa sạch tôm, cắt bỏ đầu, lột vỏ, bỏ chỉ đen trên lưng tôm..."-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="15sp"-->
+<!--                        android:fontFamily="@font/sfpro_regu"/>-->
+<!--                </LinearLayout>-->
+<!--                &lt;!&ndash; Add more steps as needed &ndash;&gt;-->
+<!--            </LinearLayout>-->
+
+<!--            &lt;!&ndash; Comment Section &ndash;&gt;-->
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:background="@color/light_gray"-->
+<!--                android:layout_marginVertical="8dp"/>-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:padding="12dp"-->
+<!--                android:gravity="center_vertical">-->
+
+<!--                <EditText-->
+<!--                    android:id="@+id/edtComment"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:background="@color/light_gray"-->
+<!--                    android:hint="Thêm bình luận"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textColorHint="@color/gray"-->
+<!--                    android:fontFamily="@font/sfpro_regu"-->
+<!--                    android:paddingHorizontal="12dp"/>-->
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/btnSendComment"-->
+<!--                    android:layout_width="40dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:background="@android:color/transparent"-->
+<!--                    android:src="@drawable/ic_add_circle"-->
+<!--                    android:contentDescription="Send Comment"-->
+<!--                    android:layout_marginStart="8dp"/>-->
+<!--            </LinearLayout>-->
+<!--        </LinearLayout>-->
+<!--    </androidx.core.widget.NestedScrollView>-->
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

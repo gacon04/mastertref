@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mastertref.R;
 import com.example.mastertref.domain.models.TaiKhoanDTO;
+import com.example.mastertref.utils.ImageHelper;
 import com.example.mastertref.utils.SessionManager;
 import com.example.mastertref.viewmodel.TaikhoanVM;
 
@@ -21,7 +23,7 @@ public class MyKitchenFragment extends Fragment {
     private TaikhoanVM taikhoanVM;
     private SessionManager sessionManager;
     TextView tvHoten, tvUsername;
-
+    ImageView ivAvatar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class MyKitchenFragment extends Fragment {
         // Khởi tạo views
         tvHoten = view.findViewById(R.id.tv_hoten);
         tvUsername = view.findViewById(R.id.tv_username);
+        ivAvatar = view.findViewById(R.id.iv_avatar);
         Button suaThongTinButton = view.findViewById(R.id.btn_edit_info_button);
 
         // Bắt sự kiện click và mở Activity mới
@@ -64,6 +67,10 @@ public class MyKitchenFragment extends Fragment {
             if (user != null) {
                 tvHoten.setText(user.getFullname());
                 tvUsername.setText("@" + user.getUsername());
+                if (user.getImageLink() != null && !user.getImageLink().isEmpty()) {
+                    ImageHelper.loadImage(ivAvatar, user.getImageLink());
+                }
+
             }
         });
     }

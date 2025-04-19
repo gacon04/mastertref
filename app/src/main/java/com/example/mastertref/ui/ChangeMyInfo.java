@@ -2,6 +2,7 @@ package com.example.mastertref.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -141,7 +142,6 @@ public class ChangeMyInfo extends AppCompatActivity {
                 String newDescription = edtDescription.getText().toString().trim();
                 String newEmail = edtEmail.getText().toString().trim();
                 String newUsername = edtUsername.getText().toString().trim();
-                
                 currentUser.setFullname(newName);
                 currentUser.setFrom(newFrom);
                 currentUser.setDescription(newDescription);
@@ -155,7 +155,6 @@ public class ChangeMyInfo extends AppCompatActivity {
                 new Thread(() -> {
                     taikhoanVM.updateUser(currentUser);
                     sessionManager.saveUserSession(newUsername);
-
                     runOnUiThread(() -> {
                         Toast.makeText(this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
                         currentUsername = newUsername;
@@ -175,7 +174,6 @@ public class ChangeMyInfo extends AppCompatActivity {
             }
         });
     }
-
     private void updateUI(TaikhoanEntity user) {
         tvName.setText(user.getFullname());
         tvUsername.setText("@" + user.getUsername());
@@ -188,6 +186,7 @@ public class ChangeMyInfo extends AppCompatActivity {
         // Load ảnh đại diện nếu có
         if (user.getImageLink() != null && !user.getImageLink().isEmpty()) {
             ImageHelper.loadImage(profileImage, user.getImageLink());
+            profileImage.setBackground(Drawable.createFromPath("@drawable/circle_background"));
         }
     }
 
@@ -226,7 +225,6 @@ public class ChangeMyInfo extends AppCompatActivity {
     private boolean isValidUsernameFormat(String username) {
         return username.matches("^[a-zA-Z][a-zA-Z0-9_]{1,}$");
     }
-
     private void validateInput() {
         String name = edtName.getText().toString().trim();
         String email = edtEmail.getText().toString().trim();
@@ -286,18 +284,15 @@ public class ChangeMyInfo extends AppCompatActivity {
         }
     }
 
-    private void uploadImageToCloudinary() {
+    public void uploadImageToCloudinary() {
         if (selectedImageUri != null) {
-
-            
             CloudinaryHelper.uploadImage(this, selectedImageUri, new CloudinaryHelper.CloudinaryCallback() {
                 @Override
                 public void onSuccess(String imageUrl) {
                     runOnUiThread(() -> {
                         uploadedImageUrl = imageUrl;
-                        Toast.makeText(ChangeMyInfo.this, 
+                        Toast.makeText(ChangeMyInfo.this,
                             "Upload ảnh thành công", Toast.LENGTH_SHORT).show();
-                        
                         // Cập nhật URL ảnh vào currentUser
                         if (currentUser != null) {
                             currentUser.setImageLink(uploadedImageUrl);

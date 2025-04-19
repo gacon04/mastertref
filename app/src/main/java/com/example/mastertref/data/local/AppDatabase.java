@@ -14,6 +14,9 @@ public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
 
     public abstract TaikhoanDAO taikhoanDAO();
+    public abstract MonAnDAO monAnDAO();
+    public abstract NguyenLieuDAO nguyenLieuDAO();
+    public abstract BuocNauDAO buocNauDAO();
 
     public static AppDatabase getInstance(Context context) { // single ton
         if (INSTANCE == null) {
