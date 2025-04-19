@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.example.mastertref.utils.NguyenLieuUtils;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,9 +26,9 @@ import com.example.mastertref.data.local.MonAnEntity;
 import com.example.mastertref.data.local.NguyenLieuEntity;
 import com.example.mastertref.databinding.ActivityAddRecipeBinding;
 import com.example.mastertref.viewmodel.AddRecipeVM;
-import com.example.mastertref.viewmodel.AddRecipeViewModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AddRecipeActivity extends AppCompatActivity {
@@ -200,7 +201,14 @@ public class AddRecipeActivity extends AppCompatActivity {
             EditText edt = (EditText) ((LinearLayout) ingredientsContainer.getChildAt(i)).getChildAt(0);
             String text = edt.getText().toString().trim();
             if (!text.isEmpty()) {
-                nguyenLieus.add(new NguyenLieuEntity(text));
+                // PHÂN TÁCH NGUYÊN LIỆU THÀNH ĐỊNH LƯỢNG RIÊNG VÀ TÊN NGUYÊN LIỆU RIÊNG
+                NguyenLieuEntity ngl = NguyenLieuUtils.parseNguyenLieu(text);
+                if (ngl != null) {
+                    nguyenLieus.add(ngl);
+                } else {
+                    Toast.makeText(this, "Nguyên liệu không hợp lệ: " + text, Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
         }
 
@@ -360,6 +368,9 @@ public class AddRecipeActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
 
     // hàm chuyển dp sang pixel
     private int dpToPx(int dp) {
