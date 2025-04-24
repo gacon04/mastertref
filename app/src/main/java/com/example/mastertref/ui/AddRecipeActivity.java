@@ -1,21 +1,38 @@
 package com.example.mastertref.ui;
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.mastertref.utils.CloudinaryHelper;
 import com.example.mastertref.utils.NguyenLieuUtils;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -27,8 +44,8 @@ import com.example.mastertref.data.local.NguyenLieuEntity;
 import com.example.mastertref.databinding.ActivityAddRecipeBinding;
 import com.example.mastertref.viewmodel.AddRecipeVM;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class AddRecipeActivity extends AppCompatActivity {
@@ -39,7 +56,27 @@ public class AddRecipeActivity extends AppCompatActivity {
     LinearLayout ingredientsContainer, stepsContainer;
     EditText edtTitle, edtDescription, edtServing, edtCookingTime;
     ImageView imgAvatar,btnAddImage;
-    private AddRecipeVM viewModel;
+    FrameLayout layoutHinhAnh;
+    LinearLayout pickAvatarImgLayout;
+    private static final int STORAGE_PERMISSION_CODE = 100;
+    private static final int CAMERA_PERMISSION_CODE = 101;
+
+    String  uploadedImageUrl;
+    private Uri selectedImageUri;
+    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    selectedImageUri = result.getData().getData();
+                    // Hiển thị ảnh đã chọn
+                    imgAvatar.setImageURI(selectedImageUri);
+                    // Upload ảnh lên Cloudinary
+                    uploadImageToCloudinary();
+                }
+            }
+    );
+    private AddRecipeVM addRecipeVM;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,8 +100,9 @@ public class AddRecipeActivity extends AppCompatActivity {
         edtCookingTime = findViewById(R.id.edtCookingTime);
         imgAvatar = findViewById(R.id.imgRecipe);
 
-        viewModel = new ViewModelProvider(this).get(AddRecipeVM.class);
-
+        layoutHinhAnh = findViewById(R.id.addImageFL);
+        addRecipeVM = new ViewModelProvider(this).get(AddRecipeVM.class);
+        pickAvatarImgLayout = findViewById(R.id.pickAvatarImgLayout);
         // Khởi tạo các view và xử lý sự kiện
         initViews();
         setupListeners();
@@ -85,7 +123,12 @@ public class AddRecipeActivity extends AppCompatActivity {
                     addStepBlock();
             }
         });
-
+        layoutHinhAnh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addImageBlock();
+            }
+        });
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,53 +224,104 @@ public class AddRecipeActivity extends AppCompatActivity {
     }
 
     private void addNewRecipe() {
-        String tenMon = edtTitle.getText().toString().trim();
-        String moTa = edtDescription.getText().toString().trim();
-        String khauPhan = edtServing.getText().toString().trim();
-        String thoiGian = edtCookingTime.getText().toString().trim();
+        try {
+            String tenMon = edtTitle.getText().toString().trim();
+            String moTa = edtDescription.getText().toString().trim();
+            String khauPhan = edtServing.getText().toString().trim();
+            String thoiGian = edtCookingTime.getText().toString().trim();
 
+            Log.d("AddRecipe", "Bắt đầu thêm món ăn mới");
+            Log.d("AddRecipe", "Tên món: " + tenMon);
+            Log.d("AddRecipe", "Mô tả: " + moTa);
+            Log.d("AddRecipe", "Khẩu phần: " + khauPhan);
+            Log.d("AddRecipe", "Thời gian: " + thoiGian);
 
-        if (tenMon.isEmpty()) {
-            Toast.makeText(this, "Nhập tên món ăn!", Toast.LENGTH_SHORT).show();
-            return;
-        }
+            // Kiểm tra dữ liệu đầu vào
+            if (tenMon.isEmpty()) {
+                Toast.makeText(this, "Vui lòng nhập tên món ăn!", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        MonAnEntity monAn = new MonAnEntity(tenMon, moTa, khauPhan, thoiGian); // nếu bạn có constructor
-        List<NguyenLieuEntity> nguyenLieus = new ArrayList<>();
-        List<BuocNauEntity> buocNaus = new ArrayList<>();
+            if (ingredientsContainer.getChildCount() == 0) {
+                Toast.makeText(this, "Vui lòng thêm ít nhất một nguyên liệu!", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        // Lấy nguyên liệu
-        for (int i = 0; i < ingredientsContainer.getChildCount(); i++) {
-            EditText edt = (EditText) ((LinearLayout) ingredientsContainer.getChildAt(i)).getChildAt(0);
-            String text = edt.getText().toString().trim();
-            if (!text.isEmpty()) {
-                // PHÂN TÁCH NGUYÊN LIỆU THÀNH ĐỊNH LƯỢNG RIÊNG VÀ TÊN NGUYÊN LIỆU RIÊNG
-                NguyenLieuEntity ngl = NguyenLieuUtils.parseNguyenLieu(text);
-                if (ngl != null) {
-                    nguyenLieus.add(ngl);
-                } else {
-                    Toast.makeText(this, "Nguyên liệu không hợp lệ: " + text, Toast.LENGTH_SHORT).show();
-                    return;
+            if (stepsContainer.getChildCount() == 0) {
+                Toast.makeText(this, "Vui lòng thêm ít nhất một bước nấu!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Kiểm tra xem ảnh đã upload xong chưa
+            if (uploadedImageUrl == null) {
+                Toast.makeText(this, "Vui lòng đợi ảnh upload xong!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            MonAnEntity monAn = new MonAnEntity(tenMon, moTa, khauPhan, thoiGian);
+            List<NguyenLieuEntity> nguyenLieus = new ArrayList<>();
+            List<BuocNauEntity> buocNaus = new ArrayList<>();
+
+            // Lấy nguyên liệu
+            for (int i = 0; i < ingredientsContainer.getChildCount(); i++) {
+                EditText edt = (EditText) ((LinearLayout) ingredientsContainer.getChildAt(i)).getChildAt(0);
+                String text = edt.getText().toString().trim();
+                if (!text.isEmpty()) {
+                    NguyenLieuEntity ngl = NguyenLieuUtils.parseNguyenLieu(text);
+                    if (ngl != null) {
+                        nguyenLieus.add(ngl);
+                        Log.d("AddRecipe", "Thêm nguyên liệu: " + ngl.toString());
+                    } else {
+                        Toast.makeText(this, "Nguyên liệu không hợp lệ: " + text, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
             }
-        }
 
-        // Lấy bước nấu
-        for (int i = 0; i < stepsContainer.getChildCount(); i++) {
-            EditText edt = (EditText) ((LinearLayout) stepsContainer.getChildAt(i)).getChildAt(1);
-            String text = edt.getText().toString().trim();
-            if (!text.isEmpty()) {
-                buocNaus.add(new BuocNauEntity(i + 1, text));
+            // Lấy bước nấu
+            for (int i = 0; i < stepsContainer.getChildCount(); i++) {
+                EditText edt = (EditText) ((LinearLayout) stepsContainer.getChildAt(i)).getChildAt(1);
+                String text = edt.getText().toString().trim();
+                if (!text.isEmpty()) {
+                    BuocNauEntity buocNau = new BuocNauEntity(0, i, text);
+                    buocNaus.add(buocNau);
+                    Log.d("AddRecipe", "Thêm bước nấu: " + buocNau.toString());
+                }
             }
-        }
 
-        viewModel.addNewRecipe(monAn, nguyenLieus, buocNaus);
-        Toast.makeText(this, "Thêm món ăn thành công!", Toast.LENGTH_SHORT).show();
-        finish();
+            Log.d("AddRecipe", "Số lượng nguyên liệu: " + nguyenLieus.size());
+            Log.d("AddRecipe", "Số lượng bước nấu: " + buocNaus.size());
+
+            // Thêm callback để xử lý kết quả
+            addRecipeVM.addNewRecipe(monAn, nguyenLieus, buocNaus, new AddRecipeVM.AddRecipeCallback() {
+                @Override
+                public void onSuccess() {
+                    if (!isFinishing() && !isDestroyed()) {
+                        runOnUiThread(() -> {
+                            Log.d("AddRecipe", "Thêm món ăn thành công!");
+                            Toast.makeText(AddRecipeActivity.this, "Thêm món ăn thành công!", Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                }
+
+                @Override
+                public void onError(String error) {
+                    if (!isFinishing() && !isDestroyed()) {
+                        runOnUiThread(() -> {
+                            Log.e("AddRecipe", "Lỗi khi thêm món ăn: " + error);
+                            Toast.makeText(AddRecipeActivity.this, "Lỗi: " + error, Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                }
+            });
+        } catch (Exception e) {
+            Log.e("AddRecipe", "Lỗi trong quá trình thêm món ăn", e);
+            Toast.makeText(this, "Có lỗi xảy ra: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
 
-    // Thêm 1 LinearLayout step vào stepsContainer
+    // Thêm 1 LinearLayout bước step vào stepsContainer
     public void addStepBlock() {
         // Tạo LinearLayout chứa 1 bước
         LinearLayout stepLayout = new LinearLayout(AddRecipeActivity.this);
@@ -311,7 +405,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         addIngredientBlock();
         addStepBlock();
     }
-
+    // thêm các listener theo dõi sự thay đổi của các khối editext nhằm ràng buộc
     private void setupListeners() {
         // Tên món ăn: phải từ 2 từ trở lên
         edtTitle.addTextChangedListener(new TextWatcher() {
@@ -335,11 +429,42 @@ public class AddRecipeActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String text = s.toString().trim();
-                if (!text.isEmpty() && !text.matches("\\d+")) {
-                    edtServing.setError("Vui lòng nhập số lượng người ăn!");
+                boolean hasNumberWord = false;
+
+                if (!text.isEmpty()) {
+                    String[] words = text.split("\\s+");
+                    for (String word : words) {
+                        // Kiểm tra nếu từ chứa toàn số
+                        if (word.matches("\\d+")) {
+                            hasNumberWord = true;
+                            break;
+                        }
+                        // Kiểm tra nếu từ là biểu diễn số bằng chữ tiếng Việt
+                        if (isVietnameseNumberWord(word.toLowerCase())) {
+                            hasNumberWord = true;
+                            break;
+                        }
+                    }
+
+                    if (!hasNumberWord) {
+                        edtServing.setError("Vui lòng nhập khẩu phần hợp lệ!");
+                    } else {
+                        edtServing.setError(null);
+                    }
                 } else {
-                    edtServing.setError(null);
+                    edtServing.setError("Vui lòng không để trống!");
                 }
+            }
+
+            private boolean isVietnameseNumberWord(String word) {
+                String[] numberWords = {"không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín", "mười"};
+
+                for (String numberWord : numberWords) {
+                    if (word.equals(numberWord)) {
+                        return true;
+                    }
+                }
+                return false;
             }
         });
 
@@ -369,12 +494,142 @@ public class AddRecipeActivity extends AppCompatActivity {
         });
     }
 
+    private void addImageBlock(){
+        String permission = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ?
+                Manifest.permission.READ_MEDIA_IMAGES :
+                Manifest.permission.READ_EXTERNAL_STORAGE;
 
+        if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
+            // Nếu đã có quyền, hiển thị dialog chọn ảnh
+            showImagePickerDialog();
+        } else {
+            // Nếu chưa có quyền, kiểm tra xem có nên hiển thị giải thích không
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+                // Hiển thị dialog giải thích
+                new AlertDialog.Builder(this)
+                        .setTitle("Cần cấp quyền")
+                        .setMessage("Ứng dụng cần quyền truy cập ảnh để thay đổi ảnh đại diện")
+                        .setPositiveButton("Đồng ý", (dialog, which) -> {
+                            ActivityCompat.requestPermissions(this,
+                                    new String[]{permission},
+                                    STORAGE_PERMISSION_CODE);
+                        })
+                        .setNegativeButton("Hủy", null)
+                        .show();
+            } else {
+                // Xin quyền trực tiếp
+                ActivityCompat.requestPermissions(this,
+                        new String[]{permission},
+                        STORAGE_PERMISSION_CODE);
+                showImagePickerDialog();
+            }
+        }
+    }
 
 
     // hàm chuyển dp sang pixel
     private int dpToPx(int dp) {
         return Math.round(dp * getResources().getDisplayMetrics().density);
     }
+    public void uploadImageToCloudinary() {
+        if (selectedImageUri != null) {
+            CloudinaryHelper.uploadImage(this, selectedImageUri, new CloudinaryHelper.CloudinaryCallback() {
+                @Override
+                public void onSuccess(String imageUrl) {
+                    if (!isFinishing() && !isDestroyed()) {
+                        runOnUiThread(() -> {
+                            uploadedImageUrl = imageUrl;
+                            Toast.makeText(AddRecipeActivity.this,
+                                    "Upload ảnh thành công", Toast.LENGTH_SHORT).show();
+                            imgAvatar.setImageURI(selectedImageUri);
+                            imgAvatar.setVisibility(View.VISIBLE);
+                        });
+                    }
+                }
 
+                @Override
+                public void onError(String error) {
+                    runOnUiThread(() -> {
+
+                        Toast.makeText(AddRecipeActivity.this,
+                                "Lỗi upload ảnh: " + error, Toast.LENGTH_SHORT).show();
+                    });
+                }
+            });
+        }
+    }
+
+    private void showImagePickerDialog() {
+        String[] options = {"Chụp ảnh mới", "Chọn từ thư viện"};
+        new AlertDialog.Builder(this)
+                .setTitle("Chọn ảnh từ")
+                .setItems(options, (dialog, which) -> {
+                    if (which == 0) {
+                        // Kiểm tra quyền camera
+                        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(this,
+                                    new String[]{Manifest.permission.CAMERA},
+                                    CAMERA_PERMISSION_CODE);
+                            return;
+                        }
+                        // Mở camera
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent, 1);
+                    } else {
+                        // Mở gallery
+                        Intent intent = new Intent(Intent.ACTION_PICK,
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(intent, 2);
+                    }
+                })
+                .show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Khi được cấp quyền storage, hiển thị dialog chọn ảnh
+                showImagePickerDialog();
+            }
+        } else if (requestCode == CAMERA_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Khi được cấp quyền camera, mở camera
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 1);
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null) {
+            if (requestCode == 1) { // Camera
+                Bundle extras = data.getExtras();
+                if (extras != null) {
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    selectedImageUri = getImageUri(this, imageBitmap);
+                    imgAvatar.setImageURI(selectedImageUri);
+                    uploadImageToCloudinary();
+                }
+            } else if (requestCode == 2) { // Gallery
+                selectedImageUri = data.getData();
+                imgAvatar.setImageURI(selectedImageUri);
+                uploadImageToCloudinary();
+            }
+        }
+    }
+
+    private Uri getImageUri(Context context, Bitmap bitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(),
+                bitmap, "Title", null);
+        return Uri.parse(path);
+    }
 }

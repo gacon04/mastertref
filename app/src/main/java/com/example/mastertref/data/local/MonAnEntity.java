@@ -1,6 +1,7 @@
 package com.example.mastertref.data.local;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.ForeignKey;
 import androidx.room.ColumnInfo;
@@ -43,7 +44,7 @@ public class MonAnEntity {
         this.khauPhan = khauPhan;
         this.thoiGian = thoiGian;
     }
-
+    @Ignore
     public MonAnEntity(int taikhoanId, String tenMonAn, String thoiGian, String moTa, String khauPhan, String hinhAnh, boolean isActive, long createAt, long updateAt) {
         this.taikhoanId = taikhoanId;
         this.tenMonAn = tenMonAn;

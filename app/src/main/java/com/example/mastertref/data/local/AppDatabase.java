@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 
 import com.example.mastertref.domain.models.TaiKhoanDTO;
 
-@Database(entities = {TaikhoanEntity.class},
+@Database(entities = {TaikhoanEntity.class, MonAnEntity.class, NguyenLieuEntity.class, BuocNauEntity.class}, // Danh sách các entity
         version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;

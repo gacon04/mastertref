@@ -62,10 +62,10 @@ public class MediaPermissionHelper {
         ActivityCompat.requestPermissions(activity, permissions, PERMISSION_REQUEST_CODE);
     }
 
-    private static void showImagePickerDialog(Activity activity, MediaCallback callback) {
-        String[] options = {"Chụp ảnh mới", "Chọn từ thư viện"};
+    public static void showImagePickerDialog(Activity activity, MediaCallback callback) {
+        String[] options = {"Chụp ảnh mới 📷", "Chọn từ thư viện 📂"};
         new AlertDialog.Builder(activity)
-                .setTitle("Chọn ảnh từ")
+                .setTitle("Chọn ảnh từ ...")
                 .setItems(options, (dialog, which) -> {
                     if (which == 0) {
                         // Mở camera

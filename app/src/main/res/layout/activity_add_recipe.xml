@@ -95,46 +95,59 @@
             android:padding="16dp">
 
             <!-- Recipe Image -->
+
+
+            <!-- Recipe Title -->
             <FrameLayout
+                android:id="@+id/addImageFL"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                android:layout_marginBottom="16dp"
                 android:background="@color/light_gray"
-                android:layout_marginBottom="16dp">
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
 
-                <!-- Image hiển thị sau khi chọn ảnh -->
                 <ImageView
                     android:id="@+id/imgRecipe"
-                    android:layout_width="65dp"
-                    android:layout_height="45dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:clickable="false"
+                    android:focusable="false"/>
 
-                <!-- Overlay chứa nút thêm ảnh và hướng dẫn -->
                 <LinearLayout
+                    android:id="@+id/pickAvatarImgLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_gravity="center"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:clickable="false"
+                    android:focusable="false">
 
                     <ImageView
                         android:id="@+id/btn_AddImage"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
+                        android:layout_marginBottom="8dp"
                         android:src="@drawable/ic_camera"
-                        android:layout_marginBottom="8dp"/>
+                        android:clickable="false"
+                        android:focusable="false"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Đăng hình đại diện món ăn"
                         android:fontFamily="@font/sfpro_medi"
-                        android:textColor="@color/black"/>
+                        android:text="Đăng hình đại diện món ăn"
+                        android:textColor="@color/black"
+                        android:clickable="false"
+                        android:focusable="false"/>
                 </LinearLayout>
             </FrameLayout>
 
 
-            <!-- Recipe Title -->
             <EditText
                 android:id="@+id/edtTitle"
                 android:layout_width="match_parent"
