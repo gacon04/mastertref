@@ -42,7 +42,9 @@ import com.example.mastertref.data.local.BuocNauEntity;
 import com.example.mastertref.data.local.MonAnEntity;
 import com.example.mastertref.data.local.NguyenLieuEntity;
 import com.example.mastertref.databinding.ActivityAddRecipeBinding;
+import com.example.mastertref.utils.SessionManager;
 import com.example.mastertref.viewmodel.AddRecipeVM;
+import com.example.mastertref.viewmodel.TaikhoanVM;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -60,9 +62,12 @@ public class AddRecipeActivity extends AppCompatActivity {
     LinearLayout pickAvatarImgLayout;
     private static final int STORAGE_PERMISSION_CODE = 100;
     private static final int CAMERA_PERMISSION_CODE = 101;
-
-    String  uploadedImageUrl;
-    private Uri selectedImageUri;
+    // Lấy thông tin của tài khoản đăng món ăn
+    private TaikhoanVM taikhoanVM;
+    private SessionManager sessionManager;
+    int currentUserId;
+    String  uploadedImageUrl; // lưu link cloundinary ảnh up len
+    private Uri selectedImageUri; // lưu ảnh đã up lên
     private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -103,6 +108,14 @@ public class AddRecipeActivity extends AppCompatActivity {
         layoutHinhAnh = findViewById(R.id.addImageFL);
         addRecipeVM = new ViewModelProvider(this).get(AddRecipeVM.class);
         pickAvatarImgLayout = findViewById(R.id.pickAvatarImgLayout);
+
+        taikhoanVM = new ViewModelProvider(this).get(TaikhoanVM.class);
+        sessionManager = new SessionManager(this);
+
+        taikhoanVM.getUserIdByUsername(sessionManager.getUsername(), userId -> {
+           currentUserId = userId;
+        });
+
         // Khởi tạo các view và xử lý sự kiện
         initViews();
         setupListeners();
@@ -258,7 +271,17 @@ public class AddRecipeActivity extends AppCompatActivity {
                 return;
             }
 
+            // Lấy ID tài khoản hiện tại
+            // TODO: Thay thế bằng cách lấy ID tài khoản thực tế
+
+
             MonAnEntity monAn = new MonAnEntity(tenMon, moTa, khauPhan, thoiGian);
+            monAn.setTaikhoanId(currentUserId); // Set ID tài khoản
+            monAn.setHinhAnh(uploadedImageUrl); // Set URL ảnh
+            long currentTime = System.currentTimeMillis();
+            monAn.setCreateAt(currentTime);
+            monAn.setUpdateAt(currentTime);
+            monAn.setActive(true);
             List<NguyenLieuEntity> nguyenLieus = new ArrayList<>();
             List<BuocNauEntity> buocNaus = new ArrayList<>();
 
@@ -269,6 +292,7 @@ public class AddRecipeActivity extends AppCompatActivity {
                 if (!text.isEmpty()) {
                     NguyenLieuEntity ngl = NguyenLieuUtils.parseNguyenLieu(text);
                     if (ngl != null) {
+                        ngl.setMonanId(0); // Sẽ được cập nhật sau khi insert món ăn
                         nguyenLieus.add(ngl);
                         Log.d("AddRecipe", "Thêm nguyên liệu: " + ngl.toString());
                     } else {
@@ -284,6 +308,7 @@ public class AddRecipeActivity extends AppCompatActivity {
                 String text = edt.getText().toString().trim();
                 if (!text.isEmpty()) {
                     BuocNauEntity buocNau = new BuocNauEntity(0, i, text);
+                    buocNau.setMonanId(0); // Sẽ được cập nhật sau khi insert món ăn
                     buocNaus.add(buocNau);
                     Log.d("AddRecipe", "Thêm bước nấu: " + buocNau.toString());
                 }
@@ -298,8 +323,9 @@ public class AddRecipeActivity extends AppCompatActivity {
                 public void onSuccess() {
                     if (!isFinishing() && !isDestroyed()) {
                         runOnUiThread(() -> {
-                            Log.d("AddRecipe", "Thêm món ăn thành công!");
-                            Toast.makeText(AddRecipeActivity.this, "Thêm món ăn thành công!", Toast.LENGTH_SHORT).show();
+                            Log.d("AddRecipe", "Đăng tải món ăn thành công!");
+                            Toast.makeText(AddRecipeActivity.this, "Đăng tải món ăn thành công!", Toast.LENGTH_SHORT).show();
+                            finish(); // Đóng activity sau khi thêm thành công
                         });
                     }
                 }

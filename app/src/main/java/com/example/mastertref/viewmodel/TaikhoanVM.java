@@ -95,4 +95,16 @@ public class TaikhoanVM extends AndroidViewModel {
     public boolean isEmailExists(String email) {
         return taikhoanDAO.isEmailExists(email) > 0;
     }
+    public void getUserIdByUsername(String username, OnUserIdResultListener listener) {
+        new Thread(() -> {
+            int userId = taikhoanDAO.getUserIdByUsername(username);
+            listener.onResult(userId);
+        }).start();
+    }
+
+    // Interface để trả kết quả bất đồng bộ
+    public interface OnUserIdResultListener {
+        void onResult(int userId);
+    }
+
 }

@@ -45,18 +45,36 @@
             android:textSize="20sp"
             android:textColor="@color/gray"
             android:layout_marginBottom="12dp"/>
-        <TextView
-            android:layout_width="wrap_content"
+
+        <TableLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="0 Bạn bếp"
-            android:layout_marginBottom="12dp"
-            android:fontFamily="@font/sfpro_medi"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:minWidth="120dp"
-            android:paddingEnd="32dp"/>
-        <!-- TableLayout để sắp xếp 2 cột -->
+            android:layout_marginBottom="12dp">
+
+            <TableRow android:gravity="center">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="0 người theo dõi"
+                    android:fontFamily="@font/sfpro_medi"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:gravity="end"
+                    android:paddingEnd="16dp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="0 đang theo dõi"
+                    android:fontFamily="@font/sfpro_medi"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:gravity="start"
+                    android:paddingStart="16dp"/>
+            </TableRow>
+        </TableLayout>
 
 
         <!-- Nút sửa thông tin -->

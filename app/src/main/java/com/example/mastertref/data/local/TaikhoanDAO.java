@@ -26,7 +26,8 @@ public interface TaikhoanDAO {
     // 🟢 Kiểm tra đăng nhập (So sánh mật khẩu đã mã hóa)
     @Query("SELECT * FROM taikhoan WHERE email = :email AND password = :password LIMIT 1")
     TaikhoanEntity validLoginInfo(String email, String password);
-
+    @Query("SELECT id FROM taikhoan WHERE username = :username LIMIT 1")
+    int getUserIdByUsername(String username);
     // 🟢 Lấy tài khoản theo username
     @Query("SELECT * FROM taikhoan WHERE username = :username LIMIT 1")
     LiveData<TaikhoanEntity> getTaikhoanByUsername(String username);

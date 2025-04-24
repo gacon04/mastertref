@@ -23,21 +23,9 @@ public class AddRecipeVM extends AndroidViewModel {
 
     public void addNewRecipe(MonAnEntity monAn, List<NguyenLieuEntity> ingredients,
                              List<BuocNauEntity> steps, AddRecipeCallback callback) {
-        try {
-            // Thực hiện insert dữ liệu
-            repository.insertFullRecipe(monAn, ingredients, steps);
-
-            // Nếu thành công, gọi callback.onSuccess()
-            if (callback != null) {
-                callback.onSuccess();
-            }
-        } catch (Exception e) {
-            // Nếu có lỗi, gọi callback.onError()
-            if (callback != null) {
-                callback.onError(e.getMessage());
-            }
-        }
+        repository.insertFullRecipe(monAn, ingredients, steps, callback);
     }
+
     public interface AddRecipeCallback {
         void onSuccess();
         void onError(String error);

@@ -2,6 +2,7 @@
 package com.example.mastertref.data.repository;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -12,6 +13,7 @@ import com.example.mastertref.data.local.MonAnDAO;
 import com.example.mastertref.data.local.MonAnEntity;
 import com.example.mastertref.data.local.NguyenLieuDAO;
 import com.example.mastertref.data.local.NguyenLieuEntity;
+import com.example.mastertref.viewmodel.AddRecipeVM;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -31,17 +33,32 @@ public class RecipeRepository {
         executorService = Executors.newSingleThreadExecutor();
     }
 
-    public void insertFullRecipe(MonAnEntity monAn, List<NguyenLieuEntity> nguyenLieus, List<BuocNauEntity> buocNaus) {
+    public void insertFullRecipe(MonAnEntity monAn, List<NguyenLieuEntity> nguyenLieus,
+                                 List<BuocNauEntity> buocNaus, AddRecipeVM.AddRecipeCallback callback) {
         executorService.execute(() -> {
-            long monAnId = monAnDAO.insertMonAn(monAn);
-            for (NguyenLieuEntity ing : nguyenLieus) {
-                ing.setMonanId((int) monAnId);
+            try {
+                Log.d("AddRecipeRepo", "Chuẩn bị insert món ăn: " + monAn.toString());
+                long monAnId = monAnDAO.insertMonAn(monAn);
+                Log.d("AddRecipeRepo", "ID món ăn mới: " + monAnId);
+                for (NguyenLieuEntity ing : nguyenLieus) {
+                    ing.setMonanId((int) monAnId);
+                }
+                for (BuocNauEntity step : buocNaus) {
+                    step.setMonanId((int) monAnId);
+                }
+                nguyenLieuDAO.insertNguyenLieuList(nguyenLieus);
+                buocNauDAO.insertBuocNauList(buocNaus);
+               ;
+
+                if (callback != null) {
+                    callback.onSuccess();
+                }
+            } catch (Exception e) {
+                if (callback != null) {
+                    callback.onError(e.getMessage());
+                }
             }
-            for (BuocNauEntity step : buocNaus) {
-                step.setMonanId((int) monAnId);
-            }
-            nguyenLieuDAO.insertNguyenLieuList(nguyenLieus);
-            buocNauDAO.insertBuocNauList(buocNaus);
         });
     }
+
 }
