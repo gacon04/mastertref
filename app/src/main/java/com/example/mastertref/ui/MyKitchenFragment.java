@@ -12,11 +12,15 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mastertref.R;
+import com.example.mastertref.data.local.MonAnAdapter;
 import com.example.mastertref.domain.models.TaiKhoanDTO;
 import com.example.mastertref.utils.ImageHelper;
 import com.example.mastertref.utils.SessionManager;
+import com.example.mastertref.viewmodel.MonAnVM;
 import com.example.mastertref.viewmodel.TaikhoanVM;
 
 public class MyKitchenFragment extends Fragment {
@@ -24,6 +28,7 @@ public class MyKitchenFragment extends Fragment {
     private SessionManager sessionManager;
     TextView tvHoten, tvUsername;
     ImageView ivAvatar;
+    String username;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,6 +49,20 @@ public class MyKitchenFragment extends Fragment {
         ivAvatar = view.findViewById(R.id.iv_avatar);
         Button suaThongTinButton = view.findViewById(R.id.btn_edit_info_button);
 
+        MonAnAdapter adapter = new MonAnAdapter(requireContext());
+        RecyclerView recyclerView = view.findViewById(R.id.rvMonAn);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
+
+        MonAnVM viewModel = new ViewModelProvider(this).get(MonAnVM.class);
+        viewModel.getMonAnWithChiTietByUsername(sessionManager.getUsername())
+                .observe(getViewLifecycleOwner(), monAnWithChiTietList -> {
+                    adapter.setData(monAnWithChiTietList);
+                });
+
+
+
+
         // Bắt sự kiện click và mở Activity mới
         suaThongTinButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), ChangeMyInfo.class);
@@ -62,7 +81,7 @@ public class MyKitchenFragment extends Fragment {
     }
 
     private void loadUserData() {
-        String username = sessionManager.getUsername();
+        username = sessionManager.getUsername();
         taikhoanVM.getUserByUsername(username).observe(getViewLifecycleOwner(), user -> {
             if (user != null) {
                 tvHoten.setText(user.getFullname());

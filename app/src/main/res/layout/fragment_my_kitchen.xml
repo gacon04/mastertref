@@ -113,6 +113,7 @@
 
 <!--        phần show món ăn-->
         <LinearLayout
+            android:id="@+id/llRecipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -123,7 +124,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="16dp"
+                android:padding="5dp"
+                android:layout_marginHorizontal="8dp"
                 android:gravity="center_vertical">
 
                 <ImageView
@@ -154,58 +156,64 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/search" />
             </LinearLayout>
-
-            <!-- Recipe Cards -->
-            <androidx.cardview.widget.CardView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMonAn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="3dp"
-                android:layout_marginHorizontal="10dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardUseCompatPadding="true">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                android:clipToPadding="false"
+                android:layout_marginBottom="5dp"/>
+            <!-- Recipe Cards -->
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginBottom="12dp"-->
+<!--                app:cardCornerRadius="5dp"-->
+<!--                app:cardElevation="3dp"-->
+<!--                android:layout_marginHorizontal="10dp"-->
+<!--                app:cardBackgroundColor="@color/white"-->
+<!--                app:cardUseCompatPadding="true">-->
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="horizontal">-->
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/sfpro_bold"
-                            android:text="Bún riêu chay"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="2"-->
+<!--                        android:orientation="vertical"-->
+<!--                        android:padding="16dp">-->
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:fontFamily="@font/sfpro_regu"
-                            android:text="Ốc đậu, Cà chua, Nước mắm chay, hạt nêm, đậu ăn, hoa rô, Topping ăn kèm, Chả chay, Nấm rơm (tùy thích)"
-                            android:textColor="@color/gray"
-                            android:textSize="14sp"
-                            android:maxLines="3"
-                            android:ellipsize="end" />
-                    </LinearLayout>
+<!--                        <TextView-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:fontFamily="@font/sfpro_bold"-->
+<!--                            android:text="Bún riêu chay"-->
+<!--                            android:textColor="@color/black"-->
+<!--                            android:textSize="16sp" />-->
 
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/mastertref" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+<!--                        <TextView-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="4dp"-->
+<!--                            android:fontFamily="@font/sfpro_regu"-->
+<!--                            android:text="Ốc đậu, Cà chua, Nước mắm chay, hạt nêm, đậu ăn, hoa rô, Topping ăn kèm, Chả chay, Nấm rơm (tùy thích)"-->
+<!--                            android:textColor="@color/gray"-->
+<!--                            android:textSize="14sp"-->
+<!--                            android:maxLines="3"-->
+<!--                            android:ellipsize="end" />-->
+<!--                    </LinearLayout>-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:scaleType="centerCrop"-->
+<!--                        android:src="@drawable/mastertref" />-->
+<!--                </LinearLayout>-->
+<!--            </androidx.cardview.widget.CardView>-->
 
 
 

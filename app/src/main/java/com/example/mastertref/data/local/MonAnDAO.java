@@ -2,6 +2,7 @@ package com.example.mastertref.data.local;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.*;
+
 import java.util.List;
 
 @Dao
@@ -41,14 +42,25 @@ public interface MonAnDAO {
     LiveData<List<MonAnEntity>> getAllMonAn();
 
     @Transaction
-    @Query("SELECT * FROM monan WHERE id = :monAnId")
-    MonAnWithChiTiet getChiTietMonAn(int monAnId);
+    @Query("SELECT monan.* FROM monan " +
+            "INNER JOIN taikhoan ON monan.taikhoan_id = taikhoan.id " +
+            "WHERE taikhoan.username = :username AND monan.is_active = 1 " +
+            "ORDER BY monan.create_at DESC")
+    LiveData<List<MonAnWithChiTiet>> getMonAnWithChiTietByUsername(String username);
+
+
+
+
 
 
     // Lấy danh sách tất cả món ăn kèm nguyên liệu + bước nấu của 1 tài khoản
     @Transaction
     @Query("SELECT * FROM monan WHERE taikhoan_id = :taikhoanId AND is_active = 1 ORDER BY create_at DESC")
     List<MonAnWithChiTiet> getTatCaMonAnWithChiTiet(int taikhoanId);
+
+    @Transaction
+    @Query("SELECT * FROM monan")
+    List<MonAnWithChiTiet> getAllMonAnWithChiTiet();
 
 
     // 🟢 Tìm món ăn theo tên (dành cho tìm kiếm)
