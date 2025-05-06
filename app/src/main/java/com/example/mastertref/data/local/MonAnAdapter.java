@@ -1,6 +1,7 @@
 package com.example.mastertref.data.local;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.mastertref.R;
+import com.example.mastertref.ui.ChiTietMonAnActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +21,13 @@ import java.util.List;
 public class MonAnAdapter extends RecyclerView.Adapter<MonAnAdapter.MonAnViewHolder> {
     private final List<MonAnWithChiTiet> list;
     private Context context;
-
+    private OnItemClickListener listener;
+    public interface OnItemClickListener {
+        void onItemClick(MonAnWithChiTiet monAn);
+    }
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
     public MonAnAdapter(Context context) {
         this.context = context;
         this.list = new ArrayList<>();
@@ -56,6 +64,16 @@ public class MonAnAdapter extends RecyclerView.Adapter<MonAnAdapter.MonAnViewHol
         holder.tvMoTa.setText(moTa.toString());
 
         Glide.with(context).load(monAn.getHinhAnh()).into(holder.ivAnh);
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(monAnChiTiet);
+            }
+
+            Intent intent = new Intent(context, ChiTietMonAnActivity.class);
+            intent.putExtra("mon_an_id", monAn.getId());
+            context.startActivity(intent);
+        });
+
     }
 
 

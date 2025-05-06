@@ -25,6 +25,9 @@ public class MonAnRepository {
     public LiveData<List<MonAnWithChiTiet>> getMonAnWithChiTietByUsername(String username) {
         return monAnDAO.getMonAnWithChiTietByUsername(username);
     }
+    public LiveData<MonAnWithChiTiet> getMonAnWithChiTietById(int id) {
+        return monAnDAO.getMonAnWithChiTietById(id);
+    }
 
 
     // Bạn có thể thêm các phương thức khác nếu cần: insert, update, delete...

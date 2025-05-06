@@ -17,22 +17,27 @@ public class MonAnWithChiTiet {
             parentColumn = "id",
             entityColumn = "monan_id"
     )
-    private List<NguyenLieuEntity> nguyenLieuList;
 
+    private List<NguyenLieuEntity> nguyenLieuList;
     @Relation(
             parentColumn = "id",
             entityColumn = "monan_id"
     )
     private List<BuocNauEntity> buocNauList;
 
+    @Relation(
+            parentColumn = "taikhoan_id",  // từ MonAnEntity
+            entityColumn = "id"            // từ TaikhoanEntity
+    )
+    private TaikhoanEntity nguoiDang;
     // Getters & Setters
     public MonAnEntity getMonAn() {
         return monAn;
     }
-
     public void setMonAn(MonAnEntity monAn) {
         this.monAn = monAn;
     }
+
 
     public List<NguyenLieuEntity> getNguyenLieuList() {
         return nguyenLieuList;
@@ -48,5 +53,13 @@ public class MonAnWithChiTiet {
 
     public void setBuocNauList(List<BuocNauEntity> buocNauList) {
         this.buocNauList = buocNauList;
+    }
+
+    public TaikhoanEntity getNguoiDang() {
+        return nguoiDang;
+    }
+
+    public void setNguoiDang(TaikhoanEntity nguoiDang) {
+        this.nguoiDang = nguoiDang;
     }
 }

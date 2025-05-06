@@ -27,6 +27,11 @@ public interface MonAnDAO {
     @Query("SELECT * FROM monan WHERE id = :monAnId LIMIT 1")
     LiveData<MonAnEntity> getMonAnById(int monAnId);
 
+    @Transaction
+    @Query("SELECT * FROM monan WHERE id = :monAnId")
+    LiveData<MonAnWithChiTiet> getMonAnWithChiTietById(int monAnId);
+
+
     // 🟢 Lấy tất cả món ăn của một tài khoản cụ thể
     @Query("SELECT monan.* FROM monan " +
             "INNER JOIN taikhoan ON monan.taikhoan_id = taikhoan.id " +

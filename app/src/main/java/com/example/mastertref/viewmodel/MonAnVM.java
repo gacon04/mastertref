@@ -14,7 +14,7 @@ import java.util.List;
 
 public class MonAnVM extends AndroidViewModel {
     private MonAnRepository repository;
-
+    private LiveData<List<MonAnWithChiTiet>> monAnWithChiTietList;
     public MonAnVM(@NonNull Application application) {
         super(application);
         repository = new MonAnRepository(application);
@@ -26,5 +26,9 @@ public class MonAnVM extends AndroidViewModel {
     public LiveData<List<MonAnWithChiTiet>> getMonAnWithChiTietByUsername(String username) {
         return repository.getMonAnWithChiTietByUsername(username);
     }
+    public LiveData<MonAnWithChiTiet> getMonAnWithChiTietById(int id) {
+        return repository.getMonAnWithChiTietById(id);
+    }
+
 
 }

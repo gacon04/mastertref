@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ui.ShowMonAn">
+    tools:context=".ui.ChiTietMonAnActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -122,10 +122,10 @@
 
                 <ImageButton
                     android:id="@+id/btnBookmark"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_more" />
+                    android:src="@drawable/save_1" />
             </LinearLayout>
 
             <!-- Author -->
@@ -137,6 +137,7 @@
                 android:gravity="center_vertical">
 
                 <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgAuthor"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     app:shapeAppearanceOverlay="@style/CircleImageView"
@@ -205,6 +206,38 @@
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
+
+        <LinearLayout
+            android:id="@+id/listNguyenLieu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/llShowKhauPhan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="8dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/guy"
+                     />
+
+                <TextView
+                    android:id="@+id/tvSoNguoi"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sfpro_bold"
+                    android:text="3 người"
+                    android:textColor="@color/gray"
+                    android:textSize="16sp" />
+
+
+            </LinearLayout>
             <!-- Ingredient 1 -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -232,32 +265,9 @@
 
 
             </LinearLayout>
+        </LinearLayout>
 
-            <!-- Ingredient 2 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="16dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/sfpro_regu"
-                    android:text="200 g"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/sfpro_regu"
-                    android:text="Thịt ba chỉ"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-            </LinearLayout>
 
             <!-- Divider -->
             <View
@@ -287,6 +297,11 @@
 
             </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/listCachLam"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <!-- Step 1 -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -296,26 +311,24 @@
                 android:orientation="horizontal">
 
                 <TextView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:text="1"
-                android:textColor="@color/black"
-                android:background="@drawable/circle_background"
-                android:gravity="center"/>
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:text="1"
+                    android:textColor="@color/black"
+                    android:background="@drawable/circle_background"
+                    android:gravity="center"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:fontFamily="@font/sfpro_regu"
-                    android:text="Rửa sạch tôm, cắt bỏ đầu, lột vỏ, bỏ chỉ đen trên lưng tôm.\nƯớp tôm với 1 thìa muối.\nRửa sạch thịt ba chỉ, cắt miếng vừa, ướp gia vị như tôm\nHành tím gọt vỏ, thái mỏng"
+                    android:text="Rửa sạch tôm"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
 
-
-
-
+        </LinearLayout>
 
             <!-- Bottom Actions -->
             <LinearLayout
@@ -340,7 +353,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_marginEnd="8dp"
-                        android:src="@drawable/ic_camera" />
+                        android:src="@drawable/pin" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -356,7 +369,8 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:background="@color/white"
-                    android:src="@drawable/account_icon" />
+                    android:scaleType="centerInside"
+                    android:src="@drawable/save_1" />
 
                 <ImageButton
                     android:id="@+id/btnMoreOptions"
@@ -412,6 +426,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgAuthorAvatar"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     app:shapeAppearanceOverlay="@style/CircleImageView"
@@ -428,6 +443,7 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/tvAuthor2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sfpro_medi"
@@ -445,6 +461,7 @@
                     android:fontFamily="@font/sfpro_medi"
                     android:text="Kết bạn bếp"
                     android:textAllCaps="false"
+                    android:textSize="20sp"
                     android:textColor="@color/white" />
             </LinearLayout>
 
@@ -467,12 +484,6 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-<!--                <de.hdodenhof.circleimageview.CircleImageView-->
-<!--                    android:id="@+id/imgCommenter"-->
-<!--                    android:layout_width="32dp"-->
-<!--                    android:layout_height="32dp"-->
-<!--                    android:layout_marginEnd="8dp"-->
-<!--                    android:src="@drawable/default_avatar" />-->
 
                 <TextView
                     android:layout_width="0dp"

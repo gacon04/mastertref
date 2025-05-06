@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -60,6 +61,16 @@ public class MyKitchenFragment extends Fragment {
                     adapter.setData(monAnWithChiTietList);
                 });
 
+        adapter.setOnItemClickListener(monAnChiTiet -> {
+            if (monAnChiTiet != null && monAnChiTiet.getMonAn() != null) {
+                Intent intent = new Intent(requireContext(), ChiTietMonAnActivity.class);
+                intent.putExtra("mon_an_id", monAnChiTiet.getMonAn().getId());
+                startActivity(intent);
+            } else {
+                // Handle the case where monAnChiTiet or its MonAn is null
+                Toast.makeText(requireContext(), "Không thể mở chi tiết món ăn", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
 

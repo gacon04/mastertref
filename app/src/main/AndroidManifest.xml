@@ -30,6 +30,9 @@
             android:name=".ui.ForgotPassword"
             android:exported="false" />
         <activity
+            android:name=".ui.ChiTietMonAnActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.ChangeMyInfo"
             android:exported="false" />
         <activity
