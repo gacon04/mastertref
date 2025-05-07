@@ -79,4 +79,53 @@ public interface MonAnDAO {
     // 🟢 Bật/tắt trạng thái hoạt động của món ăn
     @Query("UPDATE monan SET is_active = :active WHERE id = :monAnId")
     void setMonAnActiveStatus(int monAnId, boolean active);
+
+    @Transaction
+    @Query("SELECT DISTINCT m.* FROM monan m " +
+            "INNER JOIN nguyenlieu n1 ON m.id = n1.monan_id " +
+            "WHERE n1.ten_nguyen_lieu IN (" +
+            "    SELECT n2.ten_nguyen_lieu FROM nguyenlieu n2 WHERE n2.monan_id = :sourceMonAnId" +
+            ") AND m.id != :sourceMonAnId AND m.is_active = 1 " +
+            "GROUP BY m.id " +
+            "ORDER BY COUNT(DISTINCT n1.ten_nguyen_lieu) DESC " +
+            "LIMIT :limit")
+    LiveData<List<MonAnWithChiTiet>> getSimilarRecipesByIngredients(int sourceMonAnId, int limit);
+
+    // Lấy các món ăn cùng tác giả
+    @Transaction
+    @Query("SELECT m.* FROM monan m " +
+            "WHERE m.taikhoan_id = (" +
+            "    SELECT m2.taikhoan_id FROM monan m2 WHERE m2.id = :sourceMonAnId" +
+            ") AND m.id != :sourceMonAnId AND m.is_active = 1 " +
+            "ORDER BY m.create_at DESC " +
+            "LIMIT :limit")
+    LiveData<List<MonAnWithChiTiet>> getRecipesBySameAuthor(int sourceMonAnId, int limit);
+
+    // Lấy các món ăn ngẫu nhiên (khi không có đủ món ăn tương tự)
+    @Transaction
+    @Query("SELECT * FROM monan " +
+            "WHERE id != :sourceMonAnId AND is_active = 1 " +
+            "ORDER BY RANDOM() " +
+            "LIMIT :limit")
+    LiveData<List<MonAnWithChiTiet>> getRandomRecipesExcept(int sourceMonAnId, int limit);
+
+    // Lấy các món ăn tương tự kết hợp (ưu tiên món có nguyên liệu chung, sau đó là cùng tác giả, sau cùng là ngẫu nhiên)
+
+    @Transaction
+    @Query("SELECT DISTINCT m.* FROM monan m " +
+            "LEFT JOIN nguyenlieu n1 ON m.id = n1.monan_id " +
+            "LEFT JOIN nguyenlieu n2 ON n2.monan_id = :sourceMonAnId " +
+            "WHERE m.id != :sourceMonAnId AND m.is_active = 1 " +
+            "GROUP BY m.id " +
+            "HAVING COUNT(CASE WHEN n1.ten_nguyen_lieu = n2.ten_nguyen_lieu THEN 1 ELSE NULL END) >= 0 " +
+            "ORDER BY " +
+            "CASE WHEN m.taikhoan_id != (SELECT taikhoan_id FROM monan WHERE id = :sourceMonAnId) THEN 1 ELSE 0 END DESC, " +
+            "COUNT(CASE WHEN n1.ten_nguyen_lieu = n2.ten_nguyen_lieu THEN 1 ELSE NULL END) DESC, " +
+            "CASE WHEN COUNT(CASE WHEN n1.ten_nguyen_lieu = n2.ten_nguyen_lieu THEN 1 ELSE NULL END) > 0 THEN 1 ELSE 0 END DESC, " +
+            "RANDOM() " +
+            "LIMIT :limit")
+    LiveData<List<MonAnWithChiTiet>> getRecommendedRecipes(int sourceMonAnId, int limit);
+
+
+
 }

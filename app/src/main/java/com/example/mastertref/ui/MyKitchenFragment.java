@@ -1,7 +1,6 @@
 package com.example.mastertref.ui;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mastertref.R;
-import com.example.mastertref.data.local.MonAnAdapter;
-import com.example.mastertref.domain.models.TaiKhoanDTO;
+import com.example.mastertref.data.local.Adapter.MonAnAdapter;
 import com.example.mastertref.utils.ImageHelper;
 import com.example.mastertref.utils.SessionManager;
 import com.example.mastertref.viewmodel.MonAnVM;
@@ -27,9 +25,10 @@ import com.example.mastertref.viewmodel.TaikhoanVM;
 public class MyKitchenFragment extends Fragment {
     private TaikhoanVM taikhoanVM;
     private SessionManager sessionManager;
-    TextView tvHoten, tvUsername;
-    ImageView ivAvatar;
-    String username;
+    private TextView tvHoten, tvUsername;
+    private Button btnShowAllRecipe;
+    private ImageView ivAvatar;
+    private String username;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,7 +38,8 @@ public class MyKitchenFragment extends Fragment {
         
         return inflater.inflate(R.layout.fragment_my_kitchen, container, false);
     }
-
+    private MonAnAdapter adapter;
+    private MonAnVM viewModel;
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -48,23 +48,43 @@ public class MyKitchenFragment extends Fragment {
         tvHoten = view.findViewById(R.id.tv_hoten);
         tvUsername = view.findViewById(R.id.tv_username);
         ivAvatar = view.findViewById(R.id.iv_avatar);
+        btnShowAllRecipe = view.findViewById(R.id.btnViewAllRecipes);
         Button suaThongTinButton = view.findViewById(R.id.btn_edit_info_button);
 
-        MonAnAdapter adapter = new MonAnAdapter(requireContext());
+        // Initialize the "Show All" button as GONE by default
+        btnShowAllRecipe.setVisibility(View.GONE);
+        
+        // Set up "Show All" button click listener
+        btnShowAllRecipe.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ShowAllRecipe.class);
+            startActivity(intent);
+
+        });
+
+        adapter = new MonAnAdapter(requireContext());
+        adapter.setItemLimit(2);
         RecyclerView recyclerView = view.findViewById(R.id.rvMonAn);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
-        MonAnVM viewModel = new ViewModelProvider(this).get(MonAnVM.class);
+        viewModel = new ViewModelProvider(this).get(MonAnVM.class);
         viewModel.getMonAnWithChiTietByUsername(sessionManager.getUsername())
                 .observe(getViewLifecycleOwner(), monAnWithChiTietList -> {
                     adapter.setData(monAnWithChiTietList);
+
+                    // Show or hide the "Show All" button based on data size
+                    if (adapter.hasMoreItems()) {
+                        btnShowAllRecipe.setVisibility(View.VISIBLE);
+                    } else {
+                        btnShowAllRecipe.setVisibility(View.GONE);
+                    }
                 });
 
         adapter.setOnItemClickListener(monAnChiTiet -> {
             if (monAnChiTiet != null && monAnChiTiet.getMonAn() != null) {
                 Intent intent = new Intent(requireContext(), ChiTietMonAnActivity.class);
                 intent.putExtra("mon_an_id", monAnChiTiet.getMonAn().getId());
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Add this line
                 startActivity(intent);
             } else {
                 // Handle the case where monAnChiTiet or its MonAn is null

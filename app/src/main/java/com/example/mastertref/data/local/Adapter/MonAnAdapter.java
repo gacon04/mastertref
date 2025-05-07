@@ -1,4 +1,4 @@
-package com.example.mastertref.data.local;
+package com.example.mastertref.data.local.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.mastertref.R;
+import com.example.mastertref.data.local.MonAnEntity;
+import com.example.mastertref.data.local.MonAnWithChiTiet;
+import com.example.mastertref.data.local.NguyenLieuEntity;
 import com.example.mastertref.ui.ChiTietMonAnActivity;
 
 import java.util.ArrayList;
@@ -20,8 +23,10 @@ import java.util.List;
 
 public class MonAnAdapter extends RecyclerView.Adapter<MonAnAdapter.MonAnViewHolder> {
     private final List<MonAnWithChiTiet> list;
+    private final List<MonAnWithChiTiet> fullList; // Store the full list
     private Context context;
     private OnItemClickListener listener;
+    private int itemLimit = -1; // -1 means no limit
     public interface OnItemClickListener {
         void onItemClick(MonAnWithChiTiet monAn);
     }
@@ -31,11 +36,33 @@ public class MonAnAdapter extends RecyclerView.Adapter<MonAnAdapter.MonAnViewHol
     public MonAnAdapter(Context context) {
         this.context = context;
         this.list = new ArrayList<>();
+        this.fullList = new ArrayList<>();
     }
 
     public void setData(List<MonAnWithChiTiet> data) {
+        fullList.clear();
+        fullList.addAll(data);
+        
         list.clear();
-        list.addAll(data);
+        if (itemLimit > 0 && data.size() > itemLimit) {
+            list.addAll(data.subList(0, itemLimit));
+        } else {
+            list.addAll(data);
+        }
+        notifyDataSetChanged();
+    }
+
+    public void setItemLimit(int limit) {
+        this.itemLimit = limit;
+    }
+
+    public boolean hasMoreItems() {
+        return fullList.size() > list.size();
+    }
+
+    public void showAllItems() {
+        list.clear();
+        list.addAll(fullList);
         notifyDataSetChanged();
     }
 

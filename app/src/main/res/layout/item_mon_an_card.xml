@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="130dp"
     android:layout_marginBottom="2dp"
     android:layout_marginHorizontal="10dp"
     app:cardCornerRadius="5dp"
@@ -12,14 +12,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal">
 
         <!-- Thông tin món ăn -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -31,7 +31,7 @@
                 android:fontFamily="@font/sfpro_bold"
                 android:text="Tên món ăn"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="19sp" />
 
             <!-- Mô tả hoặc nguyên liệu -->
             <TextView
@@ -42,7 +42,7 @@
                 android:fontFamily="@font/sfpro_regu"
                 android:text="Nguyên liệu, mô tả ngắn món ăn..."
                 android:textColor="@color/gray"
-                android:textSize="14sp"
+                android:textSize="15sp"
                 android:maxLines="3"
                 android:ellipsize="end" />
         </LinearLayout>
@@ -53,7 +53,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             android:src="@drawable/mastertref" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

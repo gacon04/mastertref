@@ -15,9 +15,12 @@
         android:elevation="0dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:contentScrim="@color/white"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleEnabled="false">
 
             <ImageView
                 android:id="@+id/imgRecipe"
@@ -45,6 +48,38 @@
                         android:layout_centerVertical="true"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:src="@drawable/left_arrow" />
+
+                    <!-- Collapsed Toolbar Content -->
+                    <LinearLayout
+                        android:id="@+id/collapsedToolbarContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_toEndOf="@id/btnBack"
+                        android:layout_toStartOf="@id/btnSave"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/imgRecipeSmall"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/CircleImageView"
+                            android:src="@drawable/mastertref" />
+
+                        <TextView
+                            android:id="@+id/tvRecipeTitleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/sfpro_bold"
+                            android:maxLines="1"
+                            android:text="Recipe Title"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+                    </LinearLayout>
 
                     <ImageButton
                         android:id="@+id/btnSave"
@@ -91,7 +126,7 @@
                 android:fontFamily="@font/sfpro_bold"
                 android:text="Ram tôm thịt"
                 android:textColor="@color/black"
-                android:textSize="24sp" />
+                android:textSize="30sp" />
 
             <!-- Posted By -->
             <LinearLayout
@@ -149,10 +184,10 @@
                     android:id="@+id/tvAuthorName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/sfpro_medi"
+                    android:fontFamily="@font/sfpro_bold"
                     android:text="Ai Phuong"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:textColor="@color/gray"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/tvAuthorUsername"
@@ -161,7 +196,7 @@
                     android:fontFamily="@font/sfpro_regu"
                     android:text=" @cook_6141805"
                     android:textColor="@color/gray"
-                    android:textSize="14sp" />
+                    android:textSize="17sp" />
             </LinearLayout>
 
             <!-- Description -->
@@ -177,16 +212,67 @@
                 android:background="@color/light_gray"
                 android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/tvShowMore"
-                android:layout_width="wrap_content"
+<!--            <TextView-->
+<!--                android:id="@+id/tvShowMore"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:layout_marginBottom="16dp"-->
+<!--                android:fontFamily="@font/sfpro_medi"-->
+<!--                android:text="xem thêm"-->
+<!--                android:textColor="@color/gray"-->
+<!--                android:textSize="14sp" />-->
+
+            <!-- Tags Section -->
+
+            <LinearLayout
+                android:id="@+id/llShowTime"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/sfpro_medi"
-                android:text="xem thêm"
-                android:textColor="@color/gray"
-                android:textSize="14sp" />
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginBottom="0dp"
+                    android:fontFamily="@font/sfpro_bold"
+                    android:text="____________________________"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="20sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:padding="0dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/clock" />
+
+                    <TextView
+                        android:id="@+id/tvShowTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/sfpro_bold"
+                        android:text="3 người"
+                        android:textColor="@color/gray"
+                        android:textSize="17sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="-20dp"
+                    android:fontFamily="@font/sfpro_bold"
+                    android:text="____________________________"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="20sp" />
+            </LinearLayout>
 
             <!-- Divider -->
             <View
@@ -238,33 +324,33 @@
 
 
             </LinearLayout>
-            <!-- Ingredient 1 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="8dp">
+<!--            &lt;!&ndash; Ingredient 1 &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginHorizontal="16dp"-->
+<!--                android:layout_marginBottom="8dp">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/sfpro_regu"
-                    android:text="200 g"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:fontFamily="@font/sfpro_regu"-->
+<!--                    android:text="200 g"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="16sp" />-->
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/sfpro_regu"
-                    android:text="Tôm đất"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+<!--                <TextView-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="8dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:fontFamily="@font/sfpro_regu"-->
+<!--                    android:text="Tôm đất"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="16sp" />-->
 
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
         </LinearLayout>
 
 
@@ -396,7 +482,7 @@
                     android:fontFamily="@font/sfpro_regu"
                     android:text="ID Công thức: 3957453"
                     android:textColor="@color/gray"
-                    android:textSize="12sp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tvPublishDate"
@@ -405,7 +491,7 @@
                     android:fontFamily="@font/sfpro_regu"
                     android:text="Lên sóng vào 4 tháng 1, 2018"
                     android:textColor="@color/gray"
-                    android:textSize="12sp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tvUpdateDate"
@@ -414,7 +500,7 @@
                     android:fontFamily="@font/sfpro_regu"
                     android:text="Cập nhật vào 4 tháng 1, 2018"
                     android:textColor="@color/gray"
-                    android:textSize="12sp" />
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <!-- Author Banner -->
@@ -427,8 +513,8 @@
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/imgAuthorAvatar"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
                     app:shapeAppearanceOverlay="@style/CircleImageView"
                     android:padding="2dp"
                     android:scaleType="centerCrop"
@@ -436,27 +522,27 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="3dp"
                     android:fontFamily="@font/sfpro_regu"
                     android:text="Lên sóng bởi"
                     android:textColor="@color/gray"
-                    android:textSize="12sp" />
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/tvAuthor2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/sfpro_medi"
+                    android:fontFamily="@font/sfpro_bold"
                     android:text="Ai Phuong"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="23sp" />
 
                 <Button
                     android:id="@+id/btnFollow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="10dp"
                     android:backgroundTint="@color/dark_gray"
                     android:fontFamily="@font/sfpro_medi"
                     android:text="Kết bạn bếp"
@@ -497,6 +583,31 @@
 
 
             </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/sfpro_bold"
+                android:text="Bạn cũng có thể thích"
+                android:textColor="@color/black"
+                android:textSize="23sp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRecipeRecommendations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
+                tools:listitem="@layout/item_mon_an_goiy"
+                tools:itemCount="8"/>
+
+
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

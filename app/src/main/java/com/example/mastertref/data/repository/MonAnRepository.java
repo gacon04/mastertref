@@ -28,7 +28,12 @@ public class MonAnRepository {
     public LiveData<MonAnWithChiTiet> getMonAnWithChiTietById(int id) {
         return monAnDAO.getMonAnWithChiTietById(id);
     }
+    // Add this method to your repository class
+    public LiveData<List<MonAnWithChiTiet>> getRecommendedRecipes(int sourceMonAnId, int limit) {
+        return monAnDAO.getRecommendedRecipes(sourceMonAnId, limit);
+    }
+    public LiveData<List<MonAnWithChiTiet>> getRandomRecipesExcept(int sourceMonAnId, int limit) {
+        return monAnDAO.getRandomRecipesExcept(sourceMonAnId, limit);
+    }
 
-
-    // Bạn có thể thêm các phương thức khác nếu cần: insert, update, delete...
 }

@@ -29,6 +29,12 @@ public class MonAnVM extends AndroidViewModel {
     public LiveData<MonAnWithChiTiet> getMonAnWithChiTietById(int id) {
         return repository.getMonAnWithChiTietById(id);
     }
-
+    // lay mon an goi y
+    public LiveData<List<MonAnWithChiTiet>> getRecommendedRecipes(int sourceMonAnId, int limit) {
+        return repository.getRecommendedRecipes(sourceMonAnId, limit);
+    }
+    public LiveData<List<MonAnWithChiTiet>> getRandomRecipesExcept(int sourceMonAnId, int limit) {
+        return repository.getRandomRecipesExcept(sourceMonAnId, limit);
+    }
 
 }

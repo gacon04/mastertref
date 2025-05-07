@@ -9,12 +9,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.mastertref.R;
+import com.example.mastertref.data.local.Adapter.MonAnGoiYAdapter;
 import com.example.mastertref.data.local.BuocNauEntity;
 import com.example.mastertref.data.local.MonAnEntity;
 import com.example.mastertref.data.local.MonAnWithChiTiet;
@@ -27,18 +28,28 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+// Add these imports at the top
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+
 public class ChiTietMonAnActivity extends AppCompatActivity {
-    private MonAnVM viewModel;
+    private MonAnVM monAnVM;
     private int monAnId;
     private SessionManager sessionManager;
     private String username;
     // UI elements
-    private ImageView imgRecipe, imgAuthor, imgAuthorAvatar;
-    private TextView tvRecipeTitle, tvAuthorName, tvAuthorUsername, tvDescription, tvAuthor2;
-    private TextView tvRecipeId, tvPublishDate, tvUpdateDate, tvSoNguoi;
-    private LinearLayout listNguyenLieu, listCachLam, llShowKhauPhan;
+    private ImageView imgRecipe, imgAuthor, imgAuthorAvatar, imgRecipeSmall;
+    private TextView tvRecipeTitle, tvAuthorName, tvAuthorUsername, tvDescription, tvAuthor2, tvRecipeTitleSmall;
+    private TextView tvRecipeId, tvPublishDate, tvUpdateDate, tvSoNguoi, tvShowTime;
+    private LinearLayout listNguyenLieu, listCachLam, llShowKhauPhan, llShowTime;
     private ImageButton btnBack, btnSave, btnMore, btnBookmark;
     private Button btnAddFriend;
+    private RecyclerView rvRecipeRecommendations;
+    private MonAnGoiYAdapter recommendationsAdapter;
+
+    private LinearLayout collapsedToolbarContent;
+    private AppBarLayout appBarLayout;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +64,7 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
         }
 
         // Initialize ViewModel
-        viewModel = new ViewModelProvider(this).get(MonAnVM.class);
+        monAnVM = new ViewModelProvider(this).get(MonAnVM.class);
         sessionManager = new SessionManager(this);
         username = sessionManager.getUsername();
         // Initialize UI elements
@@ -61,9 +72,14 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
 
         // Set click listeners
         setupClickListeners();
+        
+        // Add this line to set up the AppBar scroll listener
+        setupAppBarListener();
 
         // Load recipe data
         loadMonAnData();
+        // Load recommended recipes
+        loadRecommendedRecipes();
 
     }
 
@@ -74,7 +90,7 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
         imgAuthorAvatar = findViewById(R.id.imgAuthorAvatar);
         tvSoNguoi = findViewById(R.id.tvSoNguoi);
         tvAuthor2 = findViewById(R.id.tvAuthor2);
-
+        tvShowTime = findViewById(R.id.tvShowTime);
         tvRecipeTitle = findViewById(R.id.tvRecipeTitle);
         tvAuthorName = findViewById(R.id.tvAuthorName);
         tvAuthorUsername = findViewById(R.id.tvAuthorUsername);
@@ -85,15 +101,59 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
         listNguyenLieu = findViewById(R.id.listNguyenLieu);
         listCachLam = findViewById(R.id.listCachLam);
         llShowKhauPhan = findViewById(R.id.llShowKhauPhan);
+        llShowTime = findViewById(R.id.llShowTime);
         btnBack = findViewById(R.id.btnBack);
         btnSave = findViewById(R.id.btnSave);
         btnMore = findViewById(R.id.btnMore);
         btnAddFriend = findViewById(R.id.btnFollow);
         btnBookmark = findViewById(R.id.btnBookmark);
-    }
 
+        // Load adapter de load len mon an goi y
+        rvRecipeRecommendations = findViewById(R.id.rvRecipeRecommendations);
+        recommendationsAdapter = new MonAnGoiYAdapter(this);
+        rvRecipeRecommendations.setAdapter(recommendationsAdapter);
+
+        tvRecipeTitleSmall = findViewById(R.id.tvRecipeTitleSmall);
+        imgRecipeSmall = findViewById(R.id.imgRecipeSmall);
+        
+        // Add these lines to initialize the new UI elements
+        collapsedToolbarContent = findViewById(R.id.collapsedToolbarContent);
+        appBarLayout = findViewById(R.id.appBarLayout);
+        collapsingToolbarLayout = findViewById(R.id.collapsingToolbar);
+    }
+    
+    // Add this new method to handle the AppBar scroll behavior
+    private void setupAppBarListener() {
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = false;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                
+                // When collapsed (verticalOffset is negative, so we use abs)
+                if (Math.abs(verticalOffset) > scrollRange / 2) {
+                    if (!isShow) {
+                        isShow = true;
+                        collapsedToolbarContent.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    if (isShow) {
+                        isShow = false;
+                        collapsedToolbarContent.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+    }
+    
     private void setupClickListeners() {
-        btnBack.setOnClickListener(v -> finish());
+        btnBack.setOnClickListener(v -> {
+            onBackPressed(); // Use onBackPressed instead of finish()
+        });
 
         btnSave.setOnClickListener(v -> {
             // Implement save functionality
@@ -112,7 +172,7 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
     }
 
     private void loadMonAnData() {
-        viewModel.getMonAnWithChiTietById(monAnId).observe(this, monAnWithChiTiet -> {
+        monAnVM.getMonAnWithChiTietById(monAnId).observe(this, monAnWithChiTiet -> {
             if (monAnWithChiTiet != null) {
                 displayMonAnData(monAnWithChiTiet);
             } else {
@@ -121,7 +181,18 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
             }
         });
     }
-
+    private void loadRecommendedRecipes() {
+        monAnVM.getRecommendedRecipes(monAnId, 8).observe(this, monAnList -> {
+            if (monAnList != null && !monAnList.isEmpty()) {
+                recommendationsAdapter.setData(monAnList);
+            } else {
+                // If no similar recipes found, load random recipes
+                monAnVM.getRandomRecipesExcept(monAnId, 8).observe(this, randomList -> {
+                    recommendationsAdapter.setData(randomList);
+                });
+            }
+        });
+    }
     private void displayMonAnData(MonAnWithChiTiet monAnWithChiTiet) {
         MonAnEntity monAn = monAnWithChiTiet.getMonAn();
         List<NguyenLieuEntity> nguyenLieuList = monAnWithChiTiet.getNguyenLieuList();
@@ -130,6 +201,7 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
         // Set basic recipe info
         tvRecipeTitle.setText(monAn.getTenMonAn());
         tvDescription.setText(monAn.getMoTa());
+        tvRecipeTitleSmall.setText(monAn.getTenMonAn());
 
         // Load image using Glide
         if (monAn.getHinhAnh() != null && !monAn.getHinhAnh().isEmpty()) {
@@ -138,6 +210,13 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
                     .placeholder(R.drawable.mastertref)
                     .error(R.drawable.mastertref)
                     .into(imgRecipe);
+        }
+        if (monAn.getHinhAnh() != null && !monAn.getHinhAnh().isEmpty()) {
+            Glide.with(this)
+                    .load(monAn.getHinhAnh())
+                    .placeholder(R.drawable.mastertref)
+                    .error(R.drawable.mastertref)
+                    .into(imgRecipeSmall);
         }
 
         if (monAnWithChiTiet.getNguoiDang().getAvatar() != null && !monAnWithChiTiet.getNguoiDang().getAvatar().isEmpty()) {
@@ -160,6 +239,11 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
             tvSoNguoi.setText(""+monAn.getKhauPhan());
         } else {
             llShowKhauPhan.setVisibility(View.GONE);
+        }
+        if (monAn.getThoiGian()!= null && !monAn.getThoiGian().isEmpty()) {
+            tvShowTime.setText(monAn.getThoiGian());
+        } else {
+            llShowTime.setVisibility(View.GONE);
         }
         // Set recipe metadata
         tvRecipeId.setText("ID Công thức: " + monAn.getId());
@@ -205,7 +289,7 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
 
     private void displayIngredients(List<NguyenLieuEntity> nguyenLieuList) {
         // Clear previous ingredients
-        listNguyenLieu.removeAllViews();
+//        listNguyenLieu.removeAllViews();
 
         for (NguyenLieuEntity nguyenLieu : nguyenLieuList) {
             View ingredientView = getLayoutInflater().inflate(
@@ -243,6 +327,13 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
 
             listCachLam.addView(stepView);
         }
+    }
+
+    // Override onBackPressed to ensure consistent behavior
+    @Override
+    public void onBackPressed() {
+        finish(); // Explicitly finish the activity
+        // Don't call super.onBackPressed() to avoid potential double-back behavior
     }
 }
 
