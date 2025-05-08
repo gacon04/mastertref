@@ -53,6 +53,7 @@
 
             <TableRow android:gravity="center">
                 <TextView
+                    android:id="@+id/tv_followers"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -64,6 +65,7 @@
                     android:paddingEnd="16dp"/>
 
                 <TextView
+                    android:id="@+id/tv_following"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

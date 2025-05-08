@@ -40,7 +40,7 @@ public class SettingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Tìm các LinearLayout
-        LinearLayout quocGiaSetting = view.findViewById(R.id.layout_quocgia);
+
         LinearLayout taiKhoanSetting = view.findViewById(R.id.layout_taikhoan);
         LinearLayout cacBanBepSetting = view.findViewById(R.id.layout_cacbanbep);
         LinearLayout thongKeBepSetting = view.findViewById(R.id.layout_thongkebep);
@@ -51,7 +51,7 @@ public class SettingFragment extends Fragment {
         LinearLayout guiPhanHoiSetting = view.findViewById(R.id.layout_guiphanhoi);
 
         // Gọi Fragment tương ứng khi click
-        quocGiaSetting.setOnClickListener(v -> replaceFragment(new QuocGia()));
+
         taiKhoanSetting.setOnClickListener(v -> replaceFragment(new TaiKhoan()));
         cacBanBepSetting.setOnClickListener(v -> replaceFragment(new CacBanBep()));
         thongKeBepSetting.setOnClickListener(v -> replaceFragment(new ThongKeBep()));

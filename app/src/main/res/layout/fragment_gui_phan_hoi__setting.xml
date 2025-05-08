@@ -60,14 +60,12 @@ có phản hồi từ đội ngũ hỗ trợ, vui lòng liên hệ MasterTref qu
             android:padding="12dp"
             android:textSize="16sp"
             android:gravity="top"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/black"
             android:inputType="textMultiLine"
             android:fontFamily="@font/sfpro_regu"/>
 
-        <!-- Khoảng cách -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="16dp"
-            android:background="@android:color/transparent"/>
+
 
         <!-- Thông tin điều khoản -->
         <TextView
@@ -78,7 +76,8 @@ Khi góp ý này được gửi đi, bạn đã đồng ý để chúng tôi s�
             android:textSize="14sp"
             android:fontFamily="@font/sfpro_medi"
             android:textColor="@color/black"
-            android:paddingBottom="8dp"/>
+            android:paddingBottom="8dp"
+            android:layout_marginTop="16dp"/>
 
         <!-- Nút Gửi -->
         <Button
@@ -90,7 +89,6 @@ Khi góp ý này được gửi đi, bạn đã đồng ý để chúng tôi s�
             android:textSize="18sp"
             android:backgroundTint="@color/dark_orange"
             android:textColor="@android:color/white"
-            android:layout_marginTop="16dp"
-            android:enabled="false"/>
+            android:layout_marginTop="16dp"/>
     </LinearLayout>
 </LinearLayout>
