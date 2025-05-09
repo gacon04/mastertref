@@ -81,6 +81,7 @@
                 app:cardBackgroundColor="@color/light_gray">
 
                 <LinearLayout
+                    android:id="@+id/llSearch"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
@@ -98,7 +99,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/sfpro_regu"
-                        android:text="Tìm kiếm công thức..."
+                        android:text="Tìm kiếm mọi công thức ..."
                         android:textColor="@color/gray"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -117,7 +118,7 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginBottom="12dp"
                     android:fontFamily="@font/sfpro_bold"
-                    android:text="Danh mục phổ biến"
+                    android:text="Nguyên liệu phổ biến"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
@@ -135,6 +136,7 @@
 
             <!-- Share Recipe Card -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cvShareRecipe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -185,11 +187,10 @@
                         app:layout_constraintTop_toBottomOf="@+id/illustrationImage" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/customizeButton"
+                        android:id="@+id/btnShareNow"
                         android:layout_width="0dp"
                         android:layout_height="56dp"
                         android:layout_marginTop="5dp"
-
                         android:backgroundTint="#FFA64D"
                         android:text="Chia sẻ ngay"
                         android:textAllCaps="false"
@@ -225,7 +226,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/sfpro_bold"
-                        android:text="Công thức phổ biến"
+                        android:text="Các công thức mới nhất"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 
@@ -291,9 +292,9 @@
                     android:nestedScrollingEnabled="false"
                     android:paddingHorizontal="8dp"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="2"
+                    app:spanCount="1"
                     tools:itemCount="4"
-                    tools:listitem="@layout/item_mon_an_goiy" />
+                    tools:listitem="@layout/item_mon_an_card" />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

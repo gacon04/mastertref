@@ -8,7 +8,7 @@ import java.util.List;
 public interface LichsuTimkiemDAO {
     @Insert
     void insertHistory(LichsuTimkiemEntity history);
-    @Query("SELECT * FROM lichsu_timkiem WHERE user_id = :userId ORDER BY search_date DESC LIMIT 10")
+    @Query("SELECT * FROM lichsu_timkiem WHERE user_id = :userId ORDER BY search_date DESC LIMIT 5")
     List<LichsuTimkiemEntity> getRecentSearches(int userId);
 
     @Query("DELETE FROM lichsu_timkiem WHERE id = :historyId")

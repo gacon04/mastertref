@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5">
+
+    <!-- Search Bar Container -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/search_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardElevation="0dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Search Bar -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:cardBackgroundColor="#F5F5F5"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/search"
+                        app:tint="@color/gray" />
+
+                    <EditText
+                        android:id="@+id/search_edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:fontFamily="@font/sfpro_medi"
+                        android:hint="Tìm kiếm trong MasterTref"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:textColor="#333333"
+                        android:textColorHint="#999999"
+                        android:textSize="16sp" />
+
+
+                    <TextView
+                        android:id="@+id/btnThoat"
+                        android:layout_width="wrap_content"
+                        android:fontFamily="@font/sfpro_bold"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="Thoát"
+                        android:textColor="#FF9800"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Popular Searches Section -->
+    <TextView
+        android:id="@+id/popular_searches_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="18dp"
+        android:text="Tìm kiếm phổ biến"
+        android:fontFamily="@font/sfpro_bold"
+        android:textColor="#999999"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_container" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/popular_searches_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_background"
+        android:paddingStart="20dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="16dp"
+        tools:itemCount="5"
+        app:layout_constraintTop_toBottomOf="@id/popular_searches_title"
+        tools:listitem="@layout/popular_search_item"/>
+
+    <!-- Recent Searches Section -->
+    <TextView
+        android:id="@+id/recent_searches_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="18dp"
+        android:text="Tìm kiếm gần đây"
+        android:fontFamily="@font/sfpro_bold"
+        android:textColor="#999999"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/popular_searches_recycler"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recent_searches_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_background"
+        android:paddingStart="20dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="16dp"
+        tools:itemCount="5"
+        app:layout_constraintTop_toBottomOf="@id/recent_searches_title"
+        tools:listitem="@layout/recent_search_item"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
