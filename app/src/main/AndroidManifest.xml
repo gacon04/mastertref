@@ -18,6 +18,9 @@
         android:theme="@style/Theme.MasterTref"
         tools:targetApi="31">
         <activity
+            android:name=".ui.CommentAcitivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.ShowAllRecipe"
             android:exported="false" />
         <activity

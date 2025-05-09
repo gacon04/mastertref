@@ -40,11 +40,15 @@ public class BinhLuanEntity {
     @ColumnInfo(name = "thoi_gian")
     private Date thoiGian;
 
-    public BinhLuanEntity(int userId, int monId, String noiDung, Date thoiGian) {
+    @ColumnInfo(name = "hinh_anh") // thêm cột lưu đường dẫn hình ảnh
+    private String hinhAnh;
+
+    public BinhLuanEntity(int userId, int monId, String noiDung, Date thoiGian, String hinhAnh) {
         this.userId = userId;
         this.monId = monId;
         this.noiDung = noiDung;
         this.thoiGian = thoiGian;
+        this.hinhAnh = hinhAnh;
     }
 
     public int getId() { return id; }
@@ -61,4 +65,8 @@ public class BinhLuanEntity {
 
     public Date getThoiGian() { return thoiGian; }
     public void setThoiGian(Date thoiGian) { this.thoiGian = thoiGian; }
+
+    public String getHinhAnh() { return hinhAnh; }
+    public void setHinhAnh(String hinhAnh) { this.hinhAnh = hinhAnh; }
 }
+

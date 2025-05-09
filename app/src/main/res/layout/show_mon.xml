@@ -552,35 +552,62 @@
             </LinearLayout>
 
             <!-- Comments Section -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/sfpro_bold"
-                android:text="Bình Luận"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
 
             <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:layout_marginTop="10dp"
+                android:padding="16dp">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/title_reviews"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nhận xét"
+                        android:fontFamily="@font/sfpro_bold"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+
+                        android:textColor="#000000"
+                        android:layout_alignParentStart="true" />
+
+                    <TextView
+                        android:id="@+id/btnWriteComment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Viết nhận xét"
+                        android:fontFamily="@font/sfpro_bold"
+                        android:textSize="16sp"
+                        android:textColor="#FF7F50"
+                        android:layout_alignParentEnd="true" />
+                </RelativeLayout>
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/reviews_count"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
+                    android:text="0 bình luận"
                     android:fontFamily="@font/sfpro_regu"
-                    android:text="Thêm bình luận"
+                    android:textSize="16sp"
                     android:textColor="@color/gray"
-                    android:textSize="14sp" />
+                    android:layout_marginTop="4dp" />
 
+                <TextView
+                    android:id="@+id/no_reviews_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Chưa có cảm xúc nào được bày tỏ ở đây, hãy là người đầu tiên bình luận nhé!"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/sfpro_regu"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="16dp" />
 
             </LinearLayout>
             <TextView

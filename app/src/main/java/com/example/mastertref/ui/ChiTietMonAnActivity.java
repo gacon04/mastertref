@@ -1,5 +1,6 @@
 package com.example.mastertref.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -40,7 +41,7 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
     // UI elements
     private ImageView imgRecipe, imgAuthor, imgAuthorAvatar, imgRecipeSmall;
     private TextView tvRecipeTitle, tvAuthorName, tvAuthorUsername, tvDescription, tvAuthor2, tvRecipeTitleSmall;
-    private TextView tvRecipeId, tvPublishDate, tvUpdateDate, tvSoNguoi, tvShowTime;
+    private TextView tvRecipeId, tvPublishDate, tvUpdateDate, tvSoNguoi, tvShowTime, btnWriteComment;
     private LinearLayout listNguyenLieu, listCachLam, llShowKhauPhan, llShowTime;
     private ImageButton btnBack, btnSave, btnMore, btnBookmark;
     private Button btnAddFriend;
@@ -107,7 +108,7 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
         btnMore = findViewById(R.id.btnMore);
         btnAddFriend = findViewById(R.id.btnFollow);
         btnBookmark = findViewById(R.id.btnBookmark);
-
+        btnWriteComment = findViewById(R.id.btnWriteComment);
         // Load adapter de load len mon an goi y
         rvRecipeRecommendations = findViewById(R.id.rvRecipeRecommendations);
         recommendationsAdapter = new MonAnGoiYAdapter(this);
@@ -168,6 +169,16 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
         btnBookmark.setOnClickListener(v -> {
             // Implement bookmark functionality
             Toast.makeText(this, "Đã đánh dấu", Toast.LENGTH_SHORT).show();
+        });
+        btnWriteComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChiTietMonAnActivity.this, CommentAcitivity.class);
+                intent.putExtra("mon_an_id", monAnId);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Add this line
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
         });
     }
 
