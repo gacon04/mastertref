@@ -1,21 +1,55 @@
 package com.example.mastertref.data.local;
 
-import androidx.room.*;
+import androidx.lifecycle.LiveData;
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Transaction;
+import androidx.room.Update;
+import androidx.room.Delete;
+import androidx.room.OnConflictStrategy;
+
+import com.example.mastertref.data.local.BinhLuanEntity;
+import com.example.mastertref.data.local.BinhLuanTaiKhoanEntity;
 
 import java.util.List;
 
 @Dao
 public interface BinhLuanDAO {
-    @Insert
-    void insertComment(BinhLuanEntity comment);
 
+    // Thêm bình luận mới
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertBinhLuan(BinhLuanEntity binhLuan);
+
+    // Cập nhật bình luận
+    @Update
+    void updateBinhLuan(BinhLuanEntity binhLuan);
+
+    // Xóa bình luận
+    @Delete
+    void deleteBinhLuan(BinhLuanEntity binhLuan);
+    @Transaction
+    @Query("SELECT * FROM binh_luan")
+    LiveData<List<BinhLuanTaiKhoanEntity>> getAllBinhLuansWithUser();
+
+    @Transaction
     @Query("SELECT * FROM binh_luan WHERE mon_id = :monId ORDER BY thoi_gian DESC")
-    List<BinhLuanEntity> getCommentsByDish(int monId);
+    LiveData<List<BinhLuanTaiKhoanEntity>> getBinhLuansWithUserByMonId(int monId);
 
-    @Query("DELETE FROM binh_luan WHERE id = :commentId")
-    void deleteComment(int commentId);
+    // Lấy tất cả bình luận
+    @Query("SELECT * FROM binh_luan ORDER BY thoi_gian DESC")
+    LiveData<List<BinhLuanEntity>> getAllBinhLuans();
 
-    @Query("DELETE FROM binh_luan WHERE user_id = :userId")
-    void deleteCommentsByUser(int userId);
+    // Lấy bình luận theo món ăn
+    @Query("SELECT * FROM binh_luan WHERE mon_id = :monId ORDER BY thoi_gian DESC")
+    LiveData<List<BinhLuanEntity>> getBinhLuansByMonId(int monId);
+
+    // Lấy bình luận theo người dùng
+    @Query("SELECT * FROM binh_luan WHERE user_id = :userId ORDER BY thoi_gian DESC")
+    LiveData<List<BinhLuanEntity>> getBinhLuansByUserId(int userId);
+
+    // Lấy bình luận theo id
+    @Query("SELECT * FROM binh_luan WHERE id = :id")
+    LiveData<BinhLuanEntity> getBinhLuanById(int id);
+
 }
-

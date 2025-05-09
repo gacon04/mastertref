@@ -84,10 +84,8 @@ public class MyKitchenFragment extends Fragment {
             if (monAnChiTiet != null && monAnChiTiet.getMonAn() != null) {
                 Intent intent = new Intent(requireContext(), ChiTietMonAnActivity.class);
                 intent.putExtra("mon_an_id", monAnChiTiet.getMonAn().getId());
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Add this line
                 startActivity(intent);
             } else {
-                // Handle the case where monAnChiTiet or its MonAn is null
                 Toast.makeText(requireContext(), "Không thể mở chi tiết món ăn", Toast.LENGTH_SHORT).show();
             }
         });

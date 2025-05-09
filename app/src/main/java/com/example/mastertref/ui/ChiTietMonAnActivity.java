@@ -173,11 +173,17 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
         btnWriteComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChiTietMonAnActivity.this, CommentAcitivity.class);
-                intent.putExtra("mon_an_id", monAnId);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Add this line
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                try {
+                    Intent intent = new Intent(ChiTietMonAnActivity.this, CommentActivity.class);
+                    intent.putExtra("mon_an_id", monAnId);
+                    // Thêm flag để giữ activity stack
+                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    Toast.makeText(ChiTietMonAnActivity.this, 
+                        "Lỗi khi mở màn hình bình luận", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
             }
         });
     }
