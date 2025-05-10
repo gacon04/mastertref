@@ -631,7 +631,7 @@
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="2"
                 tools:listitem="@layout/item_mon_an_goiy"
-                tools:itemCount="8"/>
+                tools:itemCount="6"/>
 
 
 

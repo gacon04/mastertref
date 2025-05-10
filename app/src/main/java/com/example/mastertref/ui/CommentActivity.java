@@ -3,10 +3,12 @@ package com.example.mastertref.ui;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,8 @@ import com.example.mastertref.utils.SessionManager;
 import com.example.mastertref.viewmodel.BinhLuanVM;
 import com.example.mastertref.viewmodel.TaikhoanVM;
 
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class CommentActivity extends AppCompatActivity {
@@ -35,6 +39,8 @@ public class CommentActivity extends AppCompatActivity {
     private EditText etComment;
     private BinhLuanVM binhLuanVM;
     private TaikhoanVM taiKhoanVM;
+    private ImageButton btnFilter;
+    private boolean sortByNewest = true; // Mặc định sắp xếp theo mới nhất
 
     private BinhLuanAdapter binhLuanAdapter;
 
@@ -91,6 +97,7 @@ public class CommentActivity extends AppCompatActivity {
         rvBinhLuans = findViewById(R.id.commentsRecyclerView);
         llEmptyBinhLuan = findViewById(R.id.emptyComment);
         etComment = findViewById(R.id.commentInput);
+        btnFilter = findViewById(R.id.btnFilter);
     }
 
     private void setupAdapter() {
@@ -100,6 +107,9 @@ public class CommentActivity extends AppCompatActivity {
 
     private void setupListeners() {
         btnBack.setOnClickListener(v -> finish());
+
+        // Thêm xử lý cho nút filter
+        btnFilter.setOnClickListener(v -> showFilterOptions());
 
         btnSend.setOnClickListener(v -> {
             String commentText = etComment.getText().toString().trim();
@@ -141,17 +151,73 @@ public class CommentActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        // Xử lý nút camera (chức năng thêm hình ảnh)
         btnCamera.setOnClickListener(v -> {
-            // Thêm chức năng chọn ảnh từ thư viện hoặc chụp ảnh
+
             Toast.makeText(CommentActivity.this, "Chức năng đang phát triển", Toast.LENGTH_SHORT).show();
         });
+    }
+
+    private void showFilterOptions() {
+        PopupMenu popupMenu = new PopupMenu(this, btnFilter);
+        popupMenu.getMenu().add(Menu.NONE, 1, Menu.NONE, "Mới nhất");
+        popupMenu.getMenu().add(Menu.NONE, 2, Menu.NONE, "Cũ nhất");
+        
+        // Đánh dấu lựa chọn hiện tại
+        popupMenu.getMenu().getItem(sortByNewest ? 0 : 1).setChecked(true);
+        
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            if (id == 1) {
+                if (!sortByNewest) {
+                    sortByNewest = true;
+                    loadBinhLuans();
+                    Toast.makeText(CommentActivity.this, "Sắp xếp theo bình luận mới nhất", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            } else if (id == 2) {
+                if (sortByNewest) {
+                    sortByNewest = false;
+                    loadBinhLuans();
+                    Toast.makeText(CommentActivity.this, "Sắp xếp theo bình luận cũ nhất", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            }
+            return false;
+        });
+        
+        popupMenu.show();
     }
 
     private void loadBinhLuans() {
         try {
             binhLuanVM.getBinhLuansWithUserByMonId(monAnId).observe(this, binhLuans -> {
                 if (binhLuans != null && !binhLuans.isEmpty()) {
+                    // Sắp xếp bình luận theo thời gian
+                    if (sortByNewest) {
+                        // Sắp xếp theo mới nhất (giảm dần theo thời gian)
+                        Collections.sort(binhLuans, (a, b) -> {
+                            Date dateA = a.getBinhLuan().getThoiGian();
+                            Date dateB = b.getBinhLuan().getThoiGian();
+                            // xử lý null
+                            if (dateA == null && dateB == null) return 0;
+                            if (dateA == null) return 1;
+                            if (dateB == null) return -1;
+                            // So sánh ngược để sắp xếp giảm dần (mới nhất trước)
+                            return dateB.compareTo(dateA);
+                        });
+                    } else {
+                        // Sắp xếp theo cũ nhất (tăng dần theo thời gian)
+                        Collections.sort(binhLuans, (a, b) -> {
+                            Date dateA = a.getBinhLuan().getThoiGian();
+                            Date dateB = b.getBinhLuan().getThoiGian();
+                            // Nếu một trong hai giá trị null, xử lý đặc biệt
+                            if (dateA == null && dateB == null) return 0;
+                            if (dateA == null) return -1;
+                            if (dateB == null) return 1;
+                            // So sánh thuận để sắp xếp tăng dần (cũ nhất trước)
+                            return dateA.compareTo(dateB);
+                        });
+                    }
                     updateBinhLuanUI(binhLuans);
                 } else {
                     showEmptyState();
@@ -165,12 +231,14 @@ public class CommentActivity extends AppCompatActivity {
 
     private void updateBinhLuanUI(List<BinhLuanTaiKhoanEntity> binhLuans) {
         binhLuanAdapter.setBinhLuans(binhLuans);
+        btnFilter.setVisibility(View.VISIBLE);
         rvBinhLuans.setVisibility(View.VISIBLE);
         llEmptyBinhLuan.setVisibility(View.GONE);
     }
 
     private void showEmptyState() {
         rvBinhLuans.setVisibility(View.GONE);
+        btnFilter.setVisibility(View.GONE);
         llEmptyBinhLuan.setVisibility(View.VISIBLE);
     }
 

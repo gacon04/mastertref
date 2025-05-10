@@ -2,10 +2,11 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="160dp"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    app:cardCornerRadius="20dp">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,8 +17,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/RoundedImageView"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintTop_toTopOf="parent"
+
             tools:src="@drawable/mastertref" />
 
         <!-- Dark overlay for better text visibility -->
@@ -37,28 +40,27 @@
             android:maxLines="2"
             android:ellipsize="end"
             android:textColor="@color/white"
-            android:textSize="15sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/imgRecipe"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="Cơm chiên hải sản" />
 
-        <!-- Author section below the image -->
+        <!-- Author section below the image - flat design without frame -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="7dp"
+            android:padding="8dp"
             android:background="@color/white"
             android:gravity="center_vertical"
             app:layout_constraintTop_toBottomOf="@id/imgRecipe">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/imgAuthor"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 app:shapeAppearanceOverlay="@style/CircleImageView"
-                android:padding="2dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/mastertref" />
 
@@ -68,10 +70,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/sfpro_medi"
-                android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textColor="#333333"
+                android:backgroundTint="@color/white"
+                android:textSize="12sp"
                 android:maxLines="1"
-                tools:text="Tên chủ món " />
+                android:ellipsize="end"
+                tools:text="Tên chủ món" />
 
         </LinearLayout>
 

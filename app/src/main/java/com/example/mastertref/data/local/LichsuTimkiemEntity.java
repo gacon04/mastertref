@@ -28,9 +28,9 @@ public class LichsuTimkiemEntity {
     private String keyword;
 
     @ColumnInfo(name = "search_date")
-    private Date searchDate;
+    private long searchDate;
 
-    public LichsuTimkiemEntity(int userId, String keyword, Date searchDate) {
+    public LichsuTimkiemEntity(int userId, String keyword, long searchDate) {
         this.userId = userId;
         this.keyword = keyword;
         this.searchDate = searchDate;
@@ -45,7 +45,7 @@ public class LichsuTimkiemEntity {
     public String getKeyword() { return keyword; }
     public void setKeyword(String keyword) { this.keyword = keyword; }
 
-    public Date getSearchDate() { return searchDate; }
-    public void setSearchDate(Date searchDate) { this.searchDate = searchDate; }
+    public long getSearchDate() { return searchDate; }
+    public void setSearchDate(long searchDate) { this.searchDate = searchDate; }
 }
 
