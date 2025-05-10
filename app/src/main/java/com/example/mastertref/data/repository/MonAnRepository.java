@@ -36,4 +36,23 @@ public class MonAnRepository {
         return monAnDAO.getRandomRecipesExcept(sourceMonAnId, limit);
     }
 
+    // Phương thức tìm kiếm món ăn theo tên
+    public LiveData<List<MonAnWithChiTiet>> searchMonAnByName(String keyword) {
+        return monAnDAO.searchMonAnByName(keyword);
+    }
+
+    // Phương thức tìm kiếm món ăn theo nguyên liệu
+    public LiveData<List<MonAnWithChiTiet>> searchMonAnByIngredient(String keyword) {
+        return monAnDAO.searchMonAnByIngredient(keyword);
+    }
+
+    // Phương thức tìm kiếm món ăn theo tên hoặc nguyên liệu (không lọc người dùng bị chặn)
+    public LiveData<List<MonAnWithChiTiet>> searchMonAnByNameOrIngredient(String keyword) {
+        return monAnDAO.searchMonAnByNameOrIngredient(keyword);
+    }
+    
+    // Phương thức tìm kiếm món ăn theo tên hoặc nguyên liệu (có lọc người dùng bị chặn)
+    public LiveData<List<MonAnWithChiTiet>> searchMonAnByNameOrIngredient(String keyword, int currentUserId) {
+        return monAnDAO.searchMonAnByNameOrIngredient(keyword, currentUserId);
+    }
 }

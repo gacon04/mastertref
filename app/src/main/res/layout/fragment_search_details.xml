@@ -76,32 +76,32 @@
     </androidx.cardview.widget.CardView>
 
     <!-- Popular Searches Section -->
-    <TextView
-        android:id="@+id/popular_searches_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="18dp"
-        android:text="Tìm kiếm phổ biến"
-        android:fontFamily="@font/sfpro_bold"
-        android:textColor="#999999"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_container" />
+<!--    <TextView-->
+<!--        android:id="@+id/popular_searches_title"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_marginTop="18dp"-->
+<!--        android:text="Tìm kiếm phổ biến"-->
+<!--        android:fontFamily="@font/sfpro_bold"-->
+<!--        android:textColor="#999999"-->
+<!--        android:textSize="16sp"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/search_container" />-->
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/popular_searches_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/rounded_background"
-        android:paddingStart="20dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="16dp"
-        tools:itemCount="5"
-        app:layout_constraintTop_toBottomOf="@id/popular_searches_title"
-        tools:listitem="@layout/popular_search_item"/>
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/popular_searches_recycler"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:background="@drawable/rounded_background"-->
+<!--        android:paddingStart="20dp"-->
+<!--        android:paddingTop="16dp"-->
+<!--        android:paddingEnd="20dp"-->
+<!--        android:paddingBottom="16dp"-->
+<!--        tools:itemCount="5"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/popular_searches_title"-->
+<!--        tools:listitem="@layout/popular_search_item"/>-->
 
     <!-- Recent Searches Section -->
     <TextView
@@ -115,7 +115,7 @@
         android:textColor="#999999"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/popular_searches_recycler"
+        app:layout_constraintTop_toBottomOf="@id/search_container"
         />
 
     <androidx.recyclerview.widget.RecyclerView

@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.example.mastertref.data.local.BinhLuanDAO;
+import com.example.mastertref.domain.models.ChangePasswordDTO;
 import com.example.mastertref.domain.models.TaiKhoanDTO;
 
 @Database(entities = {
@@ -14,7 +15,8 @@ import com.example.mastertref.domain.models.TaiKhoanDTO;
     MonAnEntity.class, 
     NguyenLieuEntity.class, 
     BuocNauEntity.class,
-    BinhLuanEntity.class  // Cần thêm entity này
+    BinhLuanEntity.class,
+    ChanTaiKhoanEntity.class
 }, version = 1, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {

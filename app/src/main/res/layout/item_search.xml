@@ -24,6 +24,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.imageview.ShapeableImageView
+                android:background="@color/white"
                 android:id="@+id/iv_recipe"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -47,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:background="#00000000"
+                android:background="#00FFFEFE"
                 android:padding="12dp"
                 android:textColor="#FFFFFF"
                 android:fontFamily="@font/sfpro_bold"
@@ -62,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|start"
                 android:layout_marginStart="12dp"
-                android:layout_marginBottom="60dp"
+                android:layout_marginBottom="35dp"
                 android:background="#00000000"
                 android:fontFamily="@font/sfpro_regu"
                 android:paddingHorizontal="8dp"
@@ -79,6 +80,7 @@
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:padding="8dp"
+            android:background="@color/white"
             app:layout_constraintTop_toBottomOf="@id/image_container"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -99,9 +101,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="17sp"
+                android:backgroundTint="@color/white"
                 android:fontFamily="@font/sfpro_medi"
-                android:textColor="#333333"
+                android:textColor="#000000"
+                android:textSize="17sp"
                 tools:text="trần minh" />
         </LinearLayout>
 

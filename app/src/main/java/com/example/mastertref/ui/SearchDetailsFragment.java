@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -65,6 +67,32 @@ public class SearchDetailsFragment extends Fragment {
                 // Nếu không có text, quay lại Fragment trước đó
                 requireActivity().getSupportFragmentManager().popBackStack();
             }
+        });
+        
+        // Thêm sự kiện xử lý khi người dùng bấm nút tìm kiếm trên bàn phím
+        edtSearch.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH || 
+                (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
+                String searchQuery = edtSearch.getText().toString().trim();
+                if (!searchQuery.isEmpty()) {
+                    // Tạo bundle để truyền từ khóa tìm kiếm
+                    Bundle args = new Bundle();
+                    args.putString("search_query", searchQuery);
+                    
+                    // Tạo fragment mới và truyền bundle
+                    SearchResultFragment searchResultFragment = new SearchResultFragment();
+                    searchResultFragment.setArguments(args);
+                    
+                    // Chuyển đến SearchResultFragment
+                    requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout, searchResultFragment)
+                        .addToBackStack(null)
+                        .commit();
+                }
+                return true;
+            }
+            return false;
         });
     }
 }

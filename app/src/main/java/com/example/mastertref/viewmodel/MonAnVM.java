@@ -37,4 +37,12 @@ public class MonAnVM extends AndroidViewModel {
         return repository.getRandomRecipesExcept(sourceMonAnId, limit);
     }
 
+    // Phương thức tìm kiếm món ăn dựa trên từ khóa
+    // Add this method to your MonAnVM class
+    
+    public LiveData<List<MonAnWithChiTiet>> searchRecipesByNameOrIngredient(String query, int currentUserId) {
+        return repository.searchMonAnByNameOrIngredient(query, currentUserId);
+    }
+    
+
 }

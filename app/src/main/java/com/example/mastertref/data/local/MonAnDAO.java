@@ -42,9 +42,6 @@ public interface MonAnDAO {
     @Query("SELECT * FROM monan WHERE taikhoan_id = :taikhoanId AND is_active = 1 ORDER BY create_at DESC")
     List<MonAnEntity> getMonAnByTaiKhoan(int taikhoanId);
 
-    // 🟢 Lấy tất cả món ăn (không lọc theo tài khoản)
-    @Query("SELECT * FROM monan")
-    LiveData<List<MonAnEntity>> getAllMonAn();
 
     @Transaction
     @Query("SELECT monan.* FROM monan " +
@@ -52,9 +49,6 @@ public interface MonAnDAO {
             "WHERE taikhoan.username = :username AND monan.is_active = 1 " +
             "ORDER BY monan.create_at DESC")
     LiveData<List<MonAnWithChiTiet>> getMonAnWithChiTietByUsername(String username);
-
-
-
 
 
 
@@ -70,7 +64,32 @@ public interface MonAnDAO {
 
     // 🟢 Tìm món ăn theo tên (dành cho tìm kiếm)
     @Query("SELECT * FROM monan WHERE ten_monan LIKE '%' || :keyword || '%'")
-    LiveData<List<MonAnEntity>> searchMonAnByName(String keyword);
+    LiveData<List<MonAnWithChiTiet>> searchMonAnByName(String keyword);
+
+    // Tìm kiếm món ăn theo nguyên liệu
+    @Query("SELECT DISTINCT m.* FROM monan m " +
+           "INNER JOIN nguyenlieu n ON m.id = n.monan_id " +
+           "WHERE n.ten_nguyen_lieu LIKE '%' || :keyword || '%'")
+    LiveData<List<MonAnWithChiTiet>> searchMonAnByIngredient(String keyword);
+
+    // Tìm kiếm món ăn theo tên hoặc nguyên liệu, chỉ từ tài khoản đang active và không bị chặn
+    @Query("SELECT DISTINCT m.* FROM monan m " +
+           "LEFT JOIN nguyenlieu n ON m.id = n.monan_id " +
+           "INNER JOIN taikhoan t ON m.taikhoan_id = t.id " +
+           "WHERE (m.ten_monan LIKE '%' || :keyword || '%' OR n.ten_nguyen_lieu LIKE '%' || :keyword || '%') " +
+           "AND t.isActive = 1 " +
+           "AND m.is_active = 1 " +
+           "AND NOT EXISTS (SELECT 1 FROM chantaikhoan c WHERE c.blocker_id = :currentUserId AND c.blocked_id = m.taikhoan_id)")
+    LiveData<List<MonAnWithChiTiet>> searchMonAnByNameOrIngredient(String keyword, int currentUserId);
+
+    // Tìm kiếm món ăn theo tên hoặc nguyên liệu (không cần lọc người dùng bị chặn)
+    @Query("SELECT DISTINCT m.* FROM monan m " +
+           "LEFT JOIN nguyenlieu n ON m.id = n.monan_id " +
+           "INNER JOIN taikhoan t ON m.taikhoan_id = t.id " +
+           "WHERE (m.ten_monan LIKE '%' || :keyword || '%' OR n.ten_nguyen_lieu LIKE '%' || :keyword || '%') " +
+           "AND t.isActive = 1 " +
+           "AND m.is_active = 1")
+    LiveData<List<MonAnWithChiTiet>> searchMonAnByNameOrIngredient(String keyword);
 
     // 🟢 Lấy các món ăn đang được bật (isActive = true)
     @Query("SELECT * FROM monan WHERE is_active = 1")

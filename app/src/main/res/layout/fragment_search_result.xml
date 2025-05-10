@@ -57,10 +57,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
-
                     android:layout_marginEnd="8dp"
                     android:background="@null"
-                    android:hint="Search"
+                    android:hint="Nhập vào từ khóa tìm kiếm"
                     android:textSize="16sp"
                     android:fontFamily="@font/sfpro_regu"
                     android:textColor="@color/black"
@@ -83,7 +82,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_menu_sort_by_size"
+            android:src="@drawable/filter"
             android:contentDescription="Filter" />
     </LinearLayout>
 
@@ -96,13 +95,15 @@
         app:tabIndicatorColor="#FF9800"
         app:tabSelectedTextColor="#FF9800"
         app:tabTextColor="@color/black"
-
+        android:background="@color/white"
         app:tabIndicatorHeight="3dp"
         app:tabTextAppearance="@style/TabTextAppearance"
         app:tabMode="fixed">
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_recipes"
             android:layout_width="wrap_content"
+            android:background="@color/white"
             android:layout_height="wrap_content"
             android:fontFamily="@font/sfpro_bold"
             android:text="Công thức" />
@@ -110,6 +111,8 @@
 
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_communities"
+            android:background="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/sfpro_bold"
