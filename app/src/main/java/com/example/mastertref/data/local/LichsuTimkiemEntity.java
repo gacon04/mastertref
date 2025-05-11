@@ -1,51 +1,61 @@
-
 package com.example.mastertref.data.local;
 
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 import androidx.room.ForeignKey;
-import androidx.room.ColumnInfo;
-import java.util.Date;
-import static androidx.room.ForeignKey.CASCADE;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
 
-@Entity(
-        tableName = "lichsu_timkiem",
+@Entity(tableName = "tim_kiem",
         foreignKeys = @ForeignKey(
                 entity = TaikhoanEntity.class,
                 parentColumns = "id",
-                childColumns = "user_id",
-                onDelete = CASCADE
-        )
+                childColumns = "taikhoanId",
+                onDelete = ForeignKey.CASCADE
+        ),
+        indices = {@Index("taikhoanId")}
 )
 public class LichsuTimkiemEntity {
     @PrimaryKey(autoGenerate = true)
     private int id;
+    private int taikhoanId;
+    private String tuKhoa;
+    private long thoiGian; // Thời gian tìm kiếm (timestamp)
 
-    @ColumnInfo(name = "user_id", index = true)
-    private int userId;
-
-    @ColumnInfo(name = "keyword")
-    private String keyword;
-
-    @ColumnInfo(name = "search_date")
-    private long searchDate;
-
-    public LichsuTimkiemEntity(int userId, String keyword, long searchDate) {
-        this.userId = userId;
-        this.keyword = keyword;
-        this.searchDate = searchDate;
+    public LichsuTimkiemEntity(int taikhoanId, String tuKhoa, long thoiGian) {
+        this.taikhoanId = taikhoanId;
+        this.tuKhoa = tuKhoa;
+        this.thoiGian = thoiGian;
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
 
-    public int getUserId() { return userId; }
-    public void setUserId(int userId) { this.userId = userId; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public String getKeyword() { return keyword; }
-    public void setKeyword(String keyword) { this.keyword = keyword; }
+    public int getTaikhoanId() {
+        return taikhoanId;
+    }
 
-    public long getSearchDate() { return searchDate; }
-    public void setSearchDate(long searchDate) { this.searchDate = searchDate; }
+    public void setTaikhoanId(int taikhoanId) {
+        this.taikhoanId = taikhoanId;
+    }
+
+    public String getTuKhoa() {
+        return tuKhoa;
+    }
+
+    public void setTuKhoa(String tuKhoa) {
+        this.tuKhoa = tuKhoa;
+    }
+
+    public long getThoiGian() {
+        return thoiGian;
+    }
+
+    public void setThoiGian(long thoiGian) {
+        this.thoiGian = thoiGian;
+    }
 }
-

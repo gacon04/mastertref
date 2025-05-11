@@ -9,20 +9,25 @@ import androidx.lifecycle.LiveData;
 import com.example.mastertref.data.local.AppDatabase;
 import com.example.mastertref.data.local.TaikhoanDAO;
 import com.example.mastertref.data.local.TaikhoanEntity;
+import com.example.mastertref.data.repository.TaiKhoanRepository;
 import com.example.mastertref.domain.models.TaiKhoanDTO;
 import com.example.mastertref.utils.AESHelper;
 
 import org.jspecify.annotations.NonNull;
 
+import java.util.List;
+
 public class TaikhoanVM extends AndroidViewModel {
     private static final String TAG = "TaikhoanVM";
     private final TaikhoanDAO taikhoanDAO;
     private final AppDatabase database;
+    private final TaiKhoanRepository taikhoanRepository;
 
     public TaikhoanVM(@NonNull Application application) {
         super(application);
         database = AppDatabase.getInstance(application);
         taikhoanDAO = database.taikhoanDAO();
+        taikhoanRepository = new TaiKhoanRepository(application);
     }
 
     public TaikhoanDAO getTaikhoanDAO() {
@@ -107,4 +112,26 @@ public class TaikhoanVM extends AndroidViewModel {
         void onResult(int userId);
     }
 
+
+
+    /**
+     * Tìm kiếm tài khoản theo tên hoặc username, loại trừ các tài khoản đã chặn hoặc bị chặn
+     */
+    public LiveData<List<TaikhoanEntity>> searchUsersByUsernameOrName(String query, int currentUserId) {
+        return taikhoanRepository.searchUsersByUsernameOrName(query, currentUserId);
+    }
+
+    /**
+     * Tìm kiếm tài khoản theo tên hoặc username, sắp xếp theo A-Z
+     */
+    public LiveData<List<TaikhoanEntity>> searchUsersByUsernameOrNameAZ(String query, int currentUserId) {
+        return taikhoanRepository.searchUsersByUsernameOrNameAZ(query, currentUserId);
+    }
+
+    /**
+     * Tìm kiếm tài khoản theo tên hoặc username, sắp xếp theo Z-A
+     */
+    public LiveData<List<TaikhoanEntity>> searchUsersByUsernameOrNameZA(String query, int currentUserId) {
+        return taikhoanRepository.searchUsersByUsernameOrNameZA(query, currentUserId);
+    }
 }

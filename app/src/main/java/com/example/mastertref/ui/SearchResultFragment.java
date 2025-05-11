@@ -20,9 +20,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mastertref.R;
-import com.example.mastertref.data.local.Adapter.SearchResultAdapter;
+import com.example.mastertref.data.local.Adapter.SearchPeopleResultAdapter;
+import com.example.mastertref.data.local.Adapter.SearchRecipeResultAdapter;
 import com.example.mastertref.data.local.MonAnEntity;
 import com.example.mastertref.data.local.MonAnWithChiTiet;
+import com.example.mastertref.data.local.TaikhoanEntity;
 import com.example.mastertref.utils.SessionManager;
 import com.example.mastertref.viewmodel.MonAnVM;
 import com.example.mastertref.viewmodel.TaikhoanVM;
@@ -48,17 +50,25 @@ public class SearchResultFragment extends Fragment {
     private RecyclerView rvSearchResults;
     private LinearLayout emptyStateContainer;
     private SessionManager sessionManager;
-    
+
     // ViewModel
     private MonAnVM monAnVM;
-    
+
     // Adapter
-    private SearchResultAdapter searchAdapter;
-    
+    private SearchRecipeResultAdapter searchAdapter;
+
     // Search parameters
     private String currentQuery = "";
     private int currentTabPosition = 0;
-    
+    private static final int FILTER_RELEVANCE = 0;
+    private static final int FILTER_NEWEST = 1;
+    private static final int FILTER_OLDEST = 2;
+    private static final int FILTER_A_TO_Z = 3;
+    private static final int FILTER_Z_TO_A = 4;
+
+    // Add this field to track current filter option
+    private int currentFilterOption = FILTER_RELEVANCE;
+
     // Current user ID
     private int currentUserId;
 
@@ -69,9 +79,9 @@ public class SearchResultFragment extends Fragment {
         sessionManager = new SessionManager(requireContext());
         taikhoanVM = new ViewModelProvider(this).get(TaikhoanVM.class);
         monAnVM = new ViewModelProvider(this).get(MonAnVM.class);
-        // Get current user ID from shared preferences or user session
-        currentUserId = getCurrentUserId();
-
+        
+        // Initialize current user ID
+        initCurrentUserId();
     }
 
     @Override
@@ -80,20 +90,20 @@ public class SearchResultFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search_result, container, false);
     }
-    
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        
+
         // Initialize UI elements
         initViews(view);
-        
+
         // Set up click listeners
         setupClickListeners();
-        
+
         // Set up tab layout
         setupTabLayout();
-        
+
         // Set up RecyclerView
         setupRecyclerView();
 
@@ -106,7 +116,7 @@ public class SearchResultFragment extends Fragment {
             performSearch(currentQuery);
         }
     }
-    
+
     private void initViews(View view) {
         btnBack = view.findViewById(R.id.btn_back);
         btnClearSearch = view.findViewById(R.id.btn_clear_search);
@@ -116,31 +126,50 @@ public class SearchResultFragment extends Fragment {
         rvSearchResults = view.findViewById(R.id.rv_search_results);
         emptyStateContainer = view.findViewById(R.id.empty_state_container);
     }
-    
+
     private void setupClickListeners() {
         btnBack.setOnClickListener(v -> {
             // Navigate back
             requireActivity().onBackPressed();
         });
-        
+
         btnClearSearch.setOnClickListener(v -> {
             // Clear search text
             etSearch.setText("");
             currentQuery = "";
             showEmptyState(true);
         });
-        
+
         btnFilter.setOnClickListener(v -> {
             // Show filter options
             showFilterOptions();
         });
-        
+
         // Add click listener to search field to navigate back to SearchDetailsFragment
         etSearch.setOnClickListener(v -> {
-            // Navigate back to previous fragment (SearchDetailsFragment)
-            requireActivity().onBackPressed();
+            // Navigate to SearchDetailsFragment
+            SearchDetailsFragment searchDetailsFragment = new SearchDetailsFragment();
+            
+            // If we want to preserve the current search query
+            Bundle args = new Bundle();
+            args.putString("search_query", currentQuery);
+            searchDetailsFragment.setArguments(args);
+            
+            // Replace current fragment with SearchDetailsFragment
+            requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout, searchDetailsFragment)
+                .addToBackStack(null)
+                .commit();
+                
+            // Disable the EditText to prevent keyboard from showing up
+            // before navigation completes
+            etSearch.setEnabled(false);
+            
+            // Re-enable after a short delay
+            etSearch.postDelayed(() -> etSearch.setEnabled(true), 300);
         });
-        
+
         // Add text change listener to search field
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -167,7 +196,40 @@ public class SearchResultFragment extends Fragment {
             }
         });
     }
-    
+    private void showFilterOptions() {
+        PopupMenu popup = new PopupMenu(requireContext(), btnFilter);
+        Menu menu = popup.getMenu();
+
+        // Add filter options based on current tab
+        if (currentTabPosition == 0) {
+            // Recipe filters
+            menu.add(Menu.NONE, FILTER_RELEVANCE, Menu.NONE, "Liên quan nhất");
+            menu.add(Menu.NONE, FILTER_NEWEST, Menu.NONE, "Mới nhất");
+            menu.add(Menu.NONE, FILTER_OLDEST, Menu.NONE, "Cũ nhất");
+            menu.add(Menu.NONE, FILTER_A_TO_Z, Menu.NONE, "A đến Z");
+            menu.add(Menu.NONE, FILTER_Z_TO_A, Menu.NONE, "Z đến A");
+        } else {
+            // User filters
+            menu.add(Menu.NONE, FILTER_RELEVANCE, Menu.NONE, "Liên quan nhất");
+            menu.add(Menu.NONE, FILTER_A_TO_Z, Menu.NONE, "A đến Z");
+            menu.add(Menu.NONE, FILTER_Z_TO_A, Menu.NONE, "Z đến A");
+        }
+
+        // Set click listener for menu items
+        popup.setOnMenuItemClickListener(item -> {
+            currentFilterOption = item.getItemId();
+
+            // Update search results with new filter
+            if (!currentQuery.isEmpty()) {
+                performSearch(currentQuery);
+            }
+
+            return true;
+        });
+
+        // Show the popup menu
+        popup.show();
+    }
     private void setupTabLayout() {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -189,98 +251,103 @@ public class SearchResultFragment extends Fragment {
             }
         });
     }
-    
-    private void setupRecyclerView() {
-        // Initialize adapter
-        searchAdapter = new SearchResultAdapter(requireContext());
-        
-        // Set up RecyclerView
-        rvSearchResults.setAdapter(searchAdapter);
-        rvSearchResults.setLayoutManager(new GridLayoutManager(requireContext(), 2));
-        
-        // Set item click listener
-        searchAdapter.setOnItemClickListener(MonAnWithChiTiet -> {
-            // Navigate to recipe detail
-            navigateToRecipeDetail(MonAnWithChiTiet.getMonAn().getId());
-        });
-    }
-    
+
+    // Add the performSearch method to handle searching based on current tab
     private void performSearch(String query) {
         if (query.isEmpty()) {
             showEmptyState(true);
             return;
         }
         
-        // Determine which tab is selected and perform appropriate search
+        // Perform search based on current tab position
         if (currentTabPosition == 0) {
-            // Search recipes
+            // Tab 0: "CÔNG THỨC" - Search for recipes
             searchRecipes(query);
         } else {
-            // Search users
+            // Tab 1: "NGƯỜI DÙNG" - Search for users
             searchUsers(query);
         }
     }
-    
-    // Add these fields at the top of the class with other fields
-    private static final int FILTER_RELEVANCE = 1;
-    private static final int FILTER_NEWEST = 2;
-    private static final int FILTER_OLDEST = 3;
-    private static final int FILTER_A_TO_Z = 4;
-    private static final int FILTER_Z_TO_A = 5;
-    private void showFilterOptions() {
-        PopupMenu popupMenu = new PopupMenu(requireContext(), btnFilter);
-        popupMenu.getMenu().add(Menu.NONE, FILTER_RELEVANCE, Menu.NONE, "Relevance");
-        popupMenu.getMenu().add(Menu.NONE, FILTER_NEWEST, Menu.NONE, "Mới nhất");
-        popupMenu.getMenu().add(Menu.NONE, FILTER_OLDEST, Menu.NONE, "Cũ nhất");
-        popupMenu.getMenu().add(Menu.NONE, FILTER_A_TO_Z, Menu.NONE, "A -> Z");
-        popupMenu.getMenu().add(Menu.NONE, FILTER_Z_TO_A, Menu.NONE, "Z -> A");
 
-        // Mark the current selection
-        popupMenu.getMenu().getItem(currentFilterOption - 1).setChecked(true);
+    // Add this field with other adapter declarations
+    private SearchPeopleResultAdapter userAdapter;
 
-        popupMenu.setOnMenuItemClickListener(item -> {
-            int id = item.getItemId();
-            if (id != currentFilterOption) {
-                currentFilterOption = id;
+    // Update the setupRecyclerView method to initialize both adapters
+    private void setupRecyclerView() {
+        // Initialize recipe adapter
+        searchAdapter = new SearchRecipeResultAdapter(requireContext());
 
-                // If there's an active search, reapply it with the new filter
-                if (!currentQuery.isEmpty()) {
-                    performSearch(currentQuery);
-                }
+        // Initialize user adapter
+        userAdapter = new SearchPeopleResultAdapter(requireContext());
 
-                // Show toast message based on selected filter
-                String filterMessage;
-                switch (currentFilterOption) {
-                    case FILTER_RELEVANCE:
-                        filterMessage = "Sắp xếp theo độ liên quan";
-                        break;
-                    case FILTER_NEWEST:
-                        filterMessage = "Sắp xếp theo mới nhất";
-                        break;
-                    case FILTER_OLDEST:
-                        filterMessage = "Sắp xếp theo cũ nhất";
-                        break;
-                    case FILTER_A_TO_Z:
-                        filterMessage = "Sắp xếp theo tên A -> Z";
-                        break;
-                    case FILTER_Z_TO_A:
-                        filterMessage = "Sắp xếp theo tên Z -> A";
-                        break;
-                    default:
-                        filterMessage = "Đã áp dụng bộ lọc";
-                }
-                Toast.makeText(requireContext(), filterMessage, Toast.LENGTH_SHORT).show();
-            }
-            return true;
+        // Set up RecyclerView with recipe adapter initially
+        rvSearchResults.setAdapter(searchAdapter);
+        rvSearchResults.setLayoutManager(new GridLayoutManager(requireContext(), 2));
+
+        // Set item click listener for recipes
+        searchAdapter.setOnItemClickListener(MonAnWithChiTiet -> {
+            // Navigate to recipe detail
+            navigateToRecipeDetail(MonAnWithChiTiet.getMonAn().getId());
         });
 
-        popupMenu.show();
-    }
-    
-    // Current filter option, default is Relevance
-    private int currentFilterOption = FILTER_RELEVANCE;
+        // Set click listeners for user adapter
+        userAdapter.setOnUserClickListener(user -> {
+            // Navigate to user profile
+            navigateToUserProfile(user.getId());
+        });
 
+        userAdapter.setOnFollowClickListener((user, position) -> {
+            // Handle follow/unfollow action
+            Toast.makeText(requireContext(), "Đã theo dõi " + user.getUsername(), Toast.LENGTH_SHORT).show();
+            // Here you would implement the actual follow functionality
+        });
+    }
+
+    // Update the searchUsers method to actually search for users
+    private void searchUsers(String query) {
+        if (query.isEmpty()) {
+            showEmptyState(true);
+            return;
+        }
+
+        // Change layout manager for user list (1 column instead of 2)
+        rvSearchResults.setLayoutManager(new GridLayoutManager(requireContext(), 1));
+
+        // Set user adapter to RecyclerView
+        rvSearchResults.setAdapter(userAdapter);
+
+        // Use the appropriate search method based on filter
+        switch (currentFilterOption) {
+            case FILTER_A_TO_Z:
+                taikhoanVM.searchUsersByUsernameOrNameAZ(query, currentUserId).observe(getViewLifecycleOwner(), this::handleUserSearchResults);
+                break;
+            case FILTER_Z_TO_A:
+                taikhoanVM.searchUsersByUsernameOrNameZA(query, currentUserId).observe(getViewLifecycleOwner(), this::handleUserSearchResults);
+                break;
+            case FILTER_RELEVANCE:
+            default:
+                // Default sorting by relevance
+                taikhoanVM.searchUsersByUsernameOrName(query, currentUserId).observe(getViewLifecycleOwner(), this::handleUserSearchResults);
+                break;
+        }
+    }
+
+    // Add this method to handle user search results
+    private void handleUserSearchResults(List<TaikhoanEntity> users) {
+        if (users != null && !users.isEmpty()) {
+            showEmptyState(false);
+            userAdapter.setData(users);
+        } else {
+            showEmptyState(true);
+        }
+    }
+
+    // Update the searchRecipes method to set the correct adapter and layout
     private void searchRecipes(String query) {
+        // Set recipe adapter to RecyclerView
+        rvSearchResults.setAdapter(searchAdapter);
+        rvSearchResults.setLayoutManager(new GridLayoutManager(requireContext(), 2));
+
         // Use the method that filters out blocked users
         monAnVM.searchRecipesByNameOrIngredient(query, currentUserId).observe(getViewLifecycleOwner(), recipes -> {
             if (recipes != null && !recipes.isEmpty()) {
@@ -345,25 +412,39 @@ public class SearchResultFragment extends Fragment {
             }
         });
     }
-    
-    private void searchUsers(String query) {
-        // This would be implemented in your ViewModel
-        // For now, just show empty state
-        showEmptyState(true);
-        
-        // When you implement user search:
-        /*
-        userViewModel.searchUsers(query).observe(getViewLifecycleOwner(), users -> {
-            if (users != null && !users.isEmpty()) {
-                showEmptyState(false);
-                userAdapter.setData(users);
-            } else {
-                showEmptyState(true);
-            }
-        });
-        */
+
+    // Add this method to navigate to user profile
+    private void navigateToUserProfile(int userId) {
+        Bundle args = new Bundle();
+        args.putInt("user_id", userId);
+
+        // Tạo fragment mới và truyền bundle
+        SearchResultFragment searchResultFragment = new SearchResultFragment();
+        searchResultFragment.setArguments(args);
+
+        // Chuyển đến SearchResultFragment
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout, ShowOthersPro5Fragment.class, args)
+                .addToBackStack(null)
+                .commit();
+
     }
-    
+
+    // Fix the getCurrentUserId method to properly get the user ID
+    private void initCurrentUserId() {
+        String username = sessionManager.getUsername();
+        if (username != null && !username.isEmpty()) {
+            taikhoanVM.getUserIdByUsername(username, userId -> {
+                currentUserId = userId;
+                // If we already have a search query, refresh the search with the correct user ID
+                if (!currentQuery.isEmpty()) {
+                    performSearch(currentQuery);
+                }
+            });
+        }
+    }
+
     private void showEmptyState(boolean show) {
         if (show) {
             rvSearchResults.setVisibility(View.GONE);
@@ -373,27 +454,14 @@ public class SearchResultFragment extends Fragment {
             emptyStateContainer.setVisibility(View.GONE);
         }
     }
-    
+
     private void navigateToRecipeDetail(int recipeId) {
         Intent intent = new Intent(requireContext(), ChiTietMonAnActivity.class);
         intent.putExtra("mon_an_id", recipeId);
         startActivity(intent);
     }
-    
-    // Helper method to get current user ID
-    private int getCurrentUserId() {
-        String username = sessionManager.getUsername();
-        AtomicInteger result = new AtomicInteger(-1);
-        try {
-            // Note: This is still asynchronous and won't work as expected
-            taikhoanVM.getUserByUsername(username).observe(this, user -> {
-                if (user != null) {
-                    result.set(user.getId());
-                }
-            });
-        } catch (Exception e) {
-            Toast.makeText(requireContext(), "Lỗi khi lấy thông tin người dùng", Toast.LENGTH_SHORT).show();
-        }
-        return result.get(); // This will likely return -1 as the observer hasn't run yet
-    }
+
+
 }
+
+

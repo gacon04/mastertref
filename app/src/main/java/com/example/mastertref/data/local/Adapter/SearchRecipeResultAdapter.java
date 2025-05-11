@@ -12,13 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.mastertref.R;
-import com.example.mastertref.data.local.MonAnEntity;
 import com.example.mastertref.data.local.MonAnWithChiTiet;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.SearchViewHolder> {
+public class SearchRecipeResultAdapter extends RecyclerView.Adapter<SearchRecipeResultAdapter.SearchViewHolder> {
     private Context context;
     private List<MonAnWithChiTiet> monAnList;
     private OnItemClickListener listener;
@@ -27,7 +26,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         void onItemClick(MonAnWithChiTiet monAn);
     }
 
-    public SearchResultAdapter(Context context) {
+    public SearchRecipeResultAdapter(Context context) {
         this.context = context;
         this.monAnList = new ArrayList<>();
     }

@@ -16,7 +16,10 @@ import com.example.mastertref.domain.models.TaiKhoanDTO;
     NguyenLieuEntity.class, 
     BuocNauEntity.class,
     BinhLuanEntity.class,
-    ChanTaiKhoanEntity.class
+    ChanTaiKhoanEntity.class,
+    TheoDoiTaiKhoanEntity.class,
+    LichsuTimkiemEntity.class,
+        MonAnDaLuuEntity.class,
 }, version = 1, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
@@ -27,6 +30,13 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract NguyenLieuDAO nguyenLieuDAO();
     public abstract BuocNauDAO buocNauDAO();
     public abstract BinhLuanDAO binhLuanDAO();
+    public abstract LichsuTimkiemDAO lichSuTimKiemDAO();
+    public abstract TheoDoiTaiKhoanDAO theoDoiTaiKhoanDAO();
+    public abstract ChanTaiKhoanDAO chanTaiKhoanDAO();
+    public abstract MonAnDaLuuDAO monAnDaLuuDAO();
+
+
+
 
     public static AppDatabase getInstance(Context context) { // single ton
         if (INSTANCE == null) {

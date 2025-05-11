@@ -7,22 +7,21 @@ import java.util.List;
 
 @Dao
 public interface LichsuTimkiemDAO {
-    @Insert
-    void insertHistory(LichsuTimkiemEntity history);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(LichsuTimkiemEntity timKiem);
 
-    @Query("SELECT * FROM lichsu_timkiem WHERE user_id = :userId ORDER BY search_date DESC LIMIT 10")
-    LiveData<List<LichsuTimkiemEntity>> getRecentSearches(int userId);
+    @Query("SELECT * FROM tim_kiem WHERE taikhoanId = :taikhoanId ORDER BY thoiGian DESC LIMIT :limit")
+    LiveData<List<LichsuTimkiemEntity>> getSearchHistoryByUser(int taikhoanId, int limit);
 
-    @Query("DELETE FROM lichsu_timkiem WHERE id = :historyId")
-    void deleteSearchHistory(int historyId);
+    @Query("DELETE FROM tim_kiem WHERE taikhoanId = :taikhoanId")
+    void deleteAllSearchHistoryByUser(int taikhoanId);
 
-    @Query("DELETE FROM lichsu_timkiem WHERE user_id = :userId")
-    void clearHistory(int userId);
+    @Query("DELETE FROM tim_kiem WHERE id = :id")
+    void deleteSearchHistoryById(int id);
 
-    @Query("SELECT * FROM lichsu_timkiem WHERE user_id = :userId AND keyword = :keyword LIMIT 1")
-    LichsuTimkiemEntity getExistingKeyword(int userId, String keyword);
-
-    @Query("DELETE FROM lichsu_timkiem WHERE user_id = :userId AND id NOT IN (SELECT id FROM lichsu_timkiem WHERE user_id = :userId ORDER BY search_date DESC LIMIT 10)")
-    void trimHistoryToMaxTen(int userId);
+    @Query("SELECT * FROM tim_kiem WHERE taikhoanId = :taikhoanId AND tuKhoa LIKE '%' || :query || '%' ORDER BY thoiGian DESC")
+    LiveData<List<LichsuTimkiemEntity>> searchInHistory(int taikhoanId, String query);
 }
+
+
 

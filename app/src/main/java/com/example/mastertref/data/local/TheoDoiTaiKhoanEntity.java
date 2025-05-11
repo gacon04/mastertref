@@ -32,16 +32,20 @@ public class TheoDoiTaiKhoanEntity {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @ColumnInfo(name = "follower_id") // Người đi theo dõi
+    @ColumnInfo(name = "follower_id")
     private int followerId;
 
-    @ColumnInfo(name = "following_id") // Người được theo dõi
+    @ColumnInfo(name = "following_id")
     private int followingId;
 
+    @ColumnInfo(name = "thoi_gian_theo_doi")
+    private long thoiGianTheoDoi; // Thời gian theo dõi
+
     // Constructor
-    public TheoDoiTaiKhoanEntity(int followerId, int followingId) {
+    public TheoDoiTaiKhoanEntity(int followerId, int followingId, long thoiGianTheoDoi) {
         this.followerId = followerId;
         this.followingId = followingId;
+        this.thoiGianTheoDoi = thoiGianTheoDoi;
     }
 
     // Getter & Setter
@@ -67,5 +71,13 @@ public class TheoDoiTaiKhoanEntity {
 
     public void setFollowingId(int followingId) {
         this.followingId = followingId;
+    }
+
+    public long getThoiGianTheoDoi() {
+        return thoiGianTheoDoi;
+    }
+
+    public void setThoiGianTheoDoi(long thoiGianTheoDoi) {
+        this.thoiGianTheoDoi = thoiGianTheoDoi;
     }
 }

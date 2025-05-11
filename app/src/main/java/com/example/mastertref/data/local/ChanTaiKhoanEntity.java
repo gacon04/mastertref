@@ -33,10 +33,14 @@ public class ChanTaiKhoanEntity {
     @ColumnInfo(name = "blocked_id", index = true)
     private int blockedId; // Người bị chặn
 
+    @ColumnInfo(name = "thoi_gian_chan")
+    private long thoiGianChan; // Thời gian chặn (timestamp)
+
     // Constructor
-    public ChanTaiKhoanEntity(int blockerId, int blockedId) {
+    public ChanTaiKhoanEntity(int blockerId, int blockedId, long thoiGianChan) {
         this.blockerId = blockerId;
         this.blockedId = blockedId;
+        this.thoiGianChan = thoiGianChan;
     }
 
     // Getters and Setters
@@ -62,5 +66,13 @@ public class ChanTaiKhoanEntity {
 
     public void setBlockedId(int blockedId) {
         this.blockedId = blockedId;
+    }
+
+    public long getThoiGianChan() {
+        return thoiGianChan;
+    }
+
+    public void setThoiGianChan(long thoiGianChan) {
+        this.thoiGianChan = thoiGianChan;
     }
 }

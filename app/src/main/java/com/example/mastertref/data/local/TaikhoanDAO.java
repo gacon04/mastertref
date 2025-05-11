@@ -55,4 +55,55 @@ public interface TaikhoanDAO {
     // 🟢 Cập nhật mật khẩu mới (Lưu ý: Mật khẩu mới cần được mã hóa trước khi gọi hàm này)
     @Query("UPDATE taikhoan SET password = :newPassword WHERE username = :username")
     void updatePassword(String username, String newPassword);
+
+    // 🔍 Tìm kiếm tài khoản theo tên hoặc username, loại trừ các tài khoản đã chặn hoặc bị chặn
+    @Query("SELECT * FROM taikhoan WHERE " +
+           "(username LIKE '%' || :query || '%' OR fullname LIKE '%' || :query || '%') " +
+           "AND id != :currentUserId " +
+           "AND id NOT IN (" +
+           "    SELECT blocked_id FROM chantaikhoan WHERE blocker_id = :currentUserId" +
+           ") " +
+           "AND id NOT IN (" +
+           "    SELECT blocker_id FROM chantaikhoan WHERE blocked_id = :currentUserId" +
+           ") " +
+           "ORDER BY " +
+           "CASE WHEN username = :query THEN 0 " +
+           "     WHEN username LIKE :query || '%' THEN 1 " +
+           "     WHEN username LIKE '%' || :query || '%' THEN 2 " +
+           "     WHEN fullname = :query THEN 3 " +
+           "     WHEN fullname LIKE :query || '%' THEN 4 " +
+           "     ELSE 5 END")
+    LiveData<List<TaikhoanEntity>> searchUsersByUsernameOrName(String query, int currentUserId);
+
+    // 🔍 Tìm kiếm tài khoản theo tên hoặc username, sắp xếp theo A-Z
+    @Query("SELECT * FROM taikhoan WHERE " +
+            "(username LIKE '%' || :query || '%' OR fullname LIKE '%' || :query || '%') " +
+            "AND id != :currentUserId " +
+            "AND id NOT IN (" +
+            "    SELECT blocked_id FROM chantaikhoan WHERE blocker_id = :currentUserId" +
+            ") " +
+            "AND id NOT IN (" +
+            "    SELECT blocker_id FROM chantaikhoan WHERE blocked_id = :currentUserId" +
+            ") " +
+            "ORDER BY fullname ASC, username ASC")
+    LiveData<List<TaikhoanEntity>> searchUsersByUsernameOrNameAZ(String query, int currentUserId);
+
+    // 🔍 Tìm kiếm tài khoản theo tên hoặc username, sắp xếp theo Z-A
+    @Query("SELECT * FROM taikhoan WHERE " +
+            "(username LIKE '%' || :query || '%' OR fullname LIKE '%' || :query || '%') " +
+            "AND id != :currentUserId " +
+            "AND id NOT IN (" +
+            "    SELECT blocked_id FROM chantaikhoan WHERE blocker_id = :currentUserId" +
+            ") " +
+            "AND id NOT IN (" +
+            "    SELECT blocker_id FROM chantaikhoan WHERE blocked_id = :currentUserId" +
+            ") " +
+            "ORDER BY fullname DESC, username DESC")
+    LiveData<List<TaikhoanEntity>> searchUsersByUsernameOrNameZA(String query, int currentUserId);
+
+    // 🔍 Kiểm tra xem người dùng có bị chặn không
+    @Query("SELECT COUNT(*) FROM chantaikhoan WHERE " +
+            "(blocker_id = :currentUserId AND blocked_id = :targetUserId) OR " +
+            "(blocker_id = :targetUserId AND blocked_id = :currentUserId)")
+    int isUserBlockedOrBlocking(int currentUserId, int targetUserId);
 }

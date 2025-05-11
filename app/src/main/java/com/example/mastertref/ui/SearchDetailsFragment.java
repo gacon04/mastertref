@@ -35,6 +35,15 @@ public class SearchDetailsFragment extends Fragment {
         btnThoat = view.findViewById(R.id.btnThoat);
         edtSearch = view.findViewById(R.id.edtSearch);
         
+        // Check if we have a search query from arguments
+        Bundle args = getArguments();
+        if (args != null && args.containsKey("search_query")) {
+            String searchQuery = args.getString("search_query", "");
+            edtSearch.setText(searchQuery);
+            // Position cursor at the end of text
+            edtSearch.setSelection(searchQuery.length());
+        }
+        
         setupListeners();
     }
 
