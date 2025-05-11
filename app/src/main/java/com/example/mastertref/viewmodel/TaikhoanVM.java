@@ -60,6 +60,9 @@ public class TaikhoanVM extends AndroidViewModel {
     public LiveData<TaikhoanEntity> getUserByUsername(String username) {
         return taikhoanDAO.getTaikhoanByUsername(username);
     }
+    public LiveData<TaikhoanEntity> getUserById(int id) {
+        return taikhoanDAO.getTaikhoanByIdProFile(id);
+    }
 
     public boolean insertAccount(TaikhoanEntity user) {
         try {

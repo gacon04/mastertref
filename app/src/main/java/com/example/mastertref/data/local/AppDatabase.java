@@ -11,16 +11,19 @@ import com.example.mastertref.domain.models.ChangePasswordDTO;
 import com.example.mastertref.domain.models.TaiKhoanDTO;
 
 @Database(entities = {
-    TaikhoanEntity.class, 
-    MonAnEntity.class, 
-    NguyenLieuEntity.class, 
-    BuocNauEntity.class,
-    BinhLuanEntity.class,
-    ChanTaiKhoanEntity.class,
-    TheoDoiTaiKhoanEntity.class,
-    LichsuTimkiemEntity.class,
-        MonAnDaLuuEntity.class,
+        TaikhoanEntity.class,
+        MonAnEntity.class,
+        NguyenLieuEntity.class,
+        BuocNauEntity.class,
+        BinhLuanEntity.class,
+        ChanTaiKhoanEntity.class,
+        TheoDoiTaiKhoanEntity.class,
+        LichsuTimkiemEntity.class,
+        AlbumEntity.class,
+        AlbumMonAnCrossRef.class,
+        DaXemGanDayEntity.class
 }, version = 1, exportSchema = false)
+
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
@@ -33,7 +36,10 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract LichsuTimkiemDAO lichSuTimKiemDAO();
     public abstract TheoDoiTaiKhoanDAO theoDoiTaiKhoanDAO();
     public abstract ChanTaiKhoanDAO chanTaiKhoanDAO();
-    public abstract MonAnDaLuuDAO monAnDaLuuDAO();
+
+    public abstract DaXemGanDayDAO daXemGanDayDAO();
+    public abstract AlbumDAO albumDao();
+    public abstract AlbumMonAnDAO albumMonAnDao();
 
 
 

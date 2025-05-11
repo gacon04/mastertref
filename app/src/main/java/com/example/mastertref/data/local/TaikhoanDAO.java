@@ -32,6 +32,8 @@ public interface TaikhoanDAO {
     @Query("SELECT * FROM taikhoan WHERE username = :username LIMIT 1")
     LiveData<TaikhoanEntity> getTaikhoanByUsername(String username);
 
+    @Query("SELECT * FROM taikhoan WHERE  id = :userId LIMIT 1")
+    LiveData<TaikhoanEntity> getTaikhoanByIdProFile(int userId);
     // 🟢 Lấy tài khoản theo email
     @Query("SELECT * FROM taikhoan WHERE email = :email LIMIT 1")
     TaikhoanEntity getUserByEmail(String email);

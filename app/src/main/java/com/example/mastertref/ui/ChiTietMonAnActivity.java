@@ -22,6 +22,7 @@ import com.example.mastertref.data.local.MonAnEntity;
 import com.example.mastertref.data.local.MonAnWithChiTiet;
 import com.example.mastertref.data.local.NguyenLieuEntity;
 import com.example.mastertref.utils.SessionManager;
+import com.example.mastertref.viewmodel.DaXemGanDayVM;
 import com.example.mastertref.viewmodel.MonAnVM;
 
 import java.text.SimpleDateFormat;
@@ -30,11 +31,15 @@ import java.util.List;
 import java.util.Locale;
 
 // Add these imports at the top
+import com.example.mastertref.viewmodel.TaikhoanVM;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 public class ChiTietMonAnActivity extends AppCompatActivity {
     private MonAnVM monAnVM;
+    private TaikhoanVM taikhoanVM;
+    private DaXemGanDayVM daXemRecentVM;
+    private int currentUserId = -1;
     private int monAnId;
     private SessionManager sessionManager;
     private String username;
@@ -42,7 +47,7 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
     private ImageView imgRecipe, imgAuthor, imgAuthorAvatar, imgRecipeSmall;
     private TextView tvRecipeTitle, tvAuthorName, tvAuthorUsername, tvDescription, tvAuthor2, tvRecipeTitleSmall;
     private TextView tvRecipeId, tvPublishDate, tvUpdateDate, tvSoNguoi, tvShowTime, btnWriteComment;
-    private LinearLayout listNguyenLieu, listCachLam, llShowKhauPhan, llShowTime;
+    private LinearLayout listNguyenLieu, listCachLam, llShowKhauPhan, llShowTime, llAuthorBanner;
     private ImageButton btnBack, btnSave, btnMore, btnBookmark;
     private Button btnAddFriend;
     private RecyclerView rvRecipeRecommendations;
@@ -55,6 +60,12 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_mon);
+        monAnVM = new ViewModelProvider(this).get(MonAnVM.class);
+        taikhoanVM = new ViewModelProvider(this).get(TaikhoanVM.class);
+        daXemRecentVM = new ViewModelProvider(this).get(DaXemGanDayVM.class);
+        sessionManager = new SessionManager(this);
+        initCurrentUserId();
+
 
         // Get recipe ID from intent
         monAnId = getIntent().getIntExtra("mon_an_id", -1);
@@ -63,11 +74,21 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
             finish();
             return;
         }
+        // Add this line to insert the recent view
+        if (currentUserId > 0) {
+            daXemRecentVM.saveUniqueRecentView(currentUserId, monAnId);
+        } else {
+            // If user ID is not available yet, set up a listener to wait for it
+            taikhoanVM.getUserIdByUsername(username, userId -> {
+                if (userId > 0) {
+                    currentUserId = userId;
+                    daXemRecentVM.saveUniqueRecentView(currentUserId, monAnId);
+                }
+            });
+        }
 
         // Initialize ViewModel
-        monAnVM = new ViewModelProvider(this).get(MonAnVM.class);
-        sessionManager = new SessionManager(this);
-        username = sessionManager.getUsername();
+
         // Initialize UI elements
         initViews();
 
@@ -102,6 +123,7 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
         listNguyenLieu = findViewById(R.id.listNguyenLieu);
         listCachLam = findViewById(R.id.listCachLam);
         llShowKhauPhan = findViewById(R.id.llShowKhauPhan);
+        llAuthorBanner = findViewById(R.id.llAuthorBanner);
         llShowTime = findViewById(R.id.llShowTime);
         btnBack = findViewById(R.id.btnBack);
         btnSave = findViewById(R.id.btnSave);
@@ -186,6 +208,9 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
                 }
             }
         });
+        llAuthorBanner.setOnClickListener(v -> {
+
+        });
     }
 
     private void loadMonAnData() {
@@ -210,10 +235,25 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
             }
         });
     }
+    private void initCurrentUserId() {
+        username = sessionManager.getUsername();
+        if (username != null && !username.isEmpty()) {
+            taikhoanVM.getUserIdByUsername(username, userId -> {
+                currentUserId = userId;
+            });
+        }
+    }
     private void displayMonAnData(MonAnWithChiTiet monAnWithChiTiet) {
         MonAnEntity monAn = monAnWithChiTiet.getMonAn();
         List<NguyenLieuEntity> nguyenLieuList = monAnWithChiTiet.getNguyenLieuList();
         List<BuocNauEntity> buocNauList = monAnWithChiTiet.getBuocNauList();
+
+        // Add this code to save the recently viewed item
+        if (currentUserId > 0 && monAn.getTaikhoanId() != currentUserId) {
+            // Only save to recently viewed if it's not the user's own recipe
+            // This will ensure we're only tracking views of other users' recipes
+            daXemRecentVM.saveUniqueRecentView(currentUserId, monAnId);
+        }
 
         // Set basic recipe info
         tvRecipeTitle.setText(monAn.getTenMonAn());

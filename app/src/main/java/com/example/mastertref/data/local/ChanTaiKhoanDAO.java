@@ -33,4 +33,7 @@ public interface ChanTaiKhoanDAO {
     // 📋 Lấy danh sách người đã chặn user này
     @Query("SELECT blocker_id FROM chantaikhoan WHERE blocked_id = :blockedId")
     List<Integer> getWhoBlockedUser(int blockedId);
+
+    @Query("SELECT COUNT(*) > 0 FROM chantaikhoan WHERE blocker_id = :userId AND blocked_id = :blockedUserId")
+    boolean isUserBlocked(int userId, int blockedUserId);
 }
