@@ -55,4 +55,9 @@ public class MonAnRepository {
     public LiveData<List<MonAnWithChiTiet>> searchMonAnByNameOrIngredient(String keyword, int currentUserId) {
         return monAnDAO.searchMonAnByNameOrIngredient(keyword, currentUserId);
     }
+    
+    // Phương thức lấy các món ăn mới nhất (đã lọc người dùng bị chặn)
+    public LiveData<List<MonAnWithChiTiet>> getNewestRecipesFiltered(int currentUserId, int limit) {
+        return monAnDAO.getNewestRecipesFiltered(currentUserId, limit);
+    }
 }

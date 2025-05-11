@@ -44,5 +44,8 @@ public class MonAnVM extends AndroidViewModel {
         return repository.searchMonAnByNameOrIngredient(query, currentUserId);
     }
     
-
+    // Phương thức lấy các món ăn mới nhất (đã lọc người dùng bị chặn)
+    public LiveData<List<MonAnWithChiTiet>> getNewestRecipesFiltered(int currentUserId, int limit) {
+        return repository.getNewestRecipesFiltered(currentUserId, limit);
+    }
 }

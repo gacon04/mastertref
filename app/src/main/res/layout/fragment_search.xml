@@ -131,7 +131,7 @@
                     android:paddingHorizontal="8dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="5"
-                    tools:listitem="@layout/item_monantoigian" />
+                    tools:listitem="@layout/item_recipe_horizontal" />
             </LinearLayout>
 
             <!-- Share Recipe Card -->
@@ -230,25 +230,18 @@
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 
-                    <TextView
-                        android:id="@+id/tvSeeAllPopular"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/sfpro_medi"
-                        android:text="Xem tất cả"
-                        android:textColor="@color/pastel_orange"
-                        android:textSize="14sp" />
+
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvPopularRecipes"
+                    android:id="@+id/rvNewestRecipes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
                     android:orientation="horizontal"
                     android:paddingHorizontal="8dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="3"
+                    tools:itemCount="8"
                     tools:listitem="@layout/item_recipe_horizontal" />
             </LinearLayout>
 
@@ -270,7 +263,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/sfpro_bold"
-                        android:text="Tìm kiếm gần đây"
+                        android:text="Món đã xem gần đây"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 

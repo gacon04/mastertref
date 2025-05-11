@@ -147,4 +147,16 @@ public interface MonAnDAO {
 
 
 
+    // Lấy các món ăn mới nhất, không bao gồm món ăn của người dùng hiện tại, người dùng bị chặn hoặc đã chặn người dùng hiện tại
+    @Transaction
+    @Query("SELECT m.* FROM monan m " +
+           "INNER JOIN taikhoan t ON m.taikhoan_id = t.id " +
+           "WHERE m.is_active = 1 " +
+           "AND t.isActive = 1 " +
+           "AND m.taikhoan_id != :currentUserId " +
+           "AND NOT EXISTS (SELECT 1 FROM chantaikhoan c WHERE (c.blocker_id = :currentUserId AND c.blocked_id = m.taikhoan_id) " +
+           "OR (c.blocker_id = m.taikhoan_id AND c.blocked_id = :currentUserId)) " +
+           "ORDER BY m.create_at DESC " +
+           "LIMIT :limit")
+    LiveData<List<MonAnWithChiTiet>> getNewestRecipesFiltered(int currentUserId, int limit);
 }
