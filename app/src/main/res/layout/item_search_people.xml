@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:background="@color/white"
         android:padding="12dp"
         android:gravity="center_vertical">
 
@@ -27,6 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
+            android:background="@color/white"
             android:layout_marginStart="16dp">
 
             <TextView
@@ -36,6 +38,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
+                android:background="@color/white"
                 android:fontFamily="@font/sfpro_bold"
                 tools:text="Full Name" />
 
@@ -45,6 +48,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:textColor="#666666"
+                android:background="@color/white"
+
                 android:fontFamily="@font/sfpro_regu"
                 android:layout_marginTop="4dp"
                 tools:text="\@username" />
@@ -58,8 +63,9 @@
             android:text="Theo dõi"
             android:textSize="12sp"
             android:paddingHorizontal="12dp"
+
             android:paddingVertical="4dp"
-            android:background="@color/white"
+            android:backgroundTint="@color/white"
             android:fontFamily="@font/sfpro_bold"
             android:textColor="@color/gray"
             android:gravity="center" />

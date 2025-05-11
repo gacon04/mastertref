@@ -41,7 +41,7 @@ public class SplashActitvity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-        deleteDatabase(this);
+//        deleteDatabase(this);
 
         // Sử dụng Handler để delay màn hình Splash
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {

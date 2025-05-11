@@ -22,10 +22,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mastertref.R;
 import com.example.mastertref.data.local.Adapter.SearchPeopleResultAdapter;
 import com.example.mastertref.data.local.Adapter.SearchRecipeResultAdapter;
+import com.example.mastertref.data.local.LichsuTimkiemEntity;
 import com.example.mastertref.data.local.MonAnEntity;
 import com.example.mastertref.data.local.MonAnWithChiTiet;
 import com.example.mastertref.data.local.TaikhoanEntity;
 import com.example.mastertref.utils.SessionManager;
+import com.example.mastertref.viewmodel.LichSuTimKiemVM;
 import com.example.mastertref.viewmodel.MonAnVM;
 import com.example.mastertref.viewmodel.TaikhoanVM;
 import com.google.android.material.tabs.TabLayout;
@@ -43,7 +45,7 @@ import java.util.Date;
 
 public class SearchResultFragment extends Fragment {
     // UI elements
-    private TaikhoanVM taikhoanVM;
+
     private ImageButton btnBack, btnClearSearch, btnFilter;
     private EditText etSearch;
     private TabLayout tabLayout;
@@ -53,7 +55,7 @@ public class SearchResultFragment extends Fragment {
 
     // ViewModel
     private MonAnVM monAnVM;
-
+    private TaikhoanVM taikhoanVM;
     // Adapter
     private SearchRecipeResultAdapter searchAdapter;
 
@@ -113,8 +115,27 @@ public class SearchResultFragment extends Fragment {
         if (args != null && args.containsKey("search_query")) {
             currentQuery = args.getString("search_query", "");
             etSearch.setText(currentQuery);
+            
+            // lưu lịch sử tìm kiếm
+            if (!currentQuery.isEmpty()) {
+                saveSearchQuery(currentQuery);
+            }
+            
             performSearch(currentQuery);
         }
+    }
+    
+    // từ khóa tìm kiếm mới nhất của người dùng mà trùng với từ hiện tại thì không insert nữa, còn từ đã insert lâu rồi thì có thể xóa và insert từ này lại vào
+    private void saveSearchQuery(String query) {
+        if (query.isEmpty() || currentUserId <= 0) {
+            return;
+        }
+        
+        // Initialize LichSuTimKiemVM if needed
+        LichSuTimKiemVM lichSuTimKiemVM = new ViewModelProvider(this).get(LichSuTimKiemVM.class);
+        
+        // Use the new method that handles everything in one transaction
+        lichSuTimKiemVM.saveUniqueSearchQuery(currentUserId, query);
     }
 
     private void initViews(View view) {
@@ -167,7 +188,7 @@ public class SearchResultFragment extends Fragment {
             etSearch.setEnabled(false);
             
             // Re-enable after a short delay
-            etSearch.postDelayed(() -> etSearch.setEnabled(true), 300);
+            etSearch.postDelayed(() -> etSearch.setEnabled(true), 200);
         });
 
         // Add text change listener to search field
