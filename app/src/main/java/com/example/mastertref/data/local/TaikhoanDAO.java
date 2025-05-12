@@ -61,7 +61,7 @@ public interface TaikhoanDAO {
 
     // 🔍 Lấy tài khoản theo ID
     @Query("SELECT * FROM taikhoan WHERE id = :id")
-    LiveData<TaikhoanEntity> getUserById(int id);
+    TaikhoanEntity getUserById(int id);
 
     // 🔍 Lấy tài khoản theo username
     @Query("SELECT * FROM taikhoan WHERE username = :username")

@@ -44,6 +44,11 @@ public class TheoDoiVM extends AndroidViewModel {
         });
     }
     
+    // Add this method to directly check if a user is following another
+    public void isFollowing(int followerId, int followingId, FollowingRepository.FollowingCheckCallback callback) {
+        followingRepository.isFollowing(followerId, followingId, callback);
+    }
+    
     public LiveData<Boolean> getFollowStatus() {
         return followStatus;
     }
