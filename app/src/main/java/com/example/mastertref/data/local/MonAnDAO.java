@@ -7,23 +7,23 @@ import java.util.List;
 
 @Dao
 public interface MonAnDAO {
-    // 🟢 Thêm món ăn mới và trả về ID
+    // Thêm món ăn mới và trả về ID
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertMonAn(MonAnEntity monAn);
 
-    // 🟢 Cập nhật món ăn
+    // Cập nhật món ăn
     @Update
     void updateMonAn(MonAnEntity monAn);
 
-    // 🟢 Xóa món ăn
+    //  Xóa món ăn
     @Delete
     void deleteMonAn(MonAnEntity monAn);
 
-    // 🟢 Xóa món ăn theo ID
+    //  Xóa món ăn theo ID
     @Query("DELETE FROM monan WHERE id = :monAnId")
     void deleteMonAnById(int monAnId);
 
-    // 🟢 Lấy món ăn theo ID
+    //  Lấy món ăn theo ID
     @Query("SELECT * FROM monan WHERE id = :monAnId LIMIT 1")
     LiveData<MonAnEntity> getMonAnById(int monAnId);
 
@@ -32,7 +32,7 @@ public interface MonAnDAO {
     LiveData<MonAnWithChiTiet> getMonAnWithChiTietById(int monAnId);
 
 
-    // 🟢 Lấy tất cả món ăn của một tài khoản cụ thể
+    //  Lấy tất cả món ăn của một tài khoản cụ thể
     @Query("SELECT monan.* FROM monan " +
             "INNER JOIN taikhoan ON monan.taikhoan_id = taikhoan.id " +
             "WHERE taikhoan.username = :username")
@@ -147,14 +147,13 @@ public interface MonAnDAO {
 
 
 
-    // Lấy các món ăn mới nhất, không bao gồm món ăn của người dùng hiện tại, người dùng bị chặn hoặc đã chặn người dùng hiện tại
+    // Lấy các món ăn mới nhất, không bao gồm người dùng bị chặn hoặc đã chặn người dùng hiện tại
     @Transaction
     @Query("SELECT m.* FROM monan m " +
            "INNER JOIN taikhoan t ON m.taikhoan_id = t.id " +
            "WHERE m.is_active = 1 " +
            "AND t.isActive = 1 " +
-           "AND m.taikhoan_id != :currentUserId " +
-           "AND NOT EXISTS (SELECT 1 FROM chantaikhoan c WHERE (c.blocker_id = :currentUserId AND c.blocked_id = m.taikhoan_id) " +
+            "AND NOT EXISTS (SELECT 1 FROM chantaikhoan c WHERE (c.blocker_id = :currentUserId AND c.blocked_id = m.taikhoan_id) " +
            "OR (c.blocker_id = m.taikhoan_id AND c.blocked_id = :currentUserId)) " +
            "ORDER BY m.create_at DESC " +
            "LIMIT :limit")

@@ -26,7 +26,7 @@
                 android:layout_height="48dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_heart"
-                android:tint="#FF5722" />
+                android:backgroundTint="#FF5722" />
 
             <!-- Layout grid cho collection có nhiều ảnh (sẽ hiển thị/ẩn tùy loại) -->
             <GridLayout

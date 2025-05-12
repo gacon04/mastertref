@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mastertref.R;
 import com.example.mastertref.data.local.Adapter.BlockAdapter;
 import com.example.mastertref.data.local.TaikhoanEntity;
+import com.example.mastertref.ui.CommentActivity;
 import com.example.mastertref.utils.SessionManager;
 import com.example.mastertref.viewmodel.ChanTaiKhoanVM;
 import com.example.mastertref.viewmodel.TaikhoanVM;
@@ -45,12 +46,12 @@ public class CacBepDaChan extends AppCompatActivity {
         taikhoanVM = new ViewModelProvider(this).get(TaikhoanVM.class);
         chanTaiKhoanVM = new ViewModelProvider(this).get(ChanTaiKhoanVM.class);
         sessionManager = new SessionManager(this);
-
+        initCurrentUserId();
         // Initialize views
         initViews();
         
         // Get current user ID
-        initCurrentUserId();
+
     }
 
     private void initViews() {
@@ -87,8 +88,7 @@ public class CacBepDaChan extends AppCompatActivity {
         
         // Set up click listeners for adapter
         adapter.setOnBlockedUserClickListener(blockedUser -> {
-            // Navigate to user profile or show details
-            Toast.makeText(this, "Xem thông tin " + blockedUser.getFullname(), Toast.LENGTH_SHORT).show();
+
         });
         
         adapter.setOnUnblockButtonClickListener(blockedUser -> {
@@ -155,10 +155,13 @@ public class CacBepDaChan extends AppCompatActivity {
     private void initCurrentUserId() {
         String username = sessionManager.getUsername();
         if (username != null && !username.isEmpty()) {
-            taikhoanVM.getUserIdByUsername(username, userId -> {
-                currentUserId = userId;
+            taikhoanVM.getUserByUsername(username).observe(this, user -> {
+                if (user != null) {
+                    currentUserId = user.getId();
+                }
                 setupAdapter();
             });
+            // Remove setupAdapter() from here
         }
     }
 }

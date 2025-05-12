@@ -1,6 +1,7 @@
 package com.example.mastertref.data.local.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,23 +17,76 @@ import com.example.mastertref.R;
 import com.example.mastertref.data.local.AlbumWithMonAn;
 import com.example.mastertref.data.local.MonAnEntity;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder> {
-    private Context context;
+    // Remove the duplicate field
+    // private Context context; <- Remove this line
     private List<AlbumWithMonAn> albums = new ArrayList<>();
     private OnAlbumClickListener onAlbumClickListener;
 
+    // Make sure you're using a weak reference to the context or activity
+    private final WeakReference<Context> contextRef;
+    
     public AlbumAdapter(Context context) {
-        this.context = context;
+        this.contextRef = new WeakReference<>(context);
+        this.albums = new ArrayList<>();
+    }
+    
+    // When accessing the context, check if it's still valid
+    private Context getContext() {
+        Context context = contextRef.get();
+        if (context == null) {
+            Log.e("AlbumAdapter", "Context is null");
+        }
+        return context;
     }
 
     @NonNull
     @Override
     public AlbumViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Use getContext() instead of context
+        Context context = getContext();
+        if (context == null) {
+            context = parent.getContext();
+        }
         View view = LayoutInflater.from(context).inflate(R.layout.item_album, parent, false);
         return new AlbumViewHolder(view);
+    }
+
+    // In loadRecipeImages method, use getContext() instead of context
+    private void loadRecipeImages(AlbumViewHolder holder, List<MonAnEntity> recipes) {
+        // Get all ImageViews from the GridLayout
+        int childCount = holder.gridImages.getChildCount();
+        List<ImageView> imageViews = new ArrayList<>();
+        
+        for (int i = 0; i < childCount; i++) {
+            View child = holder.gridImages.getChildAt(i);
+            if (child instanceof ImageView) {
+                imageViews.add((ImageView) child);
+            }
+        }
+        
+        // Load images into the grid (up to 4)
+        Context context = getContext();
+        if (context == null) return;
+        
+        int maxImagesToShow = Math.min(recipes.size(), 4);
+        for (int i = 0; i < maxImagesToShow; i++) {
+            if (i < imageViews.size()) {
+                String imageUrl = recipes.get(i).getHinhAnh();
+                if (imageUrl != null && !imageUrl.isEmpty()) {
+                    Glide.with(context)
+                            .load(imageUrl)
+                            .centerCrop()
+                            .placeholder(R.drawable.mastertref)
+                            .error(R.drawable.mastertref)
+                            .into(imageViews.get(i));
+                }
+            }
+        }
     }
 
     @Override
@@ -68,42 +122,19 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
         });
     }
     
-    private void loadRecipeImages(AlbumViewHolder holder, List<MonAnEntity> recipes) {
-        // Get all ImageViews from the GridLayout
-        int childCount = holder.gridImages.getChildCount();
-        List<ImageView> imageViews = new ArrayList<>();
-        
-        for (int i = 0; i < childCount; i++) {
-            View child = holder.gridImages.getChildAt(i);
-            if (child instanceof ImageView) {
-                imageViews.add((ImageView) child);
-            }
-        }
-        
-        // Load images into the grid (up to 4)
-        int maxImagesToShow = Math.min(recipes.size(), 4);
-        for (int i = 0; i < maxImagesToShow; i++) {
-            if (i < imageViews.size()) {
-                String imageUrl = recipes.get(i).getHinhAnh();
-                if (imageUrl != null && !imageUrl.isEmpty()) {
-                    Glide.with(context)
-                            .load(imageUrl)
-                            .centerCrop()
-                            .placeholder(R.drawable.mastertref)
-                            .error(R.drawable.mastertref)
-                            .into(imageViews.get(i));
-                }
-            }
-        }
-    }
-
     @Override
     public int getItemCount() {
         return albums.size();
     }
     
     public void setAlbums(List<AlbumWithMonAn> albums) {
-        this.albums = albums;
+        if (albums == null) {
+            Log.e("AlbumAdapter", "Trying to set null albums list");
+            this.albums = new ArrayList<>();
+        } else {
+            this.albums = new ArrayList<>(albums); // Create a new copy to avoid reference issues
+            Log.d("AlbumAdapter", "Setting " + albums.size() + " albums in adapter");
+        }
         notifyDataSetChanged();
     }
     

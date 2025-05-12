@@ -27,6 +27,13 @@ public class AlbumRepository {
         albumMonAnDAO = database.albumMonAnDao();
         executorService = Executors.newSingleThreadExecutor();
     }
+    
+    // Add a method to clean up resources
+    public void cleanup() {
+        if (executorService != null && !executorService.isShutdown()) {
+            executorService.shutdown();
+        }
+    }
 
     // Album operations
     public LiveData<List<AlbumEntity>> getAlbumsByUserId(int userId) {

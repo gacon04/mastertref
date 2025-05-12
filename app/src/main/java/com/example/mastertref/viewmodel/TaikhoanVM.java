@@ -103,6 +103,7 @@ public class TaikhoanVM extends AndroidViewModel {
     public boolean isEmailExists(String email) {
         return taikhoanDAO.isEmailExists(email) > 0;
     }
+
     public void getUserIdByUsername(String username, OnUserIdResultListener listener) {
         new Thread(() -> {
             int userId = taikhoanDAO.getUserIdByUsername(username);
@@ -143,5 +144,10 @@ public class TaikhoanVM extends AndroidViewModel {
      */
     public LiveData<List<TaikhoanEntity>> getUsersByIds(List<Integer> userIds) {
         return taikhoanRepository.getUsersByIds(userIds);
+    }
+    
+    // Add this method to insert a user and return the ID
+    public long insertUserAndGetId(TaikhoanEntity user) {
+        return taikhoanRepository.insertUserAndGetId(user);
     }
 }

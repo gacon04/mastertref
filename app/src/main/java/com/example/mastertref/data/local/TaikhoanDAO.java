@@ -8,7 +8,8 @@ import java.util.List;
 @Dao
 public interface TaikhoanDAO {
     // 🟢 Thêm tài khoản mới (Mã hóa mật khẩu trước khi lưu)
-
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long insertUser(TaikhoanEntity user);
 
     // 🟢 Xóa tài khoản theo username
     @Query("DELETE FROM taikhoan WHERE username = :username")
@@ -48,8 +49,7 @@ public interface TaikhoanDAO {
     // 🔍 Tìm kiếm tài khoản theo tên hoặc username, loại trừ các tài khoản đã chặn hoặc bị chặn
 
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertUser(TaikhoanEntity user);
+    
 
     // 🟢 Cập nhật thông tin tài khoản (Không cập nhật mật khẩu ở đây)
     @Update

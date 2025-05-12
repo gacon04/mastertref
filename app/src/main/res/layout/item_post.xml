@@ -80,7 +80,7 @@
             android:fontFamily="@font/sfpro_regu"
             app:layout_constraintStart_toEndOf="@+id/profileImage"
             app:layout_constraintTop_toBottomOf="@+id/postImage"
-            tools:text="Hanna Käerdi cooked" />
+            tools:text="\@userabc đã đăng tải công thức" />
 
         <!-- Recipe Title -->
         <TextView
@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/sfpro_medi"
-            android:textColor="#E91E63"
+            android:textColor="#FF5722"
             android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"

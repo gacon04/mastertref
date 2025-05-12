@@ -19,10 +19,12 @@ import com.example.mastertref.data.local.TaikhoanEntity;
 import com.example.mastertref.domain.models.TaiKhoanDTO;
 import com.example.mastertref.utils.AESHelper;
 import com.example.mastertref.utils.IDGenerator;
+import com.example.mastertref.viewmodel.AlbumVM;
 import com.example.mastertref.viewmodel.TaikhoanVM;
 
 public class RegisterActivity extends AppCompatActivity {
     private TaikhoanVM taikhoanVM;
+    private AlbumVM albumViewModel;
     private EditText edtName, edtEmail, edtPassword, edtConfPass;
     private Button btnRegister;
 
@@ -33,6 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.register);
 
         taikhoanVM = new ViewModelProvider(this).get(TaikhoanVM.class);
+        albumViewModel = new ViewModelProvider(this).get(AlbumVM.class);
 
         // Ánh xạ view
         edtName = findViewById(R.id.edtFullName);
@@ -136,7 +139,12 @@ public class RegisterActivity extends AppCompatActivity {
                         IDGenerator.generateTrefID(), email, AESHelper.encrypt(password), name,"",
                         "", "https://res.cloudinary.com/dmrexfwzv/image/upload/ic_launcher-playstore_pmtrat.png", true);
 
-                taikhoanVM.insertUser(newUser);
+                // Insert user and get the user ID
+                int userId = (int) taikhoanVM.insertUserAndGetId(newUser);
+                
+                // Create default album "Đã lưu" for the new user
+                albumViewModel.createAlbum("Đã lưu", userId);
+                
                 runOnUiThread(() -> {
                     Toast.makeText(this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(this, LoginActivity.class));

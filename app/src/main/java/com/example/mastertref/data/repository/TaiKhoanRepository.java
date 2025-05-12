@@ -132,7 +132,6 @@ public class TaiKhoanRepository {
     public void blockUser(int currentUserId, int targetUserId) {
         executorService.execute(() -> {
 
-
         });
     }
 
@@ -156,5 +155,15 @@ public class TaiKhoanRepository {
 
     public interface OnIntResultListener {
         void onResult(int result);
+    }
+
+    public long insertUserAndGetId(TaikhoanEntity user) {
+        try {
+            // Use a different approach than executorService to get the return value
+            return taikhoanDAO.insertUser(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 }
