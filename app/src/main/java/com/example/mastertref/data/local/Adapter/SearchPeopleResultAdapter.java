@@ -110,4 +110,13 @@ public class SearchPeopleResultAdapter extends RecyclerView.Adapter<SearchPeople
             btnFollow = itemView.findViewById(R.id.btn_follow);
         }
     }
+    
+    // Add this method to the SearchPeopleResultAdapter class
+    
+    public void updateFollowStatus(int position, boolean isFollowing) {
+        if (position >= 0 && position < getItemCount()) {
+            // Update the button text based on follow status
+            notifyItemChanged(position);
+        }
+    }
 }

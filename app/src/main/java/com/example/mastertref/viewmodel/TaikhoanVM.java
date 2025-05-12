@@ -137,4 +137,11 @@ public class TaikhoanVM extends AndroidViewModel {
     public LiveData<List<TaikhoanEntity>> searchUsersByUsernameOrNameZA(String query, int currentUserId) {
         return taikhoanRepository.searchUsersByUsernameOrNameZA(query, currentUserId);
     }
+    
+    /**
+     * Lấy danh sách tài khoản theo danh sách ID
+     */
+    public LiveData<List<TaikhoanEntity>> getUsersByIds(List<Integer> userIds) {
+        return taikhoanRepository.getUsersByIds(userIds);
+    }
 }

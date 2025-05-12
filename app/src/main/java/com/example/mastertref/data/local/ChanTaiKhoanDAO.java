@@ -1,5 +1,6 @@
 package com.example.mastertref.data.local;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -28,11 +29,11 @@ public interface ChanTaiKhoanDAO {
 
     // 📋 Lấy danh sách người bị chặn bởi một user
     @Query("SELECT blocked_id FROM chantaikhoan WHERE blocker_id = :blockerId")
-    List<Integer> getBlockedUserIds(int blockerId);
+    LiveData<List<Integer>> getBlockedUserIds(int blockerId);
 
     // 📋 Lấy danh sách người đã chặn user này
     @Query("SELECT blocker_id FROM chantaikhoan WHERE blocked_id = :blockedId")
-    List<Integer> getWhoBlockedUser(int blockedId);
+    LiveData<Integer> getWhoBlockedUser(int blockedId);
 
     @Query("SELECT COUNT(*) > 0 FROM chantaikhoan WHERE blocker_id = :userId AND blocked_id = :blockedUserId")
     boolean isUserBlocked(int userId, int blockedUserId);

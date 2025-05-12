@@ -81,7 +81,8 @@
         android:text="Theo dõi"
         android:textAllCaps="false"
         android:textColor="#FF9800"
-        android:textSize="14sp"
+        android:textSize="12sp"
+        android:fontFamily="@font/sfpro_bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

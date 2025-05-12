@@ -38,6 +38,7 @@ public class ShowOthersPro5Fragment extends Fragment {
     // ViewModel
     private MonAnVM monAnVM;
     private TaikhoanVM taikhoanVM;
+    private TheoDoiVM theoDoiVM; // Add TheoDoiVM
     private MonAnAdapter adapter;
     private SessionManager sessionManager;
     private int currentUserId, profileId;
@@ -47,6 +48,7 @@ public class ShowOthersPro5Fragment extends Fragment {
         super.onCreate(savedInstanceState);
         sessionManager = new SessionManager(requireContext());
         taikhoanVM = new ViewModelProvider(this).get(TaikhoanVM.class);
+        theoDoiVM = new ViewModelProvider(this).get(TheoDoiVM.class); // Initialize TheoDoiVM
         monAnVM = new ViewModelProvider(this).get(MonAnVM.class);
         initCurrentUserId();
     }
@@ -80,15 +82,62 @@ public class ShowOthersPro5Fragment extends Fragment {
     private void setupClickListeners() {
         btnMore.setOnClickListener(v -> {
             blockUser();
-
         });
+        
         btnFilter.setOnClickListener(v -> {
             // Handle filter button click
         });
+        
         btnFollow.setOnClickListener(v -> {
-            // Handle follow button click
+            // Handle follow/unfollow action
+            if (currentUserId > 0 && profileId > 0) {
+                // Check if already following
+                theoDoiVM.isFollowing(currentUserId, profileId, isFollowing -> {
+                    if (isFollowing) {
+                        // Already following, so unfollow
+                        theoDoiVM.unfollowUser(currentUserId, profileId);
+                        btnFollow.setText("Theo dõi");
+                        // Update follower count
+                        loadFollowerAndFollowingCounts(profileId);
+                    } else {
+                        // Not following, so follow
+                        theoDoiVM.followUser(currentUserId, profileId);
+                        btnFollow.setText("Đang theo dõi");
+                        // Update follower count
+                        loadFollowerAndFollowingCounts(profileId);
+                    }
+                });
+            }
         });
-
+        
+        // Add click listeners for follower and following counts
+        tvFollowers.setOnClickListener(v -> {
+            // Navigate to FollowersFragment
+            FollowersFragment fragment = new FollowersFragment();
+            Bundle args = new Bundle();
+            args.putInt("user_id", profileId);
+            fragment.setArguments(args);
+            
+            requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout, fragment)
+                .addToBackStack(null)
+                .commit();
+        });
+        
+        tvFollowing.setOnClickListener(v -> {
+            // Navigate to FollowingFragment
+            FollowingFragment fragment = new FollowingFragment();
+            Bundle args = new Bundle();
+            args.putInt("user_id", profileId);
+            fragment.setArguments(args);
+            
+            requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout, fragment)
+                .addToBackStack(null)
+                .commit();
+        });
     }
     private void initViews(View view) {
         tvCollapseName = view.findViewById(R.id.tvCollapsedTitle);
@@ -148,10 +197,49 @@ public class ShowOthersPro5Fragment extends Fragment {
                     ivLocation.setVisibility(View.GONE);
                 }
                 
-                // You can add code here to load followers and following counts
-                // For now, we'll leave the default text
+                // Load follower and following counts
+                loadFollowerAndFollowingCounts(profileId);
+                
+                // Check if current user is following this profile
+                updateFollowButtonState();
             }
         });
     }
-
+    
+    // Add this method to update the follow button state
+    private void updateFollowButtonState() {
+        if (currentUserId > 0 && profileId > 0) {
+            // Don't show follow button if viewing own profile
+            if (currentUserId == profileId) {
+                btnFollow.setVisibility(View.GONE);
+                return;
+            }
+            
+            btnFollow.setVisibility(View.VISIBLE);
+            
+            // Check if already following
+            theoDoiVM.isFollowing(currentUserId, profileId, isFollowing -> {
+                if (isFollowing) {
+                    btnFollow.setText("Đang theo dõi");
+                } else {
+                    btnFollow.setText("Theo dõi");
+                }
+            });
+        }
+    }
+    
+    // Add method to load follower and following counts
+    private void loadFollowerAndFollowingCounts(int userId) {
+        // Load follower count
+        theoDoiVM.getFollowerUserIds(userId).observe(getViewLifecycleOwner(), followerIds -> {
+            int followerCount = followerIds != null ? followerIds.size() : 0;
+            tvFollowers.setText(followerCount + " người theo dõi");
+        });
+        
+        // Load following count
+        theoDoiVM.getFollowingUserIds(userId).observe(getViewLifecycleOwner(), followingIds -> {
+            int followingCount = followingIds != null ? followingIds.size() : 0;
+            tvFollowing.setText(followingCount + " đang theo dõi");
+        });
+    }
 }

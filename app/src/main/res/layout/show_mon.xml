@@ -55,7 +55,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_toEndOf="@id/btnBack"
-                        android:layout_toStartOf="@id/btnSave"
+                        android:layout_toStartOf="@id/btnMore"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:visibility="gone">
@@ -81,14 +81,7 @@
                             android:textSize="16sp" />
                     </LinearLayout>
 
-                    <ImageButton
-                        android:id="@+id/btnSave"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_centerVertical="true"
-                        android:layout_toStartOf="@id/btnMore"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:src="@drawable/abc_icon" />
+
 
                     <ImageButton
                         android:id="@+id/btnMore"
@@ -97,7 +90,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:src="@drawable/ic_more" />
+                        android:src="@drawable/more" />
                 </RelativeLayout>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -136,19 +129,19 @@
                 android:layout_marginBottom="8dp"
                 android:gravity="center_vertical">
 
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginEnd="8dp"-->
-<!--                    android:background="@drawable/round_gray_bg"-->
-<!--                    android:drawableStart="@drawable/ic_share"-->
-<!--                    android:drawablePadding="4dp"-->
-<!--                    android:fontFamily="@font/sfpro_regu"-->
-<!--                    android:paddingHorizontal="8dp"-->
-<!--                    android:paddingVertical="4dp"-->
-<!--                    android:text="Gửi cooksnap đầu tiên!"-->
-<!--                    android:textColor="@color/dark_gray"-->
-<!--                    android:textSize="12sp" />-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/rounded_button_border"
+
+                    android:drawablePadding="4dp"
+                    android:fontFamily="@font/sfpro_regu"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp"
+                    android:text="Mau mau nấu nướng và cùng bàn luận !          "
+                    android:textColor="@color/gray"
+                    android:textSize="14sp" />
 
                 <Space
                     android:layout_width="0dp"
@@ -544,9 +537,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="10dp"
-                    android:backgroundTint="@color/dark_gray"
+                    android:backgroundTint="@color/pastel_orange"
                     android:fontFamily="@font/sfpro_medi"
-                    android:text="Kết bạn bếp"
+                    android:text="Theo dõi bếp"
                     android:textAllCaps="false"
                     android:textSize="20sp"
                     android:textColor="@color/white" />

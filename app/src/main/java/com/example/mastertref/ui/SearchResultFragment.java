@@ -30,6 +30,7 @@ import com.example.mastertref.utils.SessionManager;
 import com.example.mastertref.viewmodel.LichSuTimKiemVM;
 import com.example.mastertref.viewmodel.MonAnVM;
 import com.example.mastertref.viewmodel.TaikhoanVM;
+import com.example.mastertref.viewmodel.TheoDoiVM;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -74,6 +75,9 @@ public class SearchResultFragment extends Fragment {
     // Current user ID
     private int currentUserId;
 
+    // Add TheoDoiVM
+    private TheoDoiVM theoDoiVM;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +85,7 @@ public class SearchResultFragment extends Fragment {
         sessionManager = new SessionManager(requireContext());
         taikhoanVM = new ViewModelProvider(this).get(TaikhoanVM.class);
         monAnVM = new ViewModelProvider(this).get(MonAnVM.class);
+        theoDoiVM = new ViewModelProvider(this).get(TheoDoiVM.class); // Initialize TheoDoiVM
         
         // Initialize current user ID
         initCurrentUserId();
@@ -319,8 +324,32 @@ public class SearchResultFragment extends Fragment {
 
         userAdapter.setOnFollowClickListener((user, position) -> {
             // Handle follow/unfollow action
-            Toast.makeText(requireContext(), "Đã theo dõi " + user.getUsername(), Toast.LENGTH_SHORT).show();
-            // Here you would implement the actual follow functionality
+            if (currentUserId > 0 && user.getId() > 0) {
+                // Don't allow following yourself
+                if (currentUserId == user.getId()) {
+                    Toast.makeText(requireContext(), "Không thể theo dõi chính mình", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                
+                // Check if already following
+                theoDoiVM.isFollowing(currentUserId, user.getId(), isFollowing -> {
+                    if (isFollowing) {
+                        // Already following, so unfollow
+                        theoDoiVM.unfollowUser(currentUserId, user.getId());
+                        Toast.makeText(requireContext(), "Đã hủy theo dõi " + user.getUsername(), Toast.LENGTH_SHORT).show();
+                        
+                        // Update UI
+                        userAdapter.updateFollowStatus(position, false);
+                    } else {
+                        // Not following, so follow
+                        theoDoiVM.followUser(currentUserId, user.getId());
+                        Toast.makeText(requireContext(), "Đã theo dõi " + user.getUsername(), Toast.LENGTH_SHORT).show();
+                        
+                        // Update UI
+                        userAdapter.updateFollowStatus(position, true);
+                    }
+                });
+            }
         });
     }
 

@@ -113,6 +113,8 @@
 
 
 <!--        phần show món ăn-->
+
+
         <LinearLayout
             android:id="@+id/llRecipe"
             android:layout_width="match_parent"
@@ -239,6 +241,33 @@
 
 
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llEmptyRecipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="100dp"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:gravity="center"> <!-- Thêm dòng này để căn giữa các phần tử -->
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/bowl" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chưa có hoạt động bếp nào"
+                android:textSize="22sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/sfpro_medi"
+                android:gravity="center"
+                android:layout_marginTop="8dp"/>
         </LinearLayout>
+
+    </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

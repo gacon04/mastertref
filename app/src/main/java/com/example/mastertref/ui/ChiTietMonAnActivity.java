@@ -39,7 +39,7 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
     private MonAnVM monAnVM;
     private TaikhoanVM taikhoanVM;
     private DaXemGanDayVM daXemRecentVM;
-    private int currentUserId = -1;
+    private int currentUserId = -1, ownerId=-1;
     private int monAnId;
     private SessionManager sessionManager;
     private String username;
@@ -48,7 +48,7 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
     private TextView tvRecipeTitle, tvAuthorName, tvAuthorUsername, tvDescription, tvAuthor2, tvRecipeTitleSmall;
     private TextView tvRecipeId, tvPublishDate, tvUpdateDate, tvSoNguoi, tvShowTime, btnWriteComment;
     private LinearLayout listNguyenLieu, listCachLam, llShowKhauPhan, llShowTime, llAuthorBanner;
-    private ImageButton btnBack, btnSave, btnMore, btnBookmark;
+    private ImageButton btnBack, btnMore, btnBookmark;
     private Button btnAddFriend;
     private RecyclerView rvRecipeRecommendations;
     private MonAnGoiYAdapter recommendationsAdapter;
@@ -126,7 +126,6 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
         llAuthorBanner = findViewById(R.id.llAuthorBanner);
         llShowTime = findViewById(R.id.llShowTime);
         btnBack = findViewById(R.id.btnBack);
-        btnSave = findViewById(R.id.btnSave);
         btnMore = findViewById(R.id.btnMore);
         btnAddFriend = findViewById(R.id.btnFollow);
         btnBookmark = findViewById(R.id.btnBookmark);
@@ -178,10 +177,7 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
             onBackPressed(); // Use onBackPressed instead of finish()
         });
 
-        btnSave.setOnClickListener(v -> {
-            // Implement save functionality
-            Toast.makeText(this, "Đã lưu công thức", Toast.LENGTH_SHORT).show();
-        });
+
 
         btnMore.setOnClickListener(v -> {
             // Implement more options menu
@@ -209,7 +205,21 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
             }
         });
         llAuthorBanner.setOnClickListener(v -> {
+            try {
+                // Tạo intent để mở MainActivity
+                Intent intent = new Intent(ChiTietMonAnActivity.this, MainActivity.class);
+                // Thêm action đặc biệt để MainActivity biết cần mở fragment nào
+                intent.setAction("OPEN_USER_PROFILE");
+                // Truyền user_id của người tạo công thức
+                intent.putExtra("user_id", ownerId);
+                startActivity(intent);
+                
 
+            } catch (Exception e) {
+                Toast.makeText(ChiTietMonAnActivity.this, 
+                    "Lỗi khi mở trang cá nhân: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
         });
     }
 
@@ -217,6 +227,7 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
         monAnVM.getMonAnWithChiTietById(monAnId).observe(this, monAnWithChiTiet -> {
             if (monAnWithChiTiet != null) {
                 displayMonAnData(monAnWithChiTiet);
+                ownerId = monAnWithChiTiet.getMonAn().getTaikhoanId();
             } else {
                 Toast.makeText(this, "Không tìm thấy thông tin món ăn", Toast.LENGTH_SHORT).show();
                 finish();
@@ -326,12 +337,10 @@ public class ChiTietMonAnActivity extends AppCompatActivity {
 
         if (username.equals(monAnWithChiTiet.getNguoiDang().getUsername()))
         {
-            btnSave.setVisibility(View.GONE);
             btnMore.setVisibility(View.GONE);
             btnBookmark.setVisibility(View.GONE);
             btnAddFriend.setVisibility(View.GONE);
         } else {
-            btnSave.setVisibility(View.VISIBLE);
             btnMore.setVisibility(View.VISIBLE);
             btnBookmark.setVisibility(View.VISIBLE);
             btnAddFriend.setVisibility(View.VISIBLE);

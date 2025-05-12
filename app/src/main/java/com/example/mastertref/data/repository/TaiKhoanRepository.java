@@ -114,6 +114,11 @@ public class TaiKhoanRepository {
     public LiveData<List<TaikhoanEntity>> searchUsersByUsernameOrNameZA(String query, int currentUserId) {
         return taikhoanDAO.searchUsersByUsernameOrNameZA(query, currentUserId);
     }
+    
+    // Lấy danh sách tài khoản theo danh sách ID
+    public LiveData<List<TaikhoanEntity>> getUsersByIds(List<Integer> userIds) {
+        return taikhoanDAO.getUsersByIds(userIds);
+    }
 
     // Kiểm tra xem người dùng có bị chặn không
     public void isUserBlockedOrBlocking(int currentUserId, int targetUserId, OnBooleanResultListener listener) {

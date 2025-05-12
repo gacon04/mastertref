@@ -22,12 +22,49 @@ public class MainActivity extends AppCompatActivity {
     MainBinding binding;
     FloatingActionButton fab;
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (intent != null) {
+            // Kiểm tra xem intent có action OPEN_USER_PROFILE không
+            if ("OPEN_USER_PROFILE".equals(intent.getAction())) {
+                int userId = intent.getIntExtra("user_id", -1);
+                if (userId != -1) {
+                    // Tạo bundle để truyền dữ liệu cho fragment
+                    Bundle args = new Bundle();
+                    args.putInt("user_id", userId);
+                    
+                    // Tạo fragment mới và truyền bundle
+                    ShowOthersPro5Fragment fragment = new ShowOthersPro5Fragment();
+                    fragment.setArguments(args);
+                    
+                    // Thay thế fragment hiện tại bằng ShowOthersPro5Fragment
+                    getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout, fragment)
+                        .addToBackStack(null)
+                        .commit();
+                }
+            }
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
-        CloudinaryHelper.init(this);
         super.onCreate(savedInstanceState);
+        CloudinaryHelper.init(this);
         binding = MainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new SearchFragment());
+        
+        // Xử lý intent trước khi thay thế fragment mặc định
+        if (getIntent() != null && "OPEN_USER_PROFILE".equals(getIntent().getAction())) {
+            handleIntent(getIntent());
+        } else {
+            replaceFragment(new SearchFragment());
+        }
 
         binding.bottomNavigationView.setBackground(null);
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
