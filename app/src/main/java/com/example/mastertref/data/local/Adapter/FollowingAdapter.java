@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.mastertref.R;
 import com.example.mastertref.data.local.TaikhoanEntity;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -52,6 +53,11 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Foll
             // Glide.with(context).load(followingUser.getAvatar()).into(holder.imgUserAvatar);
             holder.imgUserAvatar.setVisibility(View.VISIBLE);
             holder.txtUserInitial.setVisibility(View.GONE);
+            Glide.with(context)
+                    .load(followingUser.getImageLink())
+                    .placeholder(R.drawable.mastertref)
+                    .error(R.drawable.mastertref)
+                    .into(holder.imgUserAvatar);
         } else {
             // Show initial letter if no avatar
             holder.imgUserAvatar.setVisibility(View.GONE);

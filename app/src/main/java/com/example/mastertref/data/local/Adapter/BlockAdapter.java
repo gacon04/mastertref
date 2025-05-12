@@ -10,8 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.mastertref.R;
 import com.example.mastertref.data.local.TaikhoanEntity;
+import com.example.mastertref.utils.ImageHelper;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
@@ -51,6 +53,11 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.BlockViewHol
             // Load image using your preferred image loading library
             holder.imgUserAvatar.setVisibility(View.VISIBLE);
             holder.txtUserInitial.setVisibility(View.GONE);
+            Glide.with(context)
+                    .load(blockedUser.getImageLink())
+                    .placeholder(R.drawable.mastertref)
+                    .error(R.drawable.mastertref)
+                    .into(holder.imgUserAvatar);
             
             // Example with Glide (you would need to add Glide dependency)
             // Glide.with(context).load(blockedUser.getProfileImage()).into(holder.imgUserAvatar);
